@@ -38,15 +38,13 @@ print("recording...")
 
 frames = []
 #for i in range(0, int(RATE / CHUNK * RECORD_SECONDS)):
-record = True
-while record:
+while True:
     data = stream.read(CHUNK)
     audio_data = np.frombuffer(data, dtype=np.int16)
     
     rms = np.sqrt(np.mean(np.power(audio_data, 2)))
-    print(rms)
     if rms < lowerVolumeCutoff:
-        record = False
+        break
 
     audio_data = (audio_data * volume).astype(np.int16)
     
@@ -57,9 +55,12 @@ stream.stop_stream()
 stream.close()
 p.terminate()
 
-wf = wave.open(WAVE_OUTPUT_FILENAME, 'wb')
-wf.setnchannels(CHANNELS)
-wf.setsampwidth(p.get_sample_size(FORMAT))
-wf.setframerate(RATE)
-wf.writeframes(b''.join(frames))
-wf.close()
+if len(frames) > 0:
+    wf = wave.open(WAVE_OUTPUT_FILENAME, 'wb')
+    wf.setnchannels(CHANNELS)
+    wf.setsampwidth(p.get_sample_size(FORMAT))
+    wf.setframerate(RATE)
+    wf.writeframes(b''.join(frames))
+    wf.close()
+else:
+    print("No sound detected")
