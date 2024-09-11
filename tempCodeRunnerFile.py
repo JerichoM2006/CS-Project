@@ -1,0 +1,1 @@
+await asyncio.sleep(0)  # Yield control to other tasks
