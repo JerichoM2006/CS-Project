@@ -1,6 +1,8 @@
 import pyaudio
 import numpy
-import asyncio
+import Threadpool
+import queue
+import threading
 
 class desktopRecording:
     sound  = True
@@ -8,16 +10,16 @@ class desktopRecording:
     format = pyaudio.paInt16
     channels = 2
     rate = 44100
-    secondInterval = 1
+    secondInterval = 3
     volume = 35
 
-    isRecording = False
-    recordingTask = None
-    buffer = []
+    stopRecord = threading.Event()
+    buffer = queue.Queue()
 
-    def __init__(self):
+    def __init__(self, pool : Threadpool.Threadpool):
         self.p = pyaudio.PyAudio()
         self.generateStream()
+        self.pool = pool
 
     def generateStream(self):
         deviceIndex = -1
@@ -29,8 +31,6 @@ class desktopRecording:
         if (deviceIndex == -1):
             print("Stereo Mix (Realtek(R) Audio) not found")
             exit(1)
-        else:
-            print("Found Stereo Mix (Realtek(R) Audio) at index " + str(deviceIndex))
 
         self.stream = self.p.open(format=self.format,
                         channels=self.channels,
@@ -40,41 +40,42 @@ class desktopRecording:
                         frames_per_buffer=self.chunk)
 
 
-    async def startRecording(self):
+    def startRecording(self):
         print("Recording started")
-
-        self.buffer = []
-        self.isRecording = True
-
-        if self.recordingTask == None:
-            pass
-            #print("Starting recording task")
-            #self.recordingTask = asyncio.create_task(self.record())
-
+        self.buffer = queue.Queue()
+        self.stopRecord = threading.Event()
+        self.pool.submit(self.record)
 
     def stopRecording(self):
         print("Recording stopped")
+        self.stopRecord.set()
+        self.pool.getResult(self.record.__name__)
 
-        self.isRecording = False
-        self.buffer = []
+    def getSegment(self):
+        print("Segment fetched")
+        return self.buffer.get()
+ 
+    def record(self):
+        while not self.stopRecord.is_set():
+            frames = []
+            for i in range(0, int(self.rate / self.chunk * self.secondInterval)):
+                data = self.stream.read(self.chunk)
+                audio_data = numpy.frombuffer(data, dtype=numpy.int16)
+                audio_data = (audio_data * self.volume).astype(numpy.int16)
+                frames.append(audio_data.tobytes())
 
-    async def getSegment(self):
-        return self.buffer.pop(0)
+            self.buffer.put(b''.join(frames))
 
-    async def record(self):
+    
+    def classTest(self):
+        self.pool.submit(self.pipeTest)
+
+    def pipeTest(self):
         while True:
-            if self.isRecording:
-                frames = []
-                for i in range(0, int(self.rate / self.chunk * self.secondInterval)):
-                    data = self.stream.read(self.chunk)
-                    audio_data = numpy.frombuffer(data, dtype=numpy.int16)
-                    audio_data = (audio_data * self.volume).astype(numpy.int16)
-                    frames.append(audio_data.tobytes())
-
-                self.buffer.append(b''.join(frames))
-            await asyncio.sleep(0)
+            print(self.volume)
 
     def __del__(self):
+        self.stopRecording()
         self.stream.stop_stream()
         self.stream.close()
         self.p.terminate()
