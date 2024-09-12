@@ -29,15 +29,3 @@ while True:
             print(r.recognize_google(audio))
         except sr.UnknownValueError:
             print("can't understand audio")
-
-
-"""
-r = sr.Recognizer()
-with sr.AudioFile("segment.wav") as source:
-    audio = r.record(source)
-
-try:
-    print(r.recognize_google(audio))
-except sr.UnknownValueError:
-    print("Google Speech Recognition could not understand audio")
-"""
