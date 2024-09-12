@@ -20,6 +20,9 @@ class Threadpool():
         return self.workers[name]
     
     def getResult(self, name):
+        if name not in self.workers:
+            raise Exception("Worker not found")
+        
         return self.workers[name].result()
 
     def __del__(self):
