@@ -10,9 +10,8 @@ class desktopRecording:
     format = pyaudio.paInt16
     channels = 2
     rate = 44100
-    secondInterval = 3
-    volume = 35
-    volumeCutoff = 1.0
+    secondInterval = 10
+    volume = 10
 
     stopRecord = threading.Event()
     buffer = queue.Queue()
@@ -53,27 +52,20 @@ class desktopRecording:
         self.pool.getResult(self.record.__name__)
 
     def getSegment(self):
-        print("Segment fetched")
         return self.buffer.get()
  
     def record(self):
-        self.buffer.put(None)
         while not self.stopRecord.is_set():
             frames = []
 
             for i in range(0, int(self.rate / self.chunk * self.secondInterval)):
                 data = self.stream.read(self.chunk)
-
-                rms = numpy.sqrt(numpy.mean(data**2))
-                if rms < self.volumeCutoff:
-                    break
-
                 audio_data = numpy.frombuffer(data, dtype=numpy.int16)
+
                 audio_data = (audio_data * self.volume).astype(numpy.int16)
                 frames.append(audio_data.tobytes())
 
-            if(len(frames) > 0):
-                self.buffer.put(b''.join(frames))
+            self.buffer.put(b''.join(frames))
 
     def __del__(self):
         self.stopRecording()
