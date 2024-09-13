@@ -1,5 +1,6 @@
 import sqlite3
 import bcrypt
+import os
 
 class UserDetailsStorage:
     def __init__(self):
@@ -16,7 +17,8 @@ class UserDetailsStorage:
 
     def signUp(self, name, password):
         hashedPassword = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-        self.cursor.execute('INSERT INTO users (username, hashedPassword) VALUES (?, ?)', (name, hashedPassword))
+        salt = os.urandom(16)
+        self.cursor.execute('INSERT INTO users (username, hashedPassword) VALUES (?, ?, ?)', (name, hashedPassword, salt))
         self.conn.commit()
 
     def clear(self):
