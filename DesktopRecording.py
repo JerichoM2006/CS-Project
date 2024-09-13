@@ -10,8 +10,8 @@ class desktopRecording:
     format = pyaudio.paInt16
     channels = 2
     rate = 44100
-    secondInterval = 10
-    volume = 10
+    secondInterval = 3
+    volume = 1
 
     stopRecord = threading.Event()
     buffer = queue.Queue()
