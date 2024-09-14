@@ -1,16 +1,16 @@
-import DesktopRecording
-import Threadpool
-import PrimitiveTranscription
-import TranslationAI
+from DesktopRecording import DesktopRecording
+from Threadpool import Threadpool
+from PrimitiveTranscription import Transcription
+from TranslationAI import TranslationAI
 
 def main():
     origLanguage = "ja-JP"
     finalLanguage = "en-US"
 
-    pool = Threadpool.Threadpool(10)
-    recording = DesktopRecording.desktopRecording(pool)
-    transcriptionAI = PrimitiveTranscription.Transcription(pool, recording, origLanguage)
-    translator = TranslationAI.TranslationAI(pool, transcriptionAI, origLanguage, finalLanguage)
+    pool = Threadpool(10)
+    recording = DesktopRecording(pool)
+    transcriptionAI = Transcription(pool, recording, origLanguage)
+    translator = TranslationAI(pool, transcriptionAI, origLanguage, finalLanguage)
 
     recording.startRecording()
     transcriptionAI.startGeneration()

@@ -1,16 +1,17 @@
-import speech_recognition as sr
 import io
 import wave
-import Threadpool
 import queue
 import threading
-import DesktopRecording
+import speech_recognition as sr
+
+from Threadpool import Threadpool
+from DesktopRecording import DesktopRecording
 
 class Transcription:
     transcriptBuffer = queue.Queue()
     stopTranscript = threading.Event()
 
-    def __init__(self, pool : Threadpool.Threadpool, recording : DesktopRecording.desktopRecording, language):
+    def __init__(self, pool : Threadpool, recording : DesktopRecording, language):
         self.r = sr.Recognizer()
         self.language = language
         self.pool = pool
