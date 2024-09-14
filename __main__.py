@@ -1,7 +1,7 @@
 import DesktopRecording
 import Threadpool
 import PrimitiveTranscription
-from deep_translator import GoogleTranslator
+import TranslationAI
 
 def main():
     origLanguage = "ja-JP"
@@ -10,19 +10,15 @@ def main():
     pool = Threadpool.Threadpool(10)
     recording = DesktopRecording.desktopRecording(pool)
     transcriptionAI = PrimitiveTranscription.Transcription(pool, recording, origLanguage)
-    translator = GoogleTranslator()
+    translator = TranslationAI.TranslationAI(pool, transcriptionAI, origLanguage, finalLanguage)
 
     recording.startRecording()
     transcriptionAI.startGeneration()
+    translator.startTranslation()
 
     while True:
-        if transcriptionAI.transcriptBuffer.qsize() > 0:
-            transcript = transcriptionAI.getTranscript()
-
-            translated = translator.translate(transcript, src=origLanguage, dest=finalLanguage)
-            if translated == None:
-                translated = "..."
-
+        if translator.translationBuffer.qsize() > 0:
+            translated = translator.getTranslation()
             print(translated, end=" ")
             
 
