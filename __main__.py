@@ -1,7 +1,7 @@
-from DesktopRecording import DesktopRecording
+from LanguageSystem.DesktopRecording import DesktopRecording
+from LanguageSystem.PrimitiveTranscription import Transcription
+from LanguageSystem.TranslationAI import TranslationAI
 from Threadpool import Threadpool
-from PrimitiveTranscription import Transcription
-from TranslationAI import TranslationAI
 
 def main():
     origLanguage = "ja-JP"
