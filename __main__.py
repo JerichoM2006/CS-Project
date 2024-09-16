@@ -3,6 +3,11 @@ from LanguageSystem.PrimitiveTranscription import Transcription
 from LanguageSystem.TranslationAI import TranslationAI
 from Threadpool import Threadpool
 
+"""
+TODO: Do custom remove of queue
+TODO: Make each class less dependent
+"""
+
 def main():
     origLanguage = "ja-JP"
     finalLanguage = "en-US"
