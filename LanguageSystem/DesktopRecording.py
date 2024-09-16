@@ -53,7 +53,7 @@ class DesktopRecording:
         self.pool.getResult(self.record.__name__)
 
     def getSegment(self):
-        return self.buffer.get()
+        return self.buffer.get(block=True)
  
     def record(self):
         while not self.stopRecord.is_set():

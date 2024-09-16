@@ -17,9 +17,8 @@ def main():
     translator.startTranslation()
 
     while True:
-        if translator.translationBuffer.qsize() > 0:
-            translated = translator.getTranslation()
-            print(translated, end=" ")
+        translated = translator.getTranslation()
+        print(translated, end=" ")
             
 
 if __name__ == "__main__":

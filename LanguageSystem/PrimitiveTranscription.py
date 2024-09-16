@@ -29,7 +29,7 @@ class Transcription:
         self.pool.getResult(self.generateTranscript.__name__)
 
     def getTranscript(self):
-        return self.transcriptBuffer.get()
+        return self.transcriptBuffer.get(block=True)
         
     def generateTranscript(self):
         while not self.stopTranscript.is_set():

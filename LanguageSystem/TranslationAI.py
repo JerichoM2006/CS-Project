@@ -29,15 +29,14 @@ class TranslationAI:
         self.pool.getResult(self.translate.__name__)
 
     def getTranslation(self):
-        return self.translationBuffer.get()
+        return self.translationBuffer.get(block=True)
 
     def translate(self):
         while not self.stopTranslation.is_set():
-            if self.transciptionAI.transcriptBuffer.qsize() > 0:
-                transcript = self.transciptionAI.getTranscript()
-                translation  = self.translator.translate(transcript, src=self.origLanguage, dest=self.finalLanguage)
+            transcript = self.transciptionAI.getTranscript()
+            translation  = self.translator.translate(transcript, src=self.origLanguage, dest=self.finalLanguage)
 
-                if(translation == None):
-                    self.translationBuffer.put("...")
-                else:
-                    self.translationBuffer.put(translation)
+            if(translation == None):
+                self.translationBuffer.put("...")
+            else:
+                self.translationBuffer.put(translation)
