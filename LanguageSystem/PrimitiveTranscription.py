@@ -5,7 +5,7 @@ import threading
 import speech_recognition as sr
 
 from Threadpool import Threadpool
-from DesktopRecording import DesktopRecording
+from LanguageSystem.DesktopRecording import DesktopRecording
 
 class Transcription:
     transcriptBuffer = queue.Queue()

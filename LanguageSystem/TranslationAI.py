@@ -2,8 +2,9 @@ import queue
 import threading
 from deep_translator import GoogleTranslator
 
-from PrimitiveTranscription import Transcription
+from LanguageSystem.PrimitiveTranscription import Transcription
 from Threadpool import Threadpool
+
 
 class TranslationAI:
     translationBuffer = queue.Queue()
