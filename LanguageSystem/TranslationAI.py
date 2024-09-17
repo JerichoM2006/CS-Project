@@ -7,9 +7,6 @@ from Threadpool import Threadpool
 
 
 class TranslationAI:
-    translationBuffer = queue.Queue()
-    stop = threading.Event()
-
     def __init__(self, pool : Threadpool, transciptionAI : Transcription, origLanguage, finalLanguage):
         self.transciptionAI = transciptionAI
         self.pool = pool
@@ -17,10 +14,15 @@ class TranslationAI:
         self.finalLanguage = finalLanguage
         self.translator = GoogleTranslator()
 
+        self.translationBuffer = queue.Queue()
+        self.stop = threading.Event()
+
     def startTranslation(self):
         print("Translation started")
-        self.stop = threading.Event()
-        self.translationBuffer = queue.Queue()
+
+        self.stop.clear()
+        self.clearQueue(self.translationBuffer)
+
         self.pool.submit(self.translate)
 
     def stopTranslation(self):
@@ -40,3 +42,7 @@ class TranslationAI:
                 self.translationBuffer.put("...")
             else:
                 self.translationBuffer.put(translation)
+
+    def clearQueue(self, queue : queue.Queue):
+        while not queue.empty():
+            queue.get(block=True)

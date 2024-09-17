@@ -8,19 +8,21 @@ from Threadpool import Threadpool
 from LanguageSystem.DesktopRecording import DesktopRecording
 
 class Transcription:
-    transcriptBuffer = queue.Queue()
-    stopTranscript = threading.Event()
-
     def __init__(self, pool : Threadpool, recording : DesktopRecording, language):
         self.r = sr.Recognizer()
         self.language = language
         self.pool = pool
         self.recording = recording
 
+        self.transcriptBuffer = queue.Queue()
+        self.stopTranscript = threading.Event()
+
     def startGeneration(self):
         print("Transcription started")
-        self.stopTranscript = threading.Event()
-        self.transcriptBuffer = queue.Queue()
+
+        self.stopTranscript.clear()
+        self.clearQueue(self.transcriptBuffer)
+
         self.pool.submit(self.generateTranscript)
 
     def stopGeneration(self):
@@ -50,3 +52,7 @@ class Transcription:
                 self.transcriptBuffer.put(self.r.recognize_google(audio, language=self.language))
             except sr.UnknownValueError:
                 self.transcriptBuffer.put("...")
+
+    def clearQueue(self, queue : queue.Queue):
+        while not queue.empty():
+            queue.get(block=True)

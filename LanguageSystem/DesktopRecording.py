@@ -14,13 +14,13 @@ class DesktopRecording:
     secondInterval = 3
     volume = 1
 
-    stopRecord = threading.Event()
-    buffer = queue.Queue()
-
     def __init__(self, pool : Threadpool):
         self.p = pyaudio.PyAudio()
         self.generateStream()
         self.pool = pool
+
+        self.stopRecord = threading.Event()
+        self.buffer = queue.Queue()
 
     def generateStream(self):
         deviceIndex = -1
@@ -43,8 +43,10 @@ class DesktopRecording:
 
     def startRecording(self):
         print("Recording started")
-        self.buffer = queue.Queue()
-        self.stopRecord = threading.Event()
+
+        self.clearQueue(self.buffer)
+        self.stopRecord.clear()
+        
         self.pool.submit(self.record)
 
     def stopRecording(self):
@@ -67,6 +69,10 @@ class DesktopRecording:
                 frames.append(audio_data.tobytes())
 
             self.buffer.put(b''.join(frames))
+
+    def clearQueue(self, queue : queue.Queue):
+        while not queue.empty():
+            queue.get(block=True)
 
     def __del__(self):
         self.stopRecording()
