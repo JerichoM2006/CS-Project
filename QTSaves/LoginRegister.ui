@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LoginRegisterWindow</class>
+ <widget class="QMainWindow" name="LoginRegisterWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>560</width>
+    <height>448</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Translation Transcriptor</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QFrame" name="UsernameFrame">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>160</y>
+      <width>541</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QLineEdit" name="UsernameInput">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>10</y>
+       <width>311</width>
+       <height>50</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>16</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="placeholderText">
+      <string>Username</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="UsernameLabel">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>20</y>
+       <width>121</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Username</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QFrame" name="PasswordFrame">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>230</y>
+      <width>541</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QLineEdit" name="PasswordInput">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>10</y>
+       <width>311</width>
+       <height>50</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>16</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="placeholderText">
+      <string>Password</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="PasswordLabel">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>20</y>
+       <width>121</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Password</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QFrame" name="SubmitButtons">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>300</y>
+      <width>541</width>
+      <height>111</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QPushButton" name="LogInButton">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>40</y>
+       <width>151</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>16</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Log-In</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="RegisterButton">
+     <property name="geometry">
+      <rect>
+       <x>290</x>
+       <y>40</y>
+       <width>151</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>16</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Register</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>10</y>
+       <width>221</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: red</string>
+     </property>
+     <property name="text">
+      <string>Something bad bad happened</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>200</x>
+      <y>10</y>
+      <width>151</width>
+      <height>141</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>../Externals/Logo.jpeg</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>560</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+ <designerdata>
+  <property name="gridDeltaX">
+   <number>10</number>
+  </property>
+  <property name="gridDeltaY">
+   <number>10</number>
+  </property>
+  <property name="gridSnapX">
+   <bool>true</bool>
+  </property>
+  <property name="gridSnapY">
+   <bool>true</bool>
+  </property>
+  <property name="gridVisible">
+   <bool>true</bool>
+  </property>
+ </designerdata>
+</ui>
