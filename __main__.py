@@ -18,8 +18,11 @@ def main():
 
     while True:
         translated = translator.getTranslation()
-        print(translated, end=" ", flush=True)
-            
+        print(translated, end=" ")
+
+import QTSaves.LoginRegisterGUI as lr           
+def main1():
+    lr.main()
 
 if __name__ == "__main__":
-    main()
+    main1()

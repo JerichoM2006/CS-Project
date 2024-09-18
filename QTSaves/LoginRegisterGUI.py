@@ -12,13 +12,18 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import pathlib
 import sys
 
+from UserSystem.UserDetailsStorage import UserDetailsStorage
+
 if hasattr(QtCore.Qt, 'AA_EnableHighDpiScaling'):
     QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
 if hasattr(QtCore.Qt, 'AA_UseHighDpiPixmaps'):
     QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
 
 class Ui_LoginRegisterWindow(object):
-    def setupUi(self, login_register_window): 
+    def setupUi(self, login_register_window):
+        storagePath = str(pathlib.Path(__file__).parent.parent.resolve()) + "/Databases/userStorage.db"
+        self.storage = UserDetailsStorage(storagePath)
+
         # Create the window
         login_register_window.setObjectName("login_register_window")
         login_register_window.resize(560, 448)
@@ -99,6 +104,7 @@ class Ui_LoginRegisterWindow(object):
         font.setPointSize(16)
         self.login_button.setFont(font)
         self.login_button.setObjectName("login_button")
+        self.login_button.clicked.connect(self.onLoginButtonClicked)
 
         # Create the register button
         self.register_button = QtWidgets.QPushButton(self.submit_buttons)
@@ -107,6 +113,7 @@ class Ui_LoginRegisterWindow(object):
         font.setPointSize(16)
         self.register_button.setFont(font)
         self.register_button.setObjectName("register_button")
+        self.register_button.clicked.connect(self.onRegisterButtonClicked)
 
         # Create the error label
         self.error_label = QtWidgets.QLabel(self.submit_buttons)
@@ -122,7 +129,7 @@ class Ui_LoginRegisterWindow(object):
         self.logo_label = QtWidgets.QLabel(self.central_widget)
         self.logo_label.setGeometry(QtCore.QRect(200, 10, 151, 141))
         self.logo_label.setText("")
-        self.logo_label.setPixmap(QtGui.QPixmap(str(pathlib.Path(__file__).parent.parent.resolve()) + "\Resources\Logo.jpeg"))
+        self.logo_label.setPixmap(QtGui.QPixmap(str(pathlib.Path(__file__).parent.parent.resolve()) + "/Resources/Logo.jpeg"))
         self.logo_label.setScaledContents(True)
         self.logo_label.setObjectName("logo_label")
 
@@ -149,9 +156,20 @@ class Ui_LoginRegisterWindow(object):
         self.register_button.setText(_translate("LoginRegisterWindow", "Register"))
         self.error_label.setText(_translate("LoginRegisterWindow", "Something bad bad happened"))
 
-app = QtWidgets.QApplication(sys.argv)
-LoginRegisterWindow = QtWidgets.QMainWindow()
-ui = Ui_LoginRegisterWindow()
-ui.setupUi(LoginRegisterWindow)
-LoginRegisterWindow.show()
-sys.exit(app.exec_())
+    def onLoginButtonClicked(self):
+        if self.storage.signIn(self.username_input.text(), self.password_input.text()):
+            self.error_label.setText("Sign in successful")
+        else:
+            self.error_label.setText("Sign in failed")
+
+    def onRegisterButtonClicked(self):
+        self.storage.signUp(self.username_input.text(), self.password_input.text())
+        self.error_label.setText("Sign up successful")
+
+def main():
+    app = QtWidgets.QApplication(sys.argv)
+    LoginRegisterWindow = QtWidgets.QMainWindow()
+    ui = Ui_LoginRegisterWindow()
+    ui.setupUi(LoginRegisterWindow)
+    LoginRegisterWindow.show()
+    sys.exit(app.exec_())

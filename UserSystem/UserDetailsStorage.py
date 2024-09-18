@@ -3,8 +3,8 @@ import bcrypt
 import os
 
 class UserDetailsStorage:
-    def __init__(self):
-        self.conn = sqlite3.connect('userStorage.db')
+    def __init__(self, userStoragePath):
+        self.conn = sqlite3.connect(userStoragePath)
         self.cursor = self.conn.cursor()
 
     def signIn(self, name, password):
@@ -18,7 +18,7 @@ class UserDetailsStorage:
     def signUp(self, name, password):
         hashedPassword = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         salt = os.urandom(16)
-        self.cursor.execute('INSERT INTO users (username, hashedPassword) VALUES (?, ?, ?)', (name, hashedPassword, salt))
+        self.cursor.execute('INSERT INTO users (username, hashedPassword) VALUES (?, ?)', (name, hashedPassword))
         self.conn.commit()
 
     def clear(self):
@@ -27,26 +27,3 @@ class UserDetailsStorage:
 
     def __del__(self):
         self.conn.close()
-
-storage = UserDetailsStorage()
-
-while True:
-    inp = input("1. Sign in\n2. Sign up\n3. Clear database\n4. Exit\n")
-
-    if inp == "1":
-        name = input("Name: ")
-        password = input("Password: ")
-        if storage.signIn(name, password):
-            print("Sign in successful")
-        else:
-            print("Sign in failed")
-    elif inp == "2":
-        name = input("Name: ")
-        password = input("Password: ")
-        storage.signUp(name, password)
-        print("Sign up successful")
-    elif inp == "3":
-        storage.clear()
-        print("Database cleared")
-    elif inp == "4":
-        break
