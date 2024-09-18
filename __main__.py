@@ -18,7 +18,7 @@ def main():
 
     while True:
         translated = translator.getTranslation()
-        print(translated, end=" ")
+        print(translated, end=" ", flush=True)
             
 
 if __name__ == "__main__":
