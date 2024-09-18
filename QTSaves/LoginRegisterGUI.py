@@ -10,9 +10,15 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 import pathlib
+import sys
+
+if hasattr(QtCore.Qt, 'AA_EnableHighDpiScaling'):
+    QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
+if hasattr(QtCore.Qt, 'AA_UseHighDpiPixmaps'):
+    QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
 
 class Ui_LoginRegisterWindow(object):
-    def setupUi(self, login_register_window):
+    def setupUi(self, login_register_window): 
         # Create the window
         login_register_window.setObjectName("login_register_window")
         login_register_window.resize(560, 448)
@@ -143,8 +149,6 @@ class Ui_LoginRegisterWindow(object):
         self.register_button.setText(_translate("LoginRegisterWindow", "Register"))
         self.error_label.setText(_translate("LoginRegisterWindow", "Something bad bad happened"))
 
-
-import sys
 app = QtWidgets.QApplication(sys.argv)
 LoginRegisterWindow = QtWidgets.QMainWindow()
 ui = Ui_LoginRegisterWindow()
