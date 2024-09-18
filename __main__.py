@@ -20,7 +20,7 @@ def main():
         translated = translator.getTranslation()
         print(translated, end=" ")
 
-import QTSaves.LoginRegisterGUI as lr           
+import GUI.LoginRegisterGUI as lr
 def main1():
     lr.main()
 
