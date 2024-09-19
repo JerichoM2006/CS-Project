@@ -59,6 +59,7 @@ class UserDetailsStorage:
 
     def clear(self):
         self.cursor.execute('DELETE FROM users')
+        self.cursor.execute('DELETE FROM sqlite_sequence WHERE name="users"')
         self.conn.commit()
 
     def __del__(self):

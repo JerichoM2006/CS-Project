@@ -21,8 +21,12 @@ def main():
         print(translated, end=" ")
 
 import GUI.LoginRegisterGUI as lr
+import UserSystem.UserDetailsStorage as ud
 def main1():
     lr.main()
 
+def softReset():
+    ud.UserDetailsStorage().clear()
+
 if __name__ == "__main__":
-    main1()
+    softReset()
