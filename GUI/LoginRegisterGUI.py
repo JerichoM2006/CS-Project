@@ -21,8 +21,7 @@ if hasattr(QtCore.Qt, 'AA_UseHighDpiPixmaps'):
 
 class Ui_LoginRegisterWindow(object):
     def setupUi(self, login_register_window):
-        storagePath = str(pathlib.Path(__file__).parent.parent.resolve()) + "/Databases/userStorage.db"
-        self.storage = UserDetailsStorage(storagePath)
+        self.storage = UserDetailsStorage()
 
         # Create the window
         login_register_window.setObjectName("login_register_window")
@@ -166,6 +165,7 @@ class Ui_LoginRegisterWindow(object):
         if not self.storage.checkUserExistence(self.username_input.text()):
             self.storage.signUp(self.username_input.text(), self.password_input.text())
             self.error_label.setText("Sign up successful")
+            self.storage.generateUserData(self.username_input.text())
         else:
             self.error_label.setText("Username already exists")
 

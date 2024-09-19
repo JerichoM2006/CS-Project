@@ -1,10 +1,12 @@
 import sqlite3
 import bcrypt
-import os
+import pathlib
 
 class UserDetailsStorage:
-    def __init__(self, userStoragePath):
-        self.conn = sqlite3.connect(userStoragePath)
+    def __init__(self):
+        path = str(pathlib.Path(__file__).parent.parent.resolve()) + "/Databases/userStorage.db"
+
+        self.conn = sqlite3.connect(path)
         self.cursor = self.conn.cursor()
 
     def signIn(self, name, password):
@@ -28,6 +30,32 @@ class UserDetailsStorage:
              return False
          else:
              return True
+         
+    def generateUserData(self, name):
+        path = str(pathlib.Path(__file__).parent.parent.resolve()) + "/Databases/" + name + ".db"
+        userCon = sqlite3.connect(path)
+        userCursor = userCon.cursor()
+
+        userCursor.execute('''
+                           CREATE TABLE IF NOT EXISTS Transcripts (
+                           transcriptionID INTEGER PRIMARY KEY AUTOINCREMENT, 
+                           name TEXT, 
+                           date TEXT
+                           )
+                           ''')
+        
+        userCursor.execute('''
+                           CREATE TABLE IF NOT EXISTS Sections (
+                           sectionID INTEGER PRIMARY KEY AUTOINCREMENT,
+                           transcriptionID INTEGER,
+                           body TEXT, 
+                           date TEXT
+                           )
+                           ''')
+        
+        userCon.commit()
+        userCon.close()
+
 
     def clear(self):
         self.cursor.execute('DELETE FROM users')
