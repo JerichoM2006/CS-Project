@@ -17,9 +17,17 @@ class UserDetailsStorage:
 
     def signUp(self, name, password):
         hashedPassword = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-        salt = os.urandom(16)
         self.cursor.execute('INSERT INTO users (username, hashedPassword) VALUES (?, ?)', (name, hashedPassword))
         self.conn.commit()
+
+    def checkUserExistence(self, name):
+         self.cursor.execute('SELECT * FROM users WHERE username = ?', (name,))
+         result =self.cursor.fetchone()
+
+         if result is None:
+             return False
+         else:
+             return True
 
     def clear(self):
         self.cursor.execute('DELETE FROM users')

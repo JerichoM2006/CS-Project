@@ -163,8 +163,11 @@ class Ui_LoginRegisterWindow(object):
             self.error_label.setText("Sign in failed")
 
     def onRegisterButtonClicked(self):
-        self.storage.signUp(self.username_input.text(), self.password_input.text())
-        self.error_label.setText("Sign up successful")
+        if not self.storage.checkUserExistence(self.username_input.text()):
+            self.storage.signUp(self.username_input.text(), self.password_input.text())
+            self.error_label.setText("Sign up successful")
+        else:
+            self.error_label.setText("Username already exists")
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
