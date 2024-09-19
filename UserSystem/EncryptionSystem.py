@@ -1,5 +1,5 @@
-from crypto.Protocol.KDF import PBKDF2
-from crypto.Cipher import AES
+from Crypto.Protocol.KDF import PBKDF2
+from Crypto.Cipher import AES
 import os
 
 class EncryptionSystem:
