@@ -24,11 +24,13 @@ class Ui_LoginRegisterWindow(object):
         self.storage = UserDetailsStorage()
         
         #Create the window
-        LoginRegisterWindow.setWindowIcon(QtGui.QIcon(str(pathlib.Path(__file__).parent.parent.resolve()) + "/Resources/Logo.jpeg"))
         LoginRegisterWindow.setObjectName("LoginRegisterWindow")
         LoginRegisterWindow.resize(560, 448)
         LoginRegisterWindow.setMinimumSize(QtCore.QSize(560, 448))
         LoginRegisterWindow.setMaximumSize(QtCore.QSize(560, 448))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(str(pathlib.Path(__file__).parent.parent.resolve()) + "/Resources/Logo.jpeg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        LoginRegisterWindow.setWindowIcon(icon)
         LoginRegisterWindow.setStyleSheet("")
         self.centralwidget = QtWidgets.QWidget(LoginRegisterWindow)
         self.centralwidget.setObjectName("centralwidget")
