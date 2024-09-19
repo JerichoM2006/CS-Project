@@ -20,154 +20,154 @@ if hasattr(QtCore.Qt, 'AA_UseHighDpiPixmaps'):
     QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
 
 class Ui_LoginRegisterWindow(object):
-    def setupUi(self, login_register_window):
+    def setupUi(self, LoginRegisterWindow : QtWidgets.QMainWindow):
         self.storage = UserDetailsStorage()
+        
+        #Create the window
+        LoginRegisterWindow.setWindowIcon(QtGui.QIcon(str(pathlib.Path(__file__).parent.parent.resolve()) + "/Resources/Logo.jpeg"))
+        LoginRegisterWindow.setObjectName("LoginRegisterWindow")
+        LoginRegisterWindow.resize(560, 448)
+        LoginRegisterWindow.setMinimumSize(QtCore.QSize(560, 448))
+        LoginRegisterWindow.setMaximumSize(QtCore.QSize(560, 448))
+        LoginRegisterWindow.setStyleSheet("")
+        self.centralwidget = QtWidgets.QWidget(LoginRegisterWindow)
+        self.centralwidget.setObjectName("centralwidget")
 
-        # Create the window
-        login_register_window.setObjectName("login_register_window")
-        login_register_window.resize(560, 448)
-        login_register_window.setStyleSheet("")
-        self.central_widget = QtWidgets.QWidget(login_register_window)
-        self.central_widget.setObjectName("central_widget")
-
-        # Create the username frame and input box
-        self.username_frame = QtWidgets.QFrame(self.central_widget)
-        self.username_frame.setGeometry(QtCore.QRect(10, 160, 541, 71))
+        # The frame for the username input
+        self.UsernameFrame = QtWidgets.QFrame(self.centralwidget)
+        self.UsernameFrame.setGeometry(QtCore.QRect(10, 160, 541, 71))
         font = QtGui.QFont()
         font.setPointSize(16)
         font.setBold(False)
         font.setWeight(50)
-        self.username_frame.setFont(font)
-        self.username_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.username_frame.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.username_frame.setObjectName("username_frame")
+        self.UsernameFrame.setFont(font)
+        self.UsernameFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.UsernameFrame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.UsernameFrame.setObjectName("UsernameFrame")
 
-        self.username_input = QtWidgets.QLineEdit(self.username_frame)
-        self.username_input.setGeometry(QtCore.QRect(120, 10, 311, 50))
+        # The username input box
+        self.UsernameInput = QtWidgets.QLineEdit(self.UsernameFrame)
+        self.UsernameInput.setGeometry(QtCore.QRect(120, 10, 311, 50))
         font = QtGui.QFont()
         font.setPointSize(16)
         font.setBold(False)
         font.setWeight(50)
-        self.username_input.setFont(font)
-        self.username_input.setAutoFillBackground(False)
-        self.username_input.setText("")
-        self.username_input.setObjectName("username_input")
+        self.UsernameInput.setFont(font)
+        self.UsernameInput.setAutoFillBackground(False)
+        self.UsernameInput.setText("")
+        self.UsernameInput.setObjectName("UsernameInput")
 
-        self.username_label = QtWidgets.QLabel(self.username_frame)
-        self.username_label.setGeometry(QtCore.QRect(0, 20, 121, 31))
-        self.username_label.setAlignment(QtCore.Qt.AlignCenter)
-        self.username_label.setObjectName("username_label")
+        # The label for the username input
+        self.UsernameLabel = QtWidgets.QLabel(self.UsernameFrame)
+        self.UsernameLabel.setGeometry(QtCore.QRect(0, 20, 121, 31))
+        self.UsernameLabel.setAlignment(QtCore.Qt.AlignCenter)
+        self.UsernameLabel.setObjectName("UsernameLabel")
 
-        # Create the password frame and input box
-        self.password_frame = QtWidgets.QFrame(self.central_widget)
-        self.password_frame.setGeometry(QtCore.QRect(10, 230, 541, 71))
+        # The frame for the password input
+        self.PasswordFrame = QtWidgets.QFrame(self.centralwidget)
+        self.PasswordFrame.setGeometry(QtCore.QRect(10, 230, 541, 71))
         font = QtGui.QFont()
         font.setPointSize(16)
         font.setBold(False)
         font.setWeight(50)
-        self.password_frame.setFont(font)
-        self.password_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.password_frame.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.password_frame.setObjectName("password_frame")
+        self.PasswordFrame.setFont(font)
+        self.PasswordFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.PasswordFrame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.PasswordFrame.setObjectName("PasswordFrame")
 
-        self.password_input = QtWidgets.QLineEdit(self.password_frame)
-        self.password_input.setGeometry(QtCore.QRect(120, 10, 311, 50))
+        # The password input box
+        self.PasswordInput = QtWidgets.QLineEdit(self.PasswordFrame)
+        self.PasswordInput.setGeometry(QtCore.QRect(120, 10, 311, 50))
         font = QtGui.QFont()
         font.setPointSize(16)
         font.setBold(False)
         font.setWeight(50)
-        self.password_input.setFont(font)
-        self.password_input.setAutoFillBackground(False)
-        self.password_input.setText("")
-        self.password_input.setObjectName("password_input")
+        self.PasswordInput.setFont(font)
+        self.PasswordInput.setAutoFillBackground(False)
+        self.PasswordInput.setText("")
+        self.PasswordInput.setObjectName("PasswordInput")
 
-        self.password_label = QtWidgets.QLabel(self.password_frame)
-        self.password_label.setGeometry(QtCore.QRect(0, 20, 121, 31))
-        self.password_label.setAlignment(QtCore.Qt.AlignCenter)
-        self.password_label.setObjectName("password_label")
+        # The label for the password input
+        self.PasswordLabel = QtWidgets.QLabel(self.PasswordFrame)
+        self.PasswordLabel.setGeometry(QtCore.QRect(0, 20, 121, 31))
+        self.PasswordLabel.setAlignment(QtCore.Qt.AlignCenter)
+        self.PasswordLabel.setObjectName("PasswordLabel")
 
-        # Create the submit buttons frame
-        self.submit_buttons = QtWidgets.QFrame(self.central_widget)
-        self.submit_buttons.setGeometry(QtCore.QRect(10, 300, 541, 111))
+        # The frame for the submit buttons
+        self.SubmitButtons = QtWidgets.QFrame(self.centralwidget)
+        self.SubmitButtons.setGeometry(QtCore.QRect(10, 300, 541, 111))
         font = QtGui.QFont()
         font.setPointSize(16)
-        self.submit_buttons.setFont(font)
-        self.submit_buttons.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.submit_buttons.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.submit_buttons.setObjectName("submit_buttons")
+        self.SubmitButtons.setFont(font)
+        self.SubmitButtons.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.SubmitButtons.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.SubmitButtons.setObjectName("SubmitButtons")
 
-        # Create the login button
-        self.login_button = QtWidgets.QPushButton(self.submit_buttons)
-        self.login_button.setGeometry(QtCore.QRect(90, 40, 151, 61))
+        # The log in button
+        self.LogInButton = QtWidgets.QPushButton(self.SubmitButtons)
+        self.LogInButton.setGeometry(QtCore.QRect(90, 40, 151, 61))
         font = QtGui.QFont()
         font.setPointSize(16)
-        self.login_button.setFont(font)
-        self.login_button.setObjectName("login_button")
-        self.login_button.clicked.connect(self.onLoginButtonClicked)
+        self.LogInButton.setFont(font)
+        self.LogInButton.setObjectName("LogInButton")
+        self.LogInButton.clicked.connect(self.onLoginButtonClicked)
 
-        # Create the register button
-        self.register_button = QtWidgets.QPushButton(self.submit_buttons)
-        self.register_button.setGeometry(QtCore.QRect(290, 40, 151, 61))
+        # The register button
+        self.RegisterButton = QtWidgets.QPushButton(self.SubmitButtons)
+        self.RegisterButton.setGeometry(QtCore.QRect(290, 40, 151, 61))
         font = QtGui.QFont()
         font.setPointSize(16)
-        self.register_button.setFont(font)
-        self.register_button.setObjectName("register_button")
-        self.register_button.clicked.connect(self.onRegisterButtonClicked)
+        self.RegisterButton.setFont(font)
+        self.RegisterButton.setObjectName("RegisterButton")
+        self.RegisterButton.clicked.connect(self.onRegisterButtonClicked)
 
-        # Create the error label
-        self.error_label = QtWidgets.QLabel(self.submit_buttons)
-        self.error_label.setGeometry(QtCore.QRect(150, 10, 221, 16))
+        # The notice label
+        self.NoticeLabel = QtWidgets.QLabel(self.SubmitButtons)
+        self.NoticeLabel.setGeometry(QtCore.QRect(150, 10, 221, 16))
         font = QtGui.QFont()
         font.setPointSize(8)
-        self.error_label.setFont(font)
-        self.error_label.setStyleSheet("color: red")
-        self.error_label.setAlignment(QtCore.Qt.AlignCenter)
-        self.error_label.setObjectName("error_label")
+        self.NoticeLabel.setFont(font)
+        self.NoticeLabel.setStyleSheet("color: red")
+        self.NoticeLabel.setAlignment(QtCore.Qt.AlignCenter)
+        self.NoticeLabel.setObjectName("NoticeLabel")
 
-        # Create the logo label
-        self.logo_label = QtWidgets.QLabel(self.central_widget)
-        self.logo_label.setGeometry(QtCore.QRect(200, 10, 151, 141))
-        self.logo_label.setText("")
-        self.logo_label.setPixmap(QtGui.QPixmap(str(pathlib.Path(__file__).parent.parent.resolve()) + "/Resources/Logo.jpeg"))
-        self.logo_label.setScaledContents(True)
-        self.logo_label.setObjectName("logo_label")
+        # The logo label
+        self.LogoLabel = QtWidgets.QLabel(self.centralwidget)
+        self.LogoLabel.setGeometry(QtCore.QRect(200, 10, 151, 141))
+        self.LogoLabel.setText("")
+        self.LogoLabel.setPixmap(QtGui.QPixmap(str(pathlib.Path(__file__).parent.parent.resolve()) + "/Resources/Logo.jpeg"))
+        self.LogoLabel.setScaledContents(True)
+        self.LogoLabel.setObjectName("LogoLabel")
 
-        login_register_window.setCentralWidget(self.central_widget)
-        self.menubar = QtWidgets.QMenuBar(login_register_window)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 560, 21))
-        self.menubar.setObjectName("menubar")
-        login_register_window.setMenuBar(self.menubar)
-        self.statusbar = QtWidgets.QStatusBar(login_register_window)
-        self.statusbar.setObjectName("statusbar")
-        login_register_window.setStatusBar(self.statusbar)
+        LoginRegisterWindow.setCentralWidget(self.centralwidget)
 
-        self.retranslateUi(login_register_window)
-        QtCore.QMetaObject.connectSlotsByName(login_register_window)
+        self.retranslateUi(LoginRegisterWindow)
+        QtCore.QMetaObject.connectSlotsByName(LoginRegisterWindow)
 
     def retranslateUi(self, LoginRegisterWindow):
         _translate = QtCore.QCoreApplication.translate
         LoginRegisterWindow.setWindowTitle(_translate("LoginRegisterWindow", "Translation Transcriptor"))
-        self.username_input.setPlaceholderText(_translate("LoginRegisterWindow", "Username"))
-        self.username_label.setText(_translate("LoginRegisterWindow", "Username"))
-        self.password_input.setPlaceholderText(_translate("LoginRegisterWindow", "Password"))
-        self.password_label.setText(_translate("LoginRegisterWindow", "Password"))
-        self.login_button.setText(_translate("LoginRegisterWindow", "Log-In"))
-        self.register_button.setText(_translate("LoginRegisterWindow", "Register"))
-        self.error_label.setText(_translate("LoginRegisterWindow", "Something bad bad happened"))
+        self.UsernameInput.setPlaceholderText(_translate("LoginRegisterWindow", "Username"))
+        self.UsernameLabel.setText(_translate("LoginRegisterWindow", "Username"))
+        self.PasswordInput.setPlaceholderText(_translate("LoginRegisterWindow", "Password"))
+        self.PasswordLabel.setText(_translate("LoginRegisterWindow", "Password"))
+        self.LogInButton.setText(_translate("LoginRegisterWindow", "Log-In"))
+        self.RegisterButton.setText(_translate("LoginRegisterWindow", "Register"))
+        self.NoticeLabel.setText(_translate("LoginRegisterWindow", "Something bad bad happened"))
 
     def onLoginButtonClicked(self):
-        if self.storage.signIn(self.username_input.text(), self.password_input.text()):
-            self.error_label.setText("Sign in successful")
+        if self.storage.signIn(self.UsernameInput.text(), self.PasswordInput.text()):
+            self.NoticeLabel.setText("Sign in successful")
         else:
-            self.error_label.setText("Sign in failed")
+            self.NoticeLabel.setText("Sign in failed")
 
     def onRegisterButtonClicked(self):
-        if not self.storage.checkUserExistence(self.username_input.text()):
-            self.storage.signUp(self.username_input.text(), self.password_input.text())
-            self.error_label.setText("Sign up successful")
-            self.storage.generateUserData(self.username_input.text())
+        if not self.storage.checkUserExistence(self.UsernameInput.text()):
+            self.storage.signUp(self.UsernameInput.text(), self.PasswordInput.text())
+            self.NoticeLabel.setText("Sign up successful")
+            self.storage.generateUserData(self.UsernameInput.text())
         else:
-            self.error_label.setText("Username already exists")
+            self.NoticeLabel.setText("Username already exists")
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
@@ -176,3 +176,5 @@ def main():
     ui.setupUi(LoginRegisterWindow)
     LoginRegisterWindow.show()
     sys.exit(app.exec_())
+
+main()
