@@ -23,4 +23,4 @@ def softReset():
     ud.UserDetailsStorage().clear()
 
 if __name__ == "__main__":
-    main1()
+    main()
