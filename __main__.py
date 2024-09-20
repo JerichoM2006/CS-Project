@@ -33,7 +33,7 @@ def main1():
 
     app = QtWidgets.QApplication(sys.argv)
 
-    window = LoginRegisterWindow()
+    window = ControlWindow()
     window.show()
 
     sys.exit(app.exec_())
