@@ -10,24 +10,27 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 import pathlib
-import sys
 
 from UserSystem.UserDetailsStorage import UserDetailsStorage
 
-class Ui_LoginRegisterWindow(object):
-    def setupUi(self, LoginRegisterWindow : QtWidgets.QMainWindow):
+class Ui_LoginRegisterWindow(QtWidgets.QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.setupUi()
+
         self.storage = UserDetailsStorage()
-        
+
+    def setupUi(self):
         #Create the window
-        LoginRegisterWindow.setObjectName("LoginRegisterWindow")
-        LoginRegisterWindow.resize(560, 448)
-        LoginRegisterWindow.setMinimumSize(QtCore.QSize(560, 448))
-        LoginRegisterWindow.setMaximumSize(QtCore.QSize(560, 448))
+        self.setObjectName("LoginRegisterWindow")
+        self.resize(560, 448)
+        self.setMinimumSize(QtCore.QSize(560, 448))
+        self.setMaximumSize(QtCore.QSize(560, 448))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(str(pathlib.Path(__file__).parent.parent.resolve()) + "/Resources/Logo.jpeg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        LoginRegisterWindow.setWindowIcon(icon)
-        LoginRegisterWindow.setStyleSheet("")
-        self.centralwidget = QtWidgets.QWidget(LoginRegisterWindow)
+        self.setWindowIcon(icon)
+        self.setStyleSheet("")
+        self.centralwidget = QtWidgets.QWidget(self)
         self.centralwidget.setObjectName("centralwidget")
 
         # The frame for the username input
@@ -136,14 +139,14 @@ class Ui_LoginRegisterWindow(object):
         self.LogoLabel.setScaledContents(True)
         self.LogoLabel.setObjectName("LogoLabel")
 
-        LoginRegisterWindow.setCentralWidget(self.centralwidget)
+        self.setCentralWidget(self.centralwidget)
 
-        self.retranslateUi(LoginRegisterWindow)
-        QtCore.QMetaObject.connectSlotsByName(LoginRegisterWindow)
+        self.retranslateUi()
+        QtCore.QMetaObject.connectSlotsByName(self)
 
-    def retranslateUi(self, LoginRegisterWindow):
+    def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
-        LoginRegisterWindow.setWindowTitle(_translate("LoginRegisterWindow", "Translation Transcriptor"))
+        self.setWindowTitle(_translate("LoginRegisterWindow", "Translation Transcriptor"))
         self.UsernameInput.setPlaceholderText(_translate("LoginRegisterWindow", "Username"))
         self.UsernameLabel.setText(_translate("LoginRegisterWindow", "Username"))
         self.PasswordInput.setPlaceholderText(_translate("LoginRegisterWindow", "Password"))
@@ -165,18 +168,3 @@ class Ui_LoginRegisterWindow(object):
             self.storage.generateUserData(self.UsernameInput.text())
         else:
             self.NoticeLabel.setText("Username already exists")
-
-def main():
-    if hasattr(QtCore.Qt, 'AA_EnableHighDpiScaling'):
-        QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
-    if hasattr(QtCore.Qt, 'AA_UseHighDpiPixmaps'):
-        QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
-
-    app = QtWidgets.QApplication(sys.argv)
-    LoginRegisterWindow = QtWidgets.QMainWindow()
-    ui = Ui_LoginRegisterWindow()
-    ui.setupUi(LoginRegisterWindow)
-    LoginRegisterWindow.show()
-    sys.exit(app.exec_())
-
-main()

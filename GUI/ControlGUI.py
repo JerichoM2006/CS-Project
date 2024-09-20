@@ -10,18 +10,22 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 import pathlib
-import sys
 
-class Ui_ControlWindow(object):
-    def setupUi(self, ControlWindow):
-        ControlWindow.setObjectName("ControlWindow")
-        ControlWindow.resize(700, 448)
-        ControlWindow.setMinimumSize(QtCore.QSize(700, 448))
-        ControlWindow.setMaximumSize(QtCore.QSize(700, 448))
+class Ui_ControlWindow(QtWidgets.QMainWindow):
+    def __init__(self):
+        super().__init__()
+        
+        self.setupUi()
+
+    def setupUi(self):
+        self.setObjectName("ControlWindow")
+        self.resize(700, 448)
+        self.setMinimumSize(QtCore.QSize(700, 448))
+        self.setMaximumSize(QtCore.QSize(700, 448))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(str(pathlib.Path(__file__).parent.parent.resolve()) + "/Resources/Logo.jpeg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        ControlWindow.setWindowIcon(icon)
-        self.centralwidget = QtWidgets.QWidget(ControlWindow)
+        self.setWindowIcon(icon)
+        self.centralwidget = QtWidgets.QWidget(self)
         self.centralwidget.setObjectName("centralwidget")
 
         self.Line = QtWidgets.QFrame(self.centralwidget)
@@ -139,14 +143,14 @@ class Ui_ControlWindow(object):
         self.TranscriptsButton.setFont(font)
         self.TranscriptsButton.setObjectName("TranscriptsButton")
 
-        ControlWindow.setCentralWidget(self.centralwidget)
+        self.setCentralWidget(self.centralwidget)
 
-        self.retranslateUi(ControlWindow)
-        QtCore.QMetaObject.connectSlotsByName(ControlWindow)
+        self.retranslateUi()
+        QtCore.QMetaObject.connectSlotsByName(self)
 
-    def retranslateUi(self, ControlWindow):
+    def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
-        ControlWindow.setWindowTitle(_translate("ControlWindow", "MainWindow"))
+        self.setWindowTitle(_translate("ControlWindow", "MainWindow"))
         self.TranscriptLabel.setText(_translate("ControlWindow", "<html><head/><body><p>Lorem ipsum dolor sit amet. Qui eaque molestiae est minus consequatur eos minus voluptatem ut consequuntur iste qui rerum ipsam. Est earum repudiandae sit galisum autem sed voluptate iste est voluptas magnam et adipisci iure et possimus fuga et dolores animi. Et reprehenderit modi non harum quod qui esse dolor sed odio quia aut consequatur cumque. Ea sunt commodi rem maiores quis aut harum tempore. Rem nulla rerum qui sapiente modi qui galisum itaque et nulla incidunt ut animi velit rem quam harum. Aut voluptatem voluptatem ut quam vero in laudantium consectetur ut nihil dolorum ut aperiam aliquam in iste velit. Quo quis numquam 33 quis dignissimos ut dolorem animi non amet galisum qui ipsam enim nam adipisci nulla et dolor excepturi. Et nulla adipisci ut aperiam impedit ut expedita ducimus qui dolor suscipit et sint dolor ut aperiam velit et temporibus eius. Lorem ipsum dolor sit amet. Qui eaque molestiae est minus consequatur eos minus voluptatem ut consequuntur iste qui rerum ipsam. Est earum repudiandae sit galisum autem sed voluptate iste est voluptas magnam et adipisci iure et possimus fuga et dolores animi. Et reprehenderit modi non harum quod qui esse dolor sed odio quia aut consequatur cumque. </p><p>Ea sunt commodi rem maiores quis aut harum tempore. Rem nulla rerum qui sapiente modi qui galisum itaque et nulla incidunt ut animi velit rem quam harum. </p><p>Aut voluptatem voluptatem ut quam vero in laudantium consectetur ut nihil dolorum ut aperiam aliquam in iste velit. Quo quis numquam 33 quis dignissimos ut dolorem animi non amet galisum qui ipsam enim nam adipisci nulla et dolor excepturi. Et nulla adipisci ut aperiam impedit ut expedita ducimus qui dolor suscipit et sint dolor ut aperiam velit et temporibus eius. </p></body></html>"))
         self.StartButton.setText(_translate("ControlWindow", "Start"))
         self.NameInput.setHtml(_translate("ControlWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
@@ -162,18 +166,3 @@ class Ui_ControlWindow(object):
         self.SettingsButton.setText(_translate("ControlWindow", "Settings"))
         self.HelpButton.setText(_translate("ControlWindow", "Help"))
         self.TranscriptsButton.setText(_translate("ControlWindow", "Transcripts"))
-
-def main():
-    if hasattr(QtCore.Qt, 'AA_EnableHighDpiScaling'):
-        QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
-    if hasattr(QtCore.Qt, 'AA_UseHighDpiPixmaps'):
-        QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
-
-    app = QtWidgets.QApplication(sys.argv)
-    ControlWindow = QtWidgets.QMainWindow()
-    ui = Ui_ControlWindow()
-    ui.setupUi(ControlWindow)
-    ControlWindow.show()
-    sys.exit(app.exec_())
-
-main()

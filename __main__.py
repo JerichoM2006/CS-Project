@@ -20,10 +20,24 @@ def main():
         translated = translator.getTranslation()
         print(translated, end=" ")
 
-import GUI.LoginRegisterGUI as lr
+from GUI.LoginRegisterGUI import Ui_LoginRegisterWindow as lr
+from GUI.ControlGUI import Ui_ControlWindow as c
 import UserSystem.UserDetailsStorage as ud
+import sys
+from PyQt5 import QtWidgets, QtCore
 def main1():
-    lr.main()
+    if hasattr(QtCore.Qt, 'AA_EnableHighDpiScaling'):
+            QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
+    if hasattr(QtCore.Qt, 'AA_UseHighDpiPixmaps'):
+        QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
+
+    app = QtWidgets.QApplication(sys.argv)
+
+    window = c()
+    window.show()
+
+    sys.exit(app.exec_())
+    
 
 def softReset():
     ud.UserDetailsStorage().clear()
