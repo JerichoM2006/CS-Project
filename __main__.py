@@ -20,8 +20,8 @@ def main():
         translated = translator.getTranslation()
         print(translated, end=" ")
 
-from GUI.LoginRegisterGUI import Ui_LoginRegisterWindow as lr
-from GUI.ControlGUI import Ui_ControlWindow as c
+from GUI.LoginRegisterGUI import LoginRegisterWindow
+from GUI.ControlGUI import ControlWindow
 import UserSystem.UserDetailsStorage as ud
 import sys
 from PyQt5 import QtWidgets, QtCore
@@ -33,7 +33,7 @@ def main1():
 
     app = QtWidgets.QApplication(sys.argv)
 
-    window = c()
+    window = LoginRegisterWindow()
     window.show()
 
     sys.exit(app.exec_())

@@ -13,7 +13,7 @@ import pathlib
 
 from UserSystem.UserDetailsStorage import UserDetailsStorage
 
-class Ui_LoginRegisterWindow(QtWidgets.QMainWindow):
+class LoginRegisterWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
         self.setupUi()

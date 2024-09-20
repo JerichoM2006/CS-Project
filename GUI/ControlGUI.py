@@ -11,7 +11,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import pathlib
 
-class Ui_ControlWindow(QtWidgets.QMainWindow):
+class ControlWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
         
