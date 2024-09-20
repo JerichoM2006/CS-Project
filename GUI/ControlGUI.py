@@ -164,6 +164,11 @@ class Ui_ControlWindow(object):
         self.TranscriptsButton.setText(_translate("ControlWindow", "Transcripts"))
 
 def main():
+    if hasattr(QtCore.Qt, 'AA_EnableHighDpiScaling'):
+        QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
+    if hasattr(QtCore.Qt, 'AA_UseHighDpiPixmaps'):
+        QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
+
     app = QtWidgets.QApplication(sys.argv)
     ControlWindow = QtWidgets.QMainWindow()
     ui = Ui_ControlWindow()

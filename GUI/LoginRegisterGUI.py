@@ -14,11 +14,6 @@ import sys
 
 from UserSystem.UserDetailsStorage import UserDetailsStorage
 
-if hasattr(QtCore.Qt, 'AA_EnableHighDpiScaling'):
-    QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
-if hasattr(QtCore.Qt, 'AA_UseHighDpiPixmaps'):
-    QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
-
 class Ui_LoginRegisterWindow(object):
     def setupUi(self, LoginRegisterWindow : QtWidgets.QMainWindow):
         self.storage = UserDetailsStorage()
@@ -172,6 +167,11 @@ class Ui_LoginRegisterWindow(object):
             self.NoticeLabel.setText("Username already exists")
 
 def main():
+    if hasattr(QtCore.Qt, 'AA_EnableHighDpiScaling'):
+        QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
+    if hasattr(QtCore.Qt, 'AA_UseHighDpiPixmaps'):
+        QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
+
     app = QtWidgets.QApplication(sys.argv)
     LoginRegisterWindow = QtWidgets.QMainWindow()
     ui = Ui_LoginRegisterWindow()
