@@ -4,7 +4,11 @@ from GUI.ControlGUI import ControlWindow
 import UserSystem.UserDetailsStorage as ud
 import sys
 from PyQt5 import QtWidgets, QtCore
+import warnings
+
 def main():
+    warnings.filterwarnings("ignore", category=DeprecationWarning)
+
     if hasattr(QtCore.Qt, 'AA_EnableHighDpiScaling'):
             QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
     if hasattr(QtCore.Qt, 'AA_UseHighDpiPixmaps'):
