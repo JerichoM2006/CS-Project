@@ -6,17 +6,19 @@ class SubtitleWindow(QtWidgets.QWidget):
         super().__init__()
 
         self.padding = 10
-        self.fontsize = 12
+        self.fontsize = 24
         self.maxWidth = 800
+        self.maxLines = 3
 
         self.x = int((app.primaryScreen().size().width()) * 0.5) - (self.maxWidth // 2)
-        self.y = int(app.primaryScreen().size().height() * 0.8)
+        self.y = int(app.primaryScreen().size().height() - (self.maxLines * self.fontsize + 2 * self.padding) - 45)
 
         self.setFixedWidth(self.maxWidth)
+        self.setFixedHeight(self.maxLines * self.fontsize + 2 * self.padding)
 
         self.setAttribute(QtCore.Qt.WA_TransparentForMouseEvents, True)
         self.setAttribute(QtCore.Qt.WA_NoChildEventsForParent, True)
-        self.setWindowFlags(QtCore.Qt.SubWindow | QtCore.Qt.X11BypassWindowManagerHint | QtCore.Qt.WindowStaysOnTopHint | QtCore.Qt.FramelessWindowHint)
+        self.setWindowFlags(QtCore.Qt.SubWindow | QtCore.Qt.X11BypassWindowManagerHint | QtCore.Qt.WindowStaysOnTopHint | QtCore.Qt.FramelessWindowHint | QtCore.Qt.Tool)
         self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
 
         self.label = QtWidgets.QLabel(self)
@@ -25,9 +27,10 @@ class SubtitleWindow(QtWidgets.QWidget):
         self.label.setFont(QtGui.QFont("Arial", 8))
         self.label.setWordWrap(True)
         self.label.adjustSize()
-
-        self.resize(self.label.width() + 2 * self.padding, self.label.height() + 2 * self.padding)
+        self.label.setFixedWidth(self.maxWidth - 2 * self.padding)
         self.label.move(self.padding, self.padding)
+
+        self.move(self.x, self.y)
 
     def paintEvent(self, event):
         painter = QtGui.QPainter(self)
@@ -35,9 +38,11 @@ class SubtitleWindow(QtWidgets.QWidget):
         painter.setBrush(QtGui.QColor(50, 50, 50, 128)) 
         painter.setPen(QtCore.Qt.NoPen)
         painter.drawRoundedRect(self.rect(), 10, 10) 
+        painter.end()
 
-    def update_subtitle(self, text):
+    def setSubtitle(self, text):
         self.label.setText(text)
         self.label.adjustSize()
-        self.resize(self.label.width() + 2 * self.padding, self.label.height() + 2 * self.padding)
+        self.label.setFixedWidth(self.maxWidth - 2 * self.padding)
         self.label.move(self.padding, self.padding)
+

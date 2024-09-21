@@ -10,6 +10,7 @@
 from LanguageSystem.DesktopRecording import DesktopRecording
 from LanguageSystem.TranslationAI import TranslationAI
 from LanguageSystem.PrimitiveTranscription import Transcription
+from GUI.SubtitlesGUI import SubtitleWindow
 from Threadpool import Threadpool 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -18,10 +19,10 @@ import pathlib
 import threading
 
 class ControlWindow(QtWidgets.QMainWindow):
-    def __init__(self, pool : Threadpool):
+    def __init__(self, app : QtWidgets.QApplication, pool : Threadpool):
         super().__init__()
         
-        self.originalLanguage = "en-US"
+        self.originalLanguage = "ja-JP"
         self.finalLanguage = "en-US"
 
         self.pool = pool
@@ -31,6 +32,9 @@ class ControlWindow(QtWidgets.QMainWindow):
         self.recording = DesktopRecording(pool)
         self.transcription = Transcription(pool, self.recording, self.originalLanguage)
         self.translation = TranslationAI(pool, self.transcription, self.originalLanguage, self.finalLanguage)
+
+        self.app = app
+        self.subtitles = SubtitleWindow(app)
 
         self.setupUi()
 
@@ -200,6 +204,7 @@ class ControlWindow(QtWidgets.QMainWindow):
             else:
                 self.transcriptList[-1][1] += " " + translation
 
+            self.subtitles.setSubtitle(self.transcriptList[-1][1])
             self.TranscriptLabel.setText(self.generateText())
 
     def generateText(self):
@@ -218,6 +223,9 @@ class ControlWindow(QtWidgets.QMainWindow):
             self.transcription.startGeneration()
             self.translation.startTranslation()
 
+            self.subtitles.show()
+            self.subtitles.setSubtitle("")
+
             self.updateTranscriptEvent.clear()
             self.pool.submit(self.updateTranscript)
         else:
@@ -225,6 +233,8 @@ class ControlWindow(QtWidgets.QMainWindow):
 
             self.updateTranscriptEvent.set()
             self.pool.getResult(self.updateTranscript.__name__)
+
+            self.subtitles.close()
 
             self.recording.stopRecording()
             self.transcription.stopGeneration()

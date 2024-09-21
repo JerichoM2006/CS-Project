@@ -14,11 +14,15 @@ import pathlib
 from UserSystem.UserDetailsStorage import UserDetailsStorage
 from GUI.ControlGUI import ControlWindow
 
+from Threadpool import Threadpool
+
 class LoginRegisterWindow(QtWidgets.QMainWindow):
-    def __init__(self):
+    def __init__(self, app : QtWidgets.QApplication, pool : Threadpool):
         super().__init__()
         self.setupUi()
 
+        self.app = app
+        self.pool = pool
         self.storage = UserDetailsStorage()
 
     def setupUi(self):
@@ -160,7 +164,7 @@ class LoginRegisterWindow(QtWidgets.QMainWindow):
         if self.storage.signIn(self.UsernameInput.text(), self.PasswordInput.text()):
             self.NoticeLabel.setText("Sign in successful")
 
-            self.controlWindow = ControlWindow()
+            self.controlWindow = ControlWindow(self.app, self.pool)
             self.controlWindow.show()
             self.close()
         else:
@@ -172,7 +176,7 @@ class LoginRegisterWindow(QtWidgets.QMainWindow):
             self.NoticeLabel.setText("Sign up successful")
             self.storage.generateUserData(self.UsernameInput.text())
 
-            self.controlWindow = ControlWindow()
+            self.controlWindow = ControlWindow(self.app, self.pool)
             self.controlWindow.show()
             self.close()
         else:

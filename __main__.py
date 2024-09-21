@@ -17,7 +17,7 @@ def main():
     app = QtWidgets.QApplication(sys.argv)
     pool = Threadpool(10)
 
-    window = ControlWindow(pool)
+    window = ControlWindow(app, pool)
     window.show()
 
     sys.exit(app.exec_())
