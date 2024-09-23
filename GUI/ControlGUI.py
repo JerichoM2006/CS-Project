@@ -204,7 +204,7 @@ class ControlWindow(QtWidgets.QMainWindow):
             else:
                 self.transcriptList[-1][1] += " " + translation
 
-            self.subtitles.setSubtitle(self.transcriptList[-1][1])
+            self.subtitles.setSubtitle(translation)
             self.TranscriptLabel.setText(self.generateText())
 
     def generateText(self):

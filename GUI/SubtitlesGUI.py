@@ -8,7 +8,7 @@ class SubtitleWindow(QtWidgets.QWidget):
         self.padding = 10
         self.fontsize = 24
         self.maxWidth = 800
-        self.maxLines = 3
+        self.maxLines = 2
 
         self.x = int((app.primaryScreen().size().width()) * 0.5) - (self.maxWidth // 2)
         self.y = int(app.primaryScreen().size().height() - (self.maxLines * self.fontsize + 2 * self.padding) - 45)
@@ -32,6 +32,8 @@ class SubtitleWindow(QtWidgets.QWidget):
 
         self.move(self.x, self.y)
 
+        self.text = ""
+
     def paintEvent(self, event):
         painter = QtGui.QPainter(self)
         painter.setRenderHint(QtGui.QPainter.Antialiasing)
@@ -41,8 +43,13 @@ class SubtitleWindow(QtWidgets.QWidget):
         painter.end()
 
     def setSubtitle(self, text):
-        self.label.setText(text)
+        print(f"Height: {self.label.height()}, Max: {(self.maxLines * self.fontsize) + (self.padding * 2)}")
+        if self.label.height() > (self.maxLines * self.fontsize) + (self.padding * 2):
+            self.text = text + " "
+        else:
+            self.text += text + " "
+
+        self.label.setText(self.text)
         self.label.adjustSize()
-        self.label.setFixedWidth(self.maxWidth - 2 * self.padding)
         self.label.move(self.padding, self.padding)
 
