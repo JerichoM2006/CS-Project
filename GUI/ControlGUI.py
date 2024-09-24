@@ -127,6 +127,7 @@ class ControlWindow(QtWidgets.QMainWindow):
         font.setPointSize(14)
         self.DeleteButton.setFont(font)
         self.DeleteButton.setObjectName("DeleteButton")
+        self.DeleteButton.clicked.connect(self.onDeleteButtonClicked)
 
         self.TranscriptTitle = QtWidgets.QLabel(self.centralwidget)
         self.TranscriptTitle.setGeometry(QtCore.QRect(0, 10, 351, 31))
@@ -215,8 +216,24 @@ class ControlWindow(QtWidgets.QMainWindow):
             text += "\n"
         return text
 
+    def checkPlaying(self):
+        if self.StartButton.text() == "Stop":
+            msg = QtWidgets.QMessageBox()
+            msg.setIcon(QtWidgets.QMessageBox.Warning)
+            msg.setText("You must stop your recording")
+            msg.setWindowTitle("Warning")
+
+            msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+            msg.defaultButton = QtWidgets.QMessageBox.Ok
+
+            msg.exec_()
+
+            return True
+        return False
+
     def onStartButtonClicked(self):
         if(self.StartButton.text() == "Start"):
+            self.subtitles.clearSubtitles()
             self.StartButton.setText("Stop")
 
             self.recording.startRecording()
@@ -239,3 +256,26 @@ class ControlWindow(QtWidgets.QMainWindow):
             self.recording.stopRecording()
             self.transcription.stopGeneration()
             self.translation.stopTranslation()
+
+    def onDeleteButtonClicked(self):
+        if self.checkPlaying():
+            return
+
+        msg = QtWidgets.QMessageBox()
+        msg.setIcon(QtWidgets.QMessageBox.Warning)
+        msg.setText("Are you sure you want to delete your transcript?")
+        msg.setWindowTitle("Warning")
+
+        msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+        msg.defaultButton = QtWidgets.QMessageBox.No
+
+        msg.buttonClicked.connect(self.onDeleteWarningDecided)
+        msg.exec_()
+    
+    def onDeleteWarningDecided(self, decision):
+        print(decision.text())
+        if decision.text() == "&Yes":
+            print("Hi")
+            self.transcriptList = []
+            self.subtitles.clearSubtitles()
+            self.TranscriptLabel.setText("")
