@@ -1,10 +1,11 @@
+from PyQt5 import QtWidgets, QtCore
+import sys
+import warnings
+
 from Threadpool import Threadpool
+import UserSystem.UserDetailsStorage as ud
 from GUI.LoginRegisterGUI import LoginRegisterWindow
 from GUI.ControlGUI import ControlWindow
-import UserSystem.UserDetailsStorage as ud
-import sys
-from PyQt5 import QtWidgets, QtCore
-import warnings
 
 def main():
     warnings.filterwarnings("ignore", category=DeprecationWarning)
