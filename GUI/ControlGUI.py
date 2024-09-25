@@ -273,7 +273,6 @@ class ControlWindow(QtWidgets.QMainWindow):
         msg.exec_()
     
     def onDeleteWarningDecided(self, decision):
-        print(decision.text())
         if decision.text() == "&Yes":
             print("Hi")
             self.transcriptList = []
