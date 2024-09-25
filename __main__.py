@@ -7,6 +7,10 @@ import UserSystem.UserDetailsStorage as ud
 from GUI.LoginRegisterGUI import LoginRegisterWindow
 from GUI.ControlGUI import ControlWindow
 
+"""
+TODO: Turn every class into a singleton except the windows
+"""
+
 def main():
     warnings.filterwarnings("ignore", category=DeprecationWarning)
 
@@ -18,7 +22,7 @@ def main():
     app = QtWidgets.QApplication(sys.argv)
     pool = Threadpool(10)
 
-    window = ControlWindow(app, pool)
+    window = ControlWindow(app, pool, "Jericho")
     window.show()
 
     sys.exit(app.exec_())

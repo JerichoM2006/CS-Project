@@ -19,7 +19,7 @@ import pathlib
 import threading
 
 class ControlWindow(QtWidgets.QMainWindow):
-    def __init__(self, app : QtWidgets.QApplication, pool : Threadpool):
+    def __init__(self, app : QtWidgets.QApplication, pool : Threadpool, username):
         super().__init__()
         
         self.originalLanguage = "ja-JP"
@@ -35,6 +35,8 @@ class ControlWindow(QtWidgets.QMainWindow):
 
         self.app = app
         self.subtitles = SubtitleWindow(app)
+
+        self.username = username
 
         self.setupUi()
 
@@ -120,6 +122,7 @@ class ControlWindow(QtWidgets.QMainWindow):
         font.setPointSize(14)
         self.SaveButton.setFont(font)
         self.SaveButton.setObjectName("SaveButton")
+        self.SaveButton.clicked.connect(self.onSaveButtonClicked)
 
         self.DeleteButton = QtWidgets.QPushButton(self.SavingFrame)
         self.DeleteButton.setGeometry(QtCore.QRect(171, 10, 131, 51))
@@ -216,20 +219,16 @@ class ControlWindow(QtWidgets.QMainWindow):
             text += "\n"
         return text
 
-    def checkPlaying(self):
-        if self.StartButton.text() == "Stop":
-            msg = QtWidgets.QMessageBox()
-            msg.setIcon(QtWidgets.QMessageBox.Warning)
-            msg.setText("You must stop your recording")
-            msg.setWindowTitle("Warning")
+    def setWarning(self, text):
+        msg = QtWidgets.QMessageBox()
+        msg.setIcon(QtWidgets.QMessageBox.Warning)
+        msg.setText(text)
+        msg.setWindowTitle("Warning")
 
-            msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
-            msg.defaultButton = QtWidgets.QMessageBox.Ok
+        msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+        msg.defaultButton = QtWidgets.QMessageBox.Ok
 
-            msg.exec_()
-
-            return True
-        return False
+        msg.exec_()
 
     def onStartButtonClicked(self):
         if(self.StartButton.text() == "Start"):
@@ -258,7 +257,8 @@ class ControlWindow(QtWidgets.QMainWindow):
             self.translation.stopTranslation()
 
     def onDeleteButtonClicked(self):
-        if self.checkPlaying():
+        if self.StartButton.text() == "Stop":
+            self.setWarning("You must stop the recording before deleting the transcript")
             return
 
         msg = QtWidgets.QMessageBox()
@@ -274,7 +274,19 @@ class ControlWindow(QtWidgets.QMainWindow):
     
     def onDeleteWarningDecided(self, decision):
         if decision.text() == "&Yes":
-            print("Hi")
             self.transcriptList = []
             self.subtitles.clearSubtitles()
             self.TranscriptLabel.setText("")
+
+    def onSaveButtonClicked(self):
+        if self.StartButton.text() == "Stop":
+            self.setWarning("You must stop the recording before saving the transcript")
+            return
+
+        if len(self.transcriptList) == 0:
+            self.setWarning("You must have at least one transcript")
+            return
+
+        if self.NameInput.text() == "":
+            self.setWarning("You must enter a name for your transcript")
+            return
