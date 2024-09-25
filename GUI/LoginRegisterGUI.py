@@ -155,23 +155,22 @@ class LoginRegisterWindow(QtWidgets.QMainWindow):
         self.PasswordLabel.setText(_translate("LoginRegisterWindow", "Password"))
         self.LogInButton.setText(_translate("LoginRegisterWindow", "Log-In"))
         self.RegisterButton.setText(_translate("LoginRegisterWindow", "Register"))
-        self.NoticeLabel.setText(_translate("LoginRegisterWindow", "Something bad bad happened"))
+        self.NoticeLabel.setText(_translate("LoginRegisterWindow", ""))
 
     def onLoginButtonClicked(self):
-        if self.storage.signIn(self.UsernameInput.text(), self.PasswordInput.text()):
-            self.NoticeLabel.setText("Sign in successful")
+        if self.storage.logIn(self.UsernameInput.text(), self.PasswordInput.text()):
+            self.NoticeLabel.setText("Log in successful")
 
             self.controlWindow = ControlWindow(self.app)
             self.controlWindow.show()
             self.close()
         else:
-            self.NoticeLabel.setText("Sign in failed")
+            self.NoticeLabel.setText("Log in failed")
 
     def onRegisterButtonClicked(self):
         if not self.storage.checkUserExistence(self.UsernameInput.text()):
             self.storage.signUp(self.UsernameInput.text(), self.PasswordInput.text())
             self.NoticeLabel.setText("Sign up successful")
-            self.storage.generateUserData(self.UsernameInput.text())
 
             self.controlWindow = ControlWindow(self.app)
             self.controlWindow.show()

@@ -11,6 +11,8 @@ from LanguageSystem.DesktopRecording import DesktopRecording
 from LanguageSystem.TranslationAI import TranslationAI
 from LanguageSystem.PrimitiveTranscription import Transcription
 from GUI.SubtitlesGUI import SubtitleWindow
+from UserSystem.UserDetailsStorage import UserDetailsStorage
+from UserSystem.EncryptionSystem import EncryptionSystem
 from Utilities.Threadpool import Threadpool 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -32,6 +34,9 @@ class ControlWindow(QtWidgets.QMainWindow):
         self.recording : DesktopRecording = DesktopRecording()
         self.transcription : Transcription = Transcription()
         self.translation : TranslationAI = TranslationAI()
+
+        self.userDetails : UserDetailsStorage = UserDetailsStorage()
+        self.encryption : EncryptionSystem = EncryptionSystem()
 
         self.app = app
         self.subtitles = SubtitleWindow(app)
@@ -187,6 +192,25 @@ class ControlWindow(QtWidgets.QMainWindow):
         self.HelpButton.setText(_translate("ControlWindow", "Help"))
         self.TranscriptsButton.setText(_translate("ControlWindow", "Transcripts"))
 
+    def closeEvent(self, event):
+        if self.StartButton.text() == "Stop":
+            self.setMessageBox("You must stop the recording before exiting", "Warning", QtWidgets.QMessageBox.Warning)
+            return
+
+        msg = QtWidgets.QMessageBox()
+        msg.setIcon(QtWidgets.QMessageBox.Question)
+        msg.setText("Are you sure you want to exit?")
+        msg.setWindowTitle("Warning")
+        msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+        msg.defaultButton = QtWidgets.QMessageBox.No
+        response = msg.exec_()
+
+        if response == QtWidgets.QMessageBox.No:
+            event.ignore()
+            return
+        
+        self.encryption.encrypt(self.userDetails.password, self.userDetails.accountPath)
+
     def updateTranscript(self):
         date = ""
         while not self.updateTranscriptEvent.is_set():
@@ -196,8 +220,8 @@ class ControlWindow(QtWidgets.QMainWindow):
                 if translation == "..." and self.transcriptList[-1][1].split()[-1] == "...":
                     continue
 
-            if not date == str(datetime.now().strftime("%d:%m:%y %H:%M")):
-                date = str(datetime.now().strftime("%d:%m:%y %H:%M"))
+            if not date == str(datetime.now().strftime("%H:%M")):
+                date = str(datetime.now().strftime("%H:%M"))
                 self.transcriptList.append([date, translation])
             else:
                 self.transcriptList[-1][1] += " " + translation
@@ -213,11 +237,11 @@ class ControlWindow(QtWidgets.QMainWindow):
             text += "\n"
         return text
 
-    def setWarning(self, text):
+    def setMessageBox(self, text, title, type : QtWidgets.QMessageBox):
         msg = QtWidgets.QMessageBox()
-        msg.setIcon(QtWidgets.QMessageBox.Warning)
+        msg.setIcon(type)
         msg.setText(text)
-        msg.setWindowTitle("Warning")
+        msg.setWindowTitle(title)
 
         msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
         msg.defaultButton = QtWidgets.QMessageBox.Ok
@@ -252,7 +276,7 @@ class ControlWindow(QtWidgets.QMainWindow):
 
     def onDeleteButtonClicked(self):
         if self.StartButton.text() == "Stop":
-            self.setWarning("You must stop the recording before deleting the transcript")
+            self.setMessageBox("You must stop the recording before deleting the transcript", "Warning", QtWidgets.QMessageBox.Warning)
             return
 
         msg = QtWidgets.QMessageBox()
@@ -262,26 +286,32 @@ class ControlWindow(QtWidgets.QMainWindow):
 
         msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
         msg.defaultButton = QtWidgets.QMessageBox.No
-
-        msg.buttonClicked.connect(self.onDeleteWarningDecided)
-        msg.exec_()
     
-    def onDeleteWarningDecided(self, decision):
-        if decision.text() == "&Yes":
+        response = msg.exec_()
+
+        if response.text() == "&Yes":
             self.transcriptList = []
             self.subtitles.clearSubtitles()
             self.TranscriptLabel.setText("")
 
     def onSaveButtonClicked(self):
         if self.StartButton.text() == "Stop":
-            self.setWarning("You must stop the recording before saving the transcript")
+            self.setMessageBox("You must stop the recording before saving the transcript", "Warning", QtWidgets.QMessageBox.Warning)
             return
 
         if len(self.transcriptList) == 0:
-            self.setWarning("You must have at least one transcript")
+            self.setMessageBox("You must have a transcript", "Warning", QtWidgets.QMessageBox.Warning)
             return
 
         if self.NameInput.text() == "":
-            self.setWarning("You must enter a name for your transcript")
+            self.setMessageBox("You must enter a name for your transcript", "Warning", QtWidgets.QMessageBox.Warning)
             return
+        
+        self.userDetails.insertTranscript(self.NameInput.text(), self.transcriptList)
+        self.setMessageBox("Transcript saved", "Success", QtWidgets.QMessageBox.Information)
+        self.transcriptList = []
+        self.subtitles.clearSubtitles()
+        self.TranscriptLabel.setText("")
+        self.NameInput.setText("")
+
         

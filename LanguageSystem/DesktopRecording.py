@@ -74,9 +74,3 @@ class DesktopRecording(Singleton):
     def clearQueue(self, queue : queue.Queue):
         while not queue.empty():
             queue.get(block=True)
-
-    def __del__(self):
-        self.stopRecording()
-        self.stream.stop_stream()
-        self.stream.close()
-        self.p.terminate()

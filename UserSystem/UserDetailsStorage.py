@@ -1,3 +1,4 @@
+from datetime import datetime
 import sqlite3
 import bcrypt
 import pathlib
@@ -14,9 +15,9 @@ class UserDetailsStorage(Singleton):
 
         self.accountPath = ""
         self.password = ""
-        self.encryption = EncryptionSystem()
+        self.encryption : EncryptionSystem = EncryptionSystem()
 
-    def signIn(self, name, password):
+    def logIn(self, name, password):
         self.cursor.execute('SELECT * FROM users WHERE username = ?', (name,))
         result = self.cursor.fetchall()
         for row in result:
@@ -25,6 +26,7 @@ class UserDetailsStorage(Singleton):
                 self.password = password
 
                 self.encryption.decrypt(self.password, self.accountPath)
+                self.conn.close()
                 return True
         return False
 
@@ -36,20 +38,20 @@ class UserDetailsStorage(Singleton):
         self.accountPath = str(pathlib.Path(__file__).parent.parent.resolve()) + "/Databases/" + name + ".db"
         self.password = password
         
-        self.encryption.decrypt(password, self.accountPath)
+        self.generateUserData()
+        self.conn.close()
 
     def checkUserExistence(self, name):
          self.cursor.execute('SELECT * FROM users WHERE username = ?', (name,))
-         result =self.cursor.fetchone()
+         result = self.cursor.fetchone()
 
          if result is None:
              return False
          else:
              return True
          
-    def generateUserData(self, name):
-        path = str(pathlib.Path(__file__).parent.parent.resolve()) + "/Databases/" + name + ".db"
-        userCon = sqlite3.connect(path)
+    def generateUserData(self):
+        userCon = sqlite3.connect(self.accountPath)
         userCursor = userCon.cursor()
 
         userCursor.execute('''
@@ -72,11 +74,23 @@ class UserDetailsStorage(Singleton):
         userCon.commit()
         userCon.close()
 
+    def insertTranscript(self, transcriptName, transcriptData):
+        userCon = sqlite3.connect(self.accountPath)
+        userCursor = userCon.cursor()
+
+        date = str(datetime.now().strftime("%d:%m:%y"))
+        userCursor.execute('INSERT INTO Transcripts (name, date) VALUES (?, ?)', (transcriptName, date))
+        userCon.commit()
+
+        transcriptID = userCursor.lastrowid
+        for section in transcriptData:
+            userCursor.execute('INSERT INTO Sections (transcriptionID, body, date) VALUES (?, ?, ?)', (transcriptID, section[1], section[0]))
+            userCon.commit()
+
+        userCon.close()
+
+
     def clear(self):
         self.cursor.execute('DELETE FROM users')
         self.cursor.execute('DELETE FROM sqlite_sequence WHERE name="users"')
         self.conn.commit()
-
-    def __del__(self):
-        self.encryption.encrypt(self.password, self.accountPath)
-        self.conn.close()

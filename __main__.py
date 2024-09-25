@@ -12,10 +12,6 @@ from LanguageSystem.TranslationAI import TranslationAI
 from GUI.LoginRegisterGUI import LoginRegisterWindow
 from GUI.ControlGUI import ControlWindow
 
-"""
-TODO: Turn every class into a singleton except the windows
-"""
-
 def main():
 
     Threadpool().initialise(10)
@@ -33,13 +29,17 @@ def main():
 
     app = QtWidgets.QApplication(sys.argv)
 
-    window = ControlWindow(app)
+    window = LoginRegisterWindow(app)
     window.show()
     sys.exit(app.exec_())
     
 
 def softReset():
+    UserDetailsStorage().initialise()
     UserDetailsStorage().clear()
 
 if __name__ == "__main__":
+    inp = input("Do you want to reset the database? (y/n): ")
+    if inp == "y":
+        softReset()
     main()
