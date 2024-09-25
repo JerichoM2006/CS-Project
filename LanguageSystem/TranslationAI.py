@@ -3,13 +3,14 @@ import threading
 from deep_translator import GoogleTranslator
 
 from LanguageSystem.PrimitiveTranscription import Transcription
-from Threadpool import Threadpool
+from Utilities.Threadpool import Threadpool
+from Utilities.Singleton import Singleton
 
+class TranslationAI(Singleton):
+    def initialise(self, origLanguage, finalLanguage):
+        self.pool : Threadpool = Threadpool()
+        self.transciptionAI : Transcription = Transcription()
 
-class TranslationAI:
-    def __init__(self, pool : Threadpool, transciptionAI : Transcription, origLanguage, finalLanguage):
-        self.transciptionAI = transciptionAI
-        self.pool = pool
         self.origLanguage = origLanguage
         self.finalLanguage = finalLanguage
         self.translator = GoogleTranslator()

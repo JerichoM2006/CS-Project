@@ -4,15 +4,17 @@ import queue
 import threading
 import speech_recognition as sr
 
-from Threadpool import Threadpool
+from Utilities.Threadpool import Threadpool
+from Utilities.Singleton import Singleton
 from LanguageSystem.DesktopRecording import DesktopRecording
 
-class Transcription:
-    def __init__(self, pool : Threadpool, recording : DesktopRecording, language):
+class Transcription(Singleton):
+    def initialise(self, language):
         self.r = sr.Recognizer()
         self.language = language
-        self.pool = pool
-        self.recording = recording
+
+        self.pool : Threadpool = Threadpool()
+        self.recording : DesktopRecording = DesktopRecording()
 
         self.transcriptBuffer = queue.Queue()
         self.stopTranscript = threading.Event()

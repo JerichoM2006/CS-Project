@@ -1,5 +1,4 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-import sys
 
 class SubtitleWindow(QtWidgets.QWidget):
     def __init__(self, app : QtWidgets.QApplication):

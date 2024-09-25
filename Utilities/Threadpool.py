@@ -1,8 +1,10 @@
 import concurrent
 import concurrent.futures
 
-class Threadpool():
-    def __init__(self, max_workers=10):
+from Utilities.Singleton import Singleton
+
+class Threadpool(Singleton):
+    def initialise(self, max_workers : int) -> None:
         self.executor = concurrent.futures.ThreadPoolExecutor(max_workers=max_workers)
         self.workers = dict()
 

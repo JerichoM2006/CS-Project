@@ -2,13 +2,9 @@ from Crypto.Protocol.KDF import PBKDF2
 from Crypto.Cipher import AES
 import os
 
-class EncryptionSystem:
-    instance = None
-    def __new__(cls):
-        if cls.instance is None:
-            cls.instance = super(EncryptionSystem, cls).__new__(cls)
-        return cls.instance
+from Utilities.Singleton import Singleton
 
+class EncryptionSystem(Singleton):
     def encrypt(self, password, path):
         salt = os.urandom(16)
         key = PBKDF2(password, salt, dkLen=32, count=10000, prf=None)

@@ -3,15 +3,10 @@ import bcrypt
 import pathlib
 
 from UserSystem.EncryptionSystem import EncryptionSystem
+from Utilities.Singleton import Singleton
 
-class UserDetailsStorage:
-    instance = None
-    def __new__(cls):
-        if cls.instance is None:
-            cls.instance = super(UserDetailsStorage, cls).__new__(cls)
-        return cls.instance
-
-    def __init__(self):
+class UserDetailsStorage(Singleton):
+    def initialise(self):
         userDetailPath = str(pathlib.Path(__file__).parent.parent.resolve()) + "/Databases/userStorage.db"
 
         self.conn = sqlite3.connect(userDetailPath)

@@ -3,9 +3,10 @@ import numpy
 import queue
 import threading
 
-from Threadpool import Threadpool
+from Utilities.Threadpool import Threadpool
+from Utilities.Singleton import Singleton
 
-class DesktopRecording:
+class DesktopRecording(Singleton):
     sound  = True
     chunk = 1024
     format = pyaudio.paInt16
@@ -14,10 +15,10 @@ class DesktopRecording:
     secondInterval = 3
     volume = 1
 
-    def __init__(self, pool : Threadpool):
+    def initialise(self):
         self.p = pyaudio.PyAudio()
         self.generateStream()
-        self.pool = pool
+        self.pool : Threadpool = Threadpool()
 
         self.stopRecord = threading.Event()
         self.buffer = queue.Queue()

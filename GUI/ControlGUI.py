@@ -11,7 +11,7 @@ from LanguageSystem.DesktopRecording import DesktopRecording
 from LanguageSystem.TranslationAI import TranslationAI
 from LanguageSystem.PrimitiveTranscription import Transcription
 from GUI.SubtitlesGUI import SubtitleWindow
-from Threadpool import Threadpool 
+from Utilities.Threadpool import Threadpool 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from datetime import datetime
@@ -19,24 +19,22 @@ import pathlib
 import threading
 
 class ControlWindow(QtWidgets.QMainWindow):
-    def __init__(self, app : QtWidgets.QApplication, pool : Threadpool, username):
+    def __init__(self, app : QtWidgets.QApplication):
         super().__init__()
         
         self.originalLanguage = "ja-JP"
         self.finalLanguage = "en-US"
 
-        self.pool = pool
+        self.pool : Threadpool = Threadpool()
         self.updateTranscriptEvent = threading.Event()
         self.transcriptList = []
 
-        self.recording = DesktopRecording(pool)
-        self.transcription = Transcription(pool, self.recording, self.originalLanguage)
-        self.translation = TranslationAI(pool, self.transcription, self.originalLanguage, self.finalLanguage)
+        self.recording : DesktopRecording = DesktopRecording()
+        self.transcription : Transcription = Transcription()
+        self.translation : TranslationAI = TranslationAI()
 
         self.app = app
         self.subtitles = SubtitleWindow(app)
-
-        self.username = username
 
         self.setupUi()
 
