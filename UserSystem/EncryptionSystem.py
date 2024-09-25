@@ -3,12 +3,15 @@ from Crypto.Cipher import AES
 import os
 
 class EncryptionSystem:
-    def __init__(self, password):
-        self.password = password
+    instance = None
+    def __new__(cls):
+        if cls.instance is None:
+            cls.instance = super(EncryptionSystem, cls).__new__(cls)
+        return cls.instance
 
-    def encrypt(self, path):
+    def encrypt(self, password, path):
         salt = os.urandom(16)
-        key = PBKDF2(self.password, salt, dkLen=32, count=10000, prf=None)
+        key = PBKDF2(password, salt, dkLen=32, count=10000, prf=None)
 
         cipher = AES.new(key, AES.MODE_GCM)
         nonce = cipher.nonce
@@ -22,14 +25,14 @@ class EncryptionSystem:
 
         print("Encryption successful")
 
-    def decrypt(self, path):
+    def decrypt(self, password, path):
         with open(path, 'rb') as f:
             salt = f.read(16)
             nonce = f.read(16)
             tag = f.read(16)
             ciphertext = f.read()
 
-        key = PBKDF2(self.password, salt, dkLen=32, count=10000, prf=None)
+        key = PBKDF2(password, salt, dkLen=32, count=10000, prf=None)
 
         cipher = AES.new(key, AES.MODE_GCM, nonce=nonce)
         try:

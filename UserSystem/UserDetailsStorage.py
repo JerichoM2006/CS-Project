@@ -2,6 +2,8 @@ import sqlite3
 import bcrypt
 import pathlib
 
+from UserSystem.EncryptionSystem import EncryptionSystem
+
 class UserDetailsStorage:
     instance = None
     def __new__(cls):
@@ -16,6 +18,8 @@ class UserDetailsStorage:
         self.cursor = self.conn.cursor()
 
         self.accountPath = ""
+        self.password = ""
+        self.encryption = EncryptionSystem()
 
     def signIn(self, name, password):
         self.cursor.execute('SELECT * FROM users WHERE username = ?', (name,))
@@ -23,6 +27,9 @@ class UserDetailsStorage:
         for row in result:
             if bcrypt.checkpw(password.encode('utf-8'), row[2]):
                 self.accountPath = str(pathlib.Path(__file__).parent.parent.resolve()) + "/Databases/" + name + ".db"
+                self.password = password
+
+                self.encryption.decrypt(self.password, self.accountPath)
                 return True
         return False
 
@@ -30,7 +37,11 @@ class UserDetailsStorage:
         hashedPassword = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         self.cursor.execute('INSERT INTO users (username, hashedPassword) VALUES (?, ?)', (name, hashedPassword))
         self.conn.commit()
+
         self.accountPath = str(pathlib.Path(__file__).parent.parent.resolve()) + "/Databases/" + name + ".db"
+        self.password = password
+        
+        self.encryption.decrypt(password, self.accountPath)
 
     def checkUserExistence(self, name):
          self.cursor.execute('SELECT * FROM users WHERE username = ?', (name,))
@@ -72,4 +83,5 @@ class UserDetailsStorage:
         self.conn.commit()
 
     def __del__(self):
+        self.encryption.encrypt(self.password, self.accountPath)
         self.conn.close()
