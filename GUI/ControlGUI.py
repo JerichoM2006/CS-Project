@@ -289,7 +289,7 @@ class ControlWindow(QtWidgets.QMainWindow):
     
         response = msg.exec_()
 
-        if response.text() == "&Yes":
+        if response == QtWidgets.QMessageBox.Yes:
             self.transcriptList = []
             self.subtitles.clearSubtitles()
             self.TranscriptLabel.setText("")
