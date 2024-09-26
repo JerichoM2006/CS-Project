@@ -1,13 +1,17 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+from UserSystem.SettingsHandler import SettingsHandler
+
 class SubtitleWindow(QtWidgets.QWidget):
     def __init__(self, app : QtWidgets.QApplication):
         super().__init__()
 
-        self.padding = 10
-        self.fontsize = 24
-        self.maxWidth = 800
-        self.maxLines = 2
+        self.settingsHandler : SettingsHandler = SettingsHandler()
+
+        self.padding = self.settingsHandler.getSetting("SubtitlePadding")
+        self.fontsize = self.settingsHandler.getSetting("SubtitleFontSize")
+        self.maxWidth = self.settingsHandler.getSetting("SubtitleWidth")
+        self.maxLines = self.settingsHandler.getSetting("SubtitleLines")
 
         self.app = app
 

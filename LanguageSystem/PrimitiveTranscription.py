@@ -7,11 +7,14 @@ import speech_recognition as sr
 from Utilities.Threadpool import Threadpool
 from Utilities.Singleton import Singleton
 from LanguageSystem.DesktopRecording import DesktopRecording
+from UserSystem.SettingsHandler import SettingsHandler
 
 class Transcription(Singleton):
-    def initialise(self, language):
+    def initialise(self):
+        self.settingsHandler : SettingsHandler = SettingsHandler()
+
         self.r = sr.Recognizer()
-        self.language = language
+        self.language = self.settingsHandler.getSetting("OriginalLanguage")
 
         self.pool : Threadpool = Threadpool()
         self.recording : DesktopRecording = DesktopRecording()
@@ -21,6 +24,8 @@ class Transcription(Singleton):
 
     def startGeneration(self):
         print("Transcription started")
+
+        self.language = self.settingsHandler.getSetting("OriginalLanguage")
 
         self.stopTranscript.clear()
         self.clearQueue(self.transcriptBuffer)

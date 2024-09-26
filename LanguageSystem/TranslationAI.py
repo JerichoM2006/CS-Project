@@ -5,14 +5,17 @@ from deep_translator import GoogleTranslator
 from LanguageSystem.PrimitiveTranscription import Transcription
 from Utilities.Threadpool import Threadpool
 from Utilities.Singleton import Singleton
+from UserSystem.SettingsHandler import SettingsHandler
 
 class TranslationAI(Singleton):
-    def initialise(self, origLanguage, finalLanguage):
+    def initialise(self):
         self.pool : Threadpool = Threadpool()
         self.transciptionAI : Transcription = Transcription()
 
-        self.origLanguage = origLanguage
-        self.finalLanguage = finalLanguage
+        self.settingsHandler : SettingsHandler = SettingsHandler()
+
+        self.origLanguage = self.settingsHandler.getSetting("OriginalLanguage")
+        self.finalLanguage = self.settingsHandler.getSetting("FinalLanguage")
         self.translator = GoogleTranslator()
 
         self.translationBuffer = queue.Queue()
@@ -20,6 +23,9 @@ class TranslationAI(Singleton):
 
     def startTranslation(self):
         print("Translation started")
+
+        self.origLanguage = self.settingsHandler.getSetting("OriginalLanguage")
+        self.finalLanguage = self.settingsHandler.getSetting("FinalLanguage")
 
         self.stop.clear()
         self.clearQueue(self.translationBuffer)

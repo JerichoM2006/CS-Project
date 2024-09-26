@@ -5,6 +5,7 @@ import threading
 
 from Utilities.Threadpool import Threadpool
 from Utilities.Singleton import Singleton
+from UserSystem.SettingsHandler import SettingsHandler
 
 class DesktopRecording(Singleton):
     sound  = True
@@ -12,7 +13,6 @@ class DesktopRecording(Singleton):
     format = pyaudio.paInt16
     channels = 2
     rate = 44100
-    secondInterval = 3
     volume = 1
 
     def initialise(self):
@@ -22,6 +22,9 @@ class DesktopRecording(Singleton):
 
         self.stopRecord = threading.Event()
         self.buffer = queue.Queue()
+
+        self.settingsHandler : SettingsHandler = SettingsHandler()
+        self.secondInterval = self.settingsHandler.getSetting("SecondInterval")
 
     def generateStream(self):
         deviceIndex = -1
@@ -44,6 +47,8 @@ class DesktopRecording(Singleton):
 
     def startRecording(self):
         print("Recording started")
+
+        self.secondInterval = self.settingsHandler.getSetting("SecondInterval")
 
         self.clearQueue(self.buffer)
         self.stopRecord.clear()

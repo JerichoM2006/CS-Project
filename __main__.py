@@ -17,8 +17,8 @@ def main():
     Threadpool().initialise(10)
     UserDetailsStorage().initialise()
     DesktopRecording().initialise()
-    Transcription().initialise("ja-JP")
-    TranslationAI().initialise("ja-JP", "en-US")
+    Transcription().initialise()
+    TranslationAI().initialise()
 
     warnings.filterwarnings("ignore", category=DeprecationWarning)
 

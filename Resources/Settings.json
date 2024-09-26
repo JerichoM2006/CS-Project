@@ -1,0 +1,11 @@
+{
+    "OriginalLanguage": "ja-JP",
+    "FinalLanguage": "en-US",
+    
+    "SecondInterval": 3,
+
+    "SubtitleLines": 2,
+    "SubtitlePadding": 10,
+    "SubtitleFontSize": 24,
+    "SubtitleWidth": 800
+}
