@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SettingsName</class>
+ <widget class="QMainWindow" name="SettingsName">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>700</width>
+    <height>448</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Translation Transcriptor</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QPushButton" name="BackButton">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>131</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>18</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Back</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="SearchBar">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>10</y>
+      <width>411</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>18</pointsize>
+     </font>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="SearchButton">
+    <property name="geometry">
+     <rect>
+      <x>560</x>
+      <y>10</y>
+      <width>131</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>18</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Search</string>
+    </property>
+   </widget>
+   <widget class="QScrollArea" name="ScrollArea">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>70</y>
+      <width>681</width>
+      <height>371</height>
+     </rect>
+    </property>
+    <property name="widgetResizable">
+     <bool>true</bool>
+    </property>
+    <widget class="QWidget" name="scrollAreaWidgetContents">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>4415</width>
+       <height>343</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QLabel" name="OutputLable">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Lorem ipsum odor amet, consectetuer adipiscing elit. Justo potenti nec at cras tempus blandit pharetra adipiscing. Placerat mattis conubia aliquam tellus nibh tellus ipsum et. Potenti magnis ad finibus tortor fringilla amet rutrum curabitur. Egestas convallis rutrum dignissim leo maximus ridiculus ultrices. Maecenas hendrerit tristique felis lobortis mollis etiam sapien lacinia. Auctor lacinia torquent magna amet laoreet justo dui. Rhoncus hendrerit litora condimentum molestie pellentesque quis feugiat facilisis. Gravida aliquam curabitur suspendisse nascetur natoque? Taciti in vestibulum laoreet inceptos pellentesque velit.
+
+Imperdiet sociosqu metus ex viverra class sem morbi mattis. Consectetur nascetur aliquet nulla, sociosqu quis velit. Nunc odio auctor lobortis nullam erat sapien ut hendrerit vulputate. Posuere diam natoque sociosqu enim facilisis commodo hac. Accumsan sodales senectus vulputate metus in feugiat magna elit primis. Morbi et natoque augue netus himenaeos primis.
+
+Sollicitudin lobortis volutpat sem aliquam libero tempor. Tincidunt vel tempus quisque lacinia molestie mi cursus posuere. Proin accumsan blandit ac posuere odio quisque. Tristique erat dapibus erat ante nisi? Non nunc enim nam erat cras adipiscing. Pretium pharetra auctor, urna elit dictumst nascetur tortor. Penatibus faucibus elementum euismod condimentum, vestibulum pellentesque pharetra nec curabitur. Suspendisse imperdiet orci nam, placerat fringilla orci scelerisque. Netus iaculis dis inceptos accumsan vulputate elementum pretium. Eleifend aliquam mollis, est parturient massa integer commodo.
+
+Metus ornare maximus netus quis bibendum mollis vulputate viverra. Scelerisque dignissim elit ipsum integer turpis orci. Neque adipiscing tortor nisi neque eros mi; posuere porta sociosqu. Non auctor torquent ante amet aliquam turpis. Habitasse tristique ante nunc scelerisque ipsum. Nisi phasellus est consectetur mauris etiam luctus volutpat. Vivamus sem risus vitae arcu tellus iaculis.
+
+Mi hendrerit odio platea suspendisse nostra bibendum. Mauris suspendisse dui commodo ullamcorper placerat suscipit? Aliquet mollis vitae fringilla hendrerit magnis volutpat congue porttitor. Conubia donec tristique ac lacus pulvinar torquent. Faucibus congue magna dictum dapibus morbi. Facilisi mollis pharetra facilisis curae mattis ipsum. Bibendum adipiscing quisque pulvinar himenaeos eu accumsan lectus. Suspendisse diam suspendisse sed ultricies gravida mi. Tellus sagittis pretium nullam habitasse enim.</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
