@@ -179,7 +179,7 @@ class ControlWindow(QtWidgets.QMainWindow):
 
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
-        self.setWindowTitle(_translate("ControlWindow", "MainWindow"))
+        self.setWindowTitle(_translate("ControlWindow", "Transcription Transcriptor"))
         self.TranscriptLabel.setText(_translate("ControlWindow", ""))
         self.StartButton.setText(_translate("ControlWindow", "Start"))
         self.NameInput.setPlaceholderText(_translate("ControlWindow", "Transcript Name"))
