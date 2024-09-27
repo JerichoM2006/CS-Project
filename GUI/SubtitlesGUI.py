@@ -65,26 +65,3 @@ class SubtitleWindow(QtWidgets.QWidget):
         self.label.adjustSize()
         self.label.move(self.padding, self.padding)
         self.text = ""
-
-    def onDeleteButtonClicked(self):
-        if self.checkPlaying():
-            return
-
-        msg = QtWidgets.QMessageBox()
-        msg.setIcon(QtWidgets.QMessageBox.Warning)
-        msg.setText("Are you sure you want to delete your transcript?")
-        msg.setWindowTitle("Warning")
-
-        msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
-        msg.defaultButton = QtWidgets.QMessageBox.No
-
-        msg.buttonClicked.connect(self.onDeleteWarningDecided)
-        msg.exec_()
-    
-    def onDeleteWarningDecided(self, decision):
-        print(decision.text())
-        if decision.text() == "&Yes":
-            print("Hi")
-            self.transcriptList = []
-            self.subtitles.clearSubtitles()
-            self.TranscriptLabel.setText("")

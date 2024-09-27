@@ -24,9 +24,6 @@ class ControlWindow(QtWidgets.QMainWindow):
     def __init__(self, app : QtWidgets.QApplication):
         super().__init__()
         
-        self.originalLanguage = "ja-JP"
-        self.finalLanguage = "en-US"
-
         self.pool : Threadpool = Threadpool()
         self.updateTranscriptEvent = threading.Event()
         self.transcriptList = []
