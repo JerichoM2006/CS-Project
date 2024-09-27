@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>SettingsName</class>
- <widget class="QMainWindow" name="SettingsName">
+ <class>SearchingWindow</class>
+ <widget class="QMainWindow" name="SearchingWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -82,9 +82,15 @@
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>4415</width>
-       <height>343</height>
+       <width>662</width>
+       <height>683</height>
       </rect>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>16777215</height>
+      </size>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
@@ -113,6 +119,9 @@ Mi hendrerit odio platea suspendisse nostra bibendum. Mauris suspendisse dui com
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
