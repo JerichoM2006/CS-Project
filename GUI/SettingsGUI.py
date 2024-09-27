@@ -10,14 +10,34 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+from UserSystem.SettingsHandler import SettingsHandler
 
-class Ui_SettingsWindow(object):
-    def setupUi(self, SettingsWindow):
-        SettingsWindow.setObjectName("SettingsWindow")
-        SettingsWindow.resize(560, 448)
-        SettingsWindow.setMinimumSize(QtCore.QSize(560, 448))
-        SettingsWindow.setMaximumSize(QtCore.QSize(560, 448))
-        self.centralwidget = QtWidgets.QWidget(SettingsWindow)
+class SettingsWindow(QtWidgets.QMainWindow):
+    languageDict = {"en-US" : "English",
+                    "ja-JP" : "Japanese",
+                    "es-ES" : "Spanish",
+                    "fr-FR" : "French",
+                    "de-DE" : "German",
+                    "it-IT" : "Italian",
+                    "ru-RU" : "Russian",
+                    "zh-CN" : "Chinese",
+                    "tl-PH" : "Filipino"
+                    }
+
+    def __init__(self, app : QtWidgets.QApplication):
+        super().__init__()
+
+        self.app = app
+        self.settingsHandler : SettingsHandler = SettingsHandler()
+
+        self.setupUi()
+    
+    def setupUi(self):
+        self.setObjectName("SettingsWindow")
+        self.resize(560, 448)
+        self.setMinimumSize(QtCore.QSize(560, 448))
+        self.setMaximumSize(QtCore.QSize(560, 448))
+        self.centralwidget = QtWidgets.QWidget(self)
         self.centralwidget.setObjectName("centralwidget")
 
         self.BackButton = QtWidgets.QPushButton(self.centralwidget)
@@ -56,8 +76,8 @@ class Ui_SettingsWindow(object):
         font.setPointSize(12)
         self.OrigLanguageBox.setFont(font)
         self.OrigLanguageBox.setObjectName("OrigLanguageBox")
-        self.OrigLanguageBox.addItem("")
-        self.OrigLanguageBox.addItem("")
+        self.OrigLanguageBox.addItems(SettingsWindow.languageDict.values())
+        self.OrigLanguageBox.setCurrentText(SettingsWindow.languageDict[self.settingsHandler.getSetting("OriginalLanguage")])
 
         self.TranLanguageBox = QtWidgets.QComboBox(self.TranslationsFrame)
         self.TranLanguageBox.setGeometry(QtCore.QRect(10, 130, 101, 41))
@@ -65,8 +85,8 @@ class Ui_SettingsWindow(object):
         font.setPointSize(12)
         self.TranLanguageBox.setFont(font)
         self.TranLanguageBox.setObjectName("TranLanguageBox")
-        self.TranLanguageBox.addItem("")
-        self.TranLanguageBox.addItem("")
+        self.TranLanguageBox.addItems(SettingsWindow.languageDict.values())
+        self.TranLanguageBox.setCurrentText(SettingsWindow.languageDict[self.settingsHandler.getSetting("FinalLanguage")])
 
         self.OrigLanguageLabel = QtWidgets.QLabel(self.TranslationsFrame)
         self.OrigLanguageLabel.setGeometry(QtCore.QRect(10, 20, 131, 21))
@@ -102,6 +122,7 @@ class Ui_SettingsWindow(object):
         self.RecordingInterBox.setMinimum(1.0)
         self.RecordingInterBox.setMaximum(60.0)
         self.RecordingInterBox.setObjectName("RecordingInterBox")
+        self.RecordingInterBox.setValue(float(self.settingsHandler.getSetting("RecordingInterval")))
 
         self.RecordingInterLabel = QtWidgets.QLabel(self.RecordingsFrame)
         self.RecordingInterLabel.setGeometry(QtCore.QRect(10, 20, 131, 21))
@@ -133,6 +154,7 @@ class Ui_SettingsWindow(object):
         self.MaxLinesBox.setMinimum(1)
         self.MaxLinesBox.setMaximum(10)
         self.MaxLinesBox.setObjectName("MaxLinesBox")
+        self.MaxLinesBox.setValue(int(self.settingsHandler.getSetting("SubtitleLines")))
 
         self.FontSizeBox = QtWidgets.QSpinBox(self.SubtitlesFrame)
         self.FontSizeBox.setGeometry(QtCore.QRect(10, 130, 101, 41))
@@ -142,6 +164,7 @@ class Ui_SettingsWindow(object):
         self.FontSizeBox.setMinimum(8)
         self.FontSizeBox.setMaximum(50)
         self.FontSizeBox.setObjectName("FontSizeBox")
+        self.FontSizeBox.setValue(int(self.settingsHandler.getSetting("SubtitleFontSize")))
 
         self.YPositionBox = QtWidgets.QSpinBox(self.SubtitlesFrame)
         self.YPositionBox.setGeometry(QtCore.QRect(10, 220, 101, 41))
@@ -151,6 +174,7 @@ class Ui_SettingsWindow(object):
         self.YPositionBox.setMinimum(100)
         self.YPositionBox.setMaximum(10000)
         self.YPositionBox.setObjectName("YPositionBox")
+        self.YPositionBox.setValue(int(self.settingsHandler.getSetting("SubtitleWidth")))
 
         self.MaxLinesLabel = QtWidgets.QLabel(self.SubtitlesFrame)
         self.MaxLinesLabel.setGeometry(QtCore.QRect(10, 20, 71, 21))
@@ -180,21 +204,17 @@ class Ui_SettingsWindow(object):
         self.Line.setLineWidth(1)
         self.Line.setObjectName("Line")
         
-        SettingsWindow.setCentralWidget(self.centralwidget)
+        self.setCentralWidget(self.centralwidget)
 
-        self.retranslateUi(SettingsWindow)
-        QtCore.QMetaObject.connectSlotsByName(SettingsWindow)
+        self.retranslateUi()
+        QtCore.QMetaObject.connectSlotsByName(self)
 
-    def retranslateUi(self, SettingsWindow):
+    def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
-        SettingsWindow.setWindowTitle(_translate("SettingsWindow", "Translation Transcriptor"))
+        self.setWindowTitle(_translate("SettingsWindow", "Translation Transcriptor"))
         self.BackButton.setText(_translate("SettingsWindow", "Back"))
         self.ResetButton.setText(_translate("SettingsWindow", "Reset"))
         self.SaveButton.setText(_translate("SettingsWindow", "Save"))
-        self.OrigLanguageBox.setItemText(0, _translate("SettingsWindow", "English"))
-        self.OrigLanguageBox.setItemText(1, _translate("SettingsWindow", "Japanese"))
-        self.TranLanguageBox.setItemText(0, _translate("SettingsWindow", "English"))
-        self.TranLanguageBox.setItemText(1, _translate("SettingsWindow", "Japanese"))
         self.OrigLanguageLabel.setText(_translate("SettingsWindow", "Original Language"))
         self.TranLanguageLabel.setText(_translate("SettingsWindow", "Translated Language"))
         self.TranslationsLabel.setText(_translate("SettingsWindow", "Translations"))
@@ -204,13 +224,3 @@ class Ui_SettingsWindow(object):
         self.FontSizeLabel.setText(_translate("SettingsWindow", "Font Size"))
         self.YPositionLabel.setText(_translate("SettingsWindow", "Y Position"))
         self.SubtitlesLabel.setText(_translate("SettingsWindow", "Subtitles"))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    SettingsWindow = QtWidgets.QMainWindow()
-    ui = Ui_SettingsWindow()
-    ui.setupUi(SettingsWindow)
-    SettingsWindow.show()
-    sys.exit(app.exec_())

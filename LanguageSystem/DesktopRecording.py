@@ -24,7 +24,7 @@ class DesktopRecording(Singleton):
         self.buffer = queue.Queue()
 
         self.settingsHandler : SettingsHandler = SettingsHandler()
-        self.secondInterval = self.settingsHandler.getSetting("SecondInterval")
+        self.secondInterval = self.settingsHandler.getSetting("RecordingInterval")
 
     def generateStream(self):
         deviceIndex = -1

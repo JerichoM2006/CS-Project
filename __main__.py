@@ -11,6 +11,7 @@ from LanguageSystem.TranslationAI import TranslationAI
 
 from GUI.LoginRegisterGUI import LoginRegisterWindow
 from GUI.ControlGUI import ControlWindow
+from GUI.SettingsGUI import SettingsWindow
 
 def main():
 
@@ -29,7 +30,7 @@ def main():
 
     app = QtWidgets.QApplication(sys.argv)
 
-    window = LoginRegisterWindow(app)
+    window = SettingsWindow(app)
     window.show()
     sys.exit(app.exec_())
     

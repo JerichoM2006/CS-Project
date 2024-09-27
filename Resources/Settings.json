@@ -2,7 +2,7 @@
     "OriginalLanguage": "ja-JP",
     "FinalLanguage": "en-US",
     
-    "SecondInterval": 3,
+    "RecordingInterval": 3,
 
     "SubtitleLines": 2,
     "SubtitlePadding": 10,
