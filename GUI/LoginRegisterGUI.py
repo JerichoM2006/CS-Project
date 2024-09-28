@@ -12,14 +12,17 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import pathlib
 
 from UserSystem.UserDetailsStorage import UserDetailsStorage
-from GUI.ControlGUI import ControlWindow
+
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from GUI.ManagerGUI import ManagerWindow
 
 class LoginRegisterWindow(QtWidgets.QMainWindow):
-    def __init__(self, app : QtWidgets.QApplication):
+    def __init__(self, managerWindow : 'ManagerWindow'):
         super().__init__()
         self.setupUi()
 
-        self.app = app
+        self.managerWindow : 'ManagerWindow' = managerWindow
         self.storage : UserDetailsStorage = UserDetailsStorage()
 
     def setupUi(self):
@@ -161,9 +164,7 @@ class LoginRegisterWindow(QtWidgets.QMainWindow):
         if self.storage.logIn(self.UsernameInput.text(), self.PasswordInput.text()):
             self.NoticeLabel.setText("Log in successful")
 
-            self.controlWindow = ControlWindow(self.app)
-            self.controlWindow.show()
-            self.close()
+            self.managerWindow.switchWindow("ControlWindow")
         else:
             self.NoticeLabel.setText("Log in failed")
 
@@ -172,8 +173,6 @@ class LoginRegisterWindow(QtWidgets.QMainWindow):
             self.storage.signUp(self.UsernameInput.text(), self.PasswordInput.text())
             self.NoticeLabel.setText("Sign up successful")
 
-            self.controlWindow = ControlWindow(self.app)
-            self.controlWindow.show()
-            self.close()
+            self.managerWindow.switchWindow("ControlWindow")
         else:
             self.NoticeLabel.setText("Username already exists")

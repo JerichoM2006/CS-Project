@@ -14,7 +14,10 @@ from GUI.SubtitlesGUI import SubtitleWindow
 from UserSystem.UserDetailsStorage import UserDetailsStorage
 from UserSystem.EncryptionSystem import EncryptionSystem
 from Utilities.Threadpool import Threadpool
-from GUI.SettingsGUI import SettingsWindow
+
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from GUI.ManagerGUI import ManagerWindow
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from datetime import datetime
@@ -22,12 +25,14 @@ import pathlib
 import threading
 
 class ControlWindow(QtWidgets.QMainWindow):
-    def __init__(self, app : QtWidgets.QApplication):
+    def __init__(self, managerWindow : 'ManagerWindow', app : QtWidgets.QApplication):
         super().__init__()
         
         self.pool : Threadpool = Threadpool()
         self.updateTranscriptEvent = threading.Event()
         self.transcriptList = []
+
+        self.managerWindow : 'ManagerWindow' = managerWindow
 
         self.recording : DesktopRecording = DesktopRecording()
         self.transcription : Transcription = Transcription()
@@ -323,6 +328,5 @@ class ControlWindow(QtWidgets.QMainWindow):
             return
 
         self.isSwitching = True
-        self.settingsWindow = SettingsWindow(self.app)
-        self.settingsWindow.show()
+        self.managerWindow.switchWindow("SettingsWindow")
         self.close()

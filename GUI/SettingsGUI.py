@@ -14,6 +14,10 @@ from UserSystem.SettingsHandler import SettingsHandler
 from UserSystem.UserDetailsStorage import UserDetailsStorage
 from UserSystem.EncryptionSystem import EncryptionSystem
 
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from GUI.ManagerGUI import ManagerWindow
+
 class SettingsWindow(QtWidgets.QMainWindow):
     languageDict = {"en-US" : "English",
                     "ja-JP" : "Japanese",
@@ -26,10 +30,12 @@ class SettingsWindow(QtWidgets.QMainWindow):
                     "tl-PH" : "Filipino"
                     }
 
-    def __init__(self, app : QtWidgets.QApplication):
+    def __init__(self, managerWindow : 'ManagerWindow'):
         super().__init__()
 
-        self.app = app
+        self.managerWindow : 'ManagerWindow' = managerWindow
+        self.isSwitching = False
+
         self.settingsHandler : SettingsHandler = SettingsHandler()
 
         self.userDetails : UserDetailsStorage = UserDetailsStorage()
@@ -235,6 +241,9 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.SubtitlesLabel.setText(_translate("SettingsWindow", "Subtitles"))
 
     def closeEvent(self, event):
+        if self.isSwitching:
+            return
+
         response = self.setQuestionBox("Are you sure you want to exit?", "Warning")
         if response == QtWidgets.QMessageBox.No:
             event.ignore()
@@ -254,7 +263,8 @@ class SettingsWindow(QtWidgets.QMainWindow):
         return msg.exec_()
     
     def onBackButtonClicked(self):
-        pass
+        self.isSwitching = True
+        self.managerWindow.switchWindow("ControlWindow")
 
     def onResetButtonClicked(self):
         response = self.setQuestionBox("Are you sure you want to reset all settings?", "Reset Settings")
