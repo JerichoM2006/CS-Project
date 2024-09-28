@@ -39,6 +39,8 @@ class ControlWindow(QtWidgets.QMainWindow):
         self.app = app
         self.subtitles = SubtitleWindow(app)
 
+        self.isSwitching = False
+
         self.setupUi()
 
     def setupUi(self):
@@ -155,6 +157,7 @@ class ControlWindow(QtWidgets.QMainWindow):
         font.setPointSize(14)
         self.SettingsButton.setFont(font)
         self.SettingsButton.setObjectName("SettingsButton")
+        self.SettingsButton.clicked.connect(self.onSettingsButtonClicked)
 
         self.HelpButton = QtWidgets.QPushButton(self.NavigationFrame)
         self.HelpButton.setGeometry(QtCore.QRect(170, 70, 111, 41))
@@ -191,18 +194,15 @@ class ControlWindow(QtWidgets.QMainWindow):
         self.TranscriptsButton.setText(_translate("ControlWindow", "Transcripts"))
 
     def closeEvent(self, event):
+        if self.isSwitching:
+            return
+            
         if self.StartButton.text() == "Stop":
             self.setMessageBox("You must stop the recording before exiting", "Warning", QtWidgets.QMessageBox.Warning)
+            event.ignore()
             return
 
-        msg = QtWidgets.QMessageBox()
-        msg.setIcon(QtWidgets.QMessageBox.Question)
-        msg.setText("Are you sure you want to exit?")
-        msg.setWindowTitle("Warning")
-        msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
-        msg.defaultButton = QtWidgets.QMessageBox.No
-        response = msg.exec_()
-
+        response = self.setQuestionBox("Are you sure you want to exit?", "Warning")
         if response == QtWidgets.QMessageBox.No:
             event.ignore()
             return
@@ -245,6 +245,16 @@ class ControlWindow(QtWidgets.QMainWindow):
         msg.defaultButton = QtWidgets.QMessageBox.Ok
 
         msg.exec_()
+    def setQuestionBox(self, text, title):
+        msg = QtWidgets.QMessageBox()
+        msg.setIcon(QtWidgets.QMessageBox.Question)
+        msg.setText(text)
+        msg.setWindowTitle(title)
+
+        msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+        msg.defaultButton = QtWidgets.QMessageBox.No
+
+        return msg.exec_()
 
     def onStartButtonClicked(self):
         if(self.StartButton.text() == "Start"):
@@ -277,16 +287,7 @@ class ControlWindow(QtWidgets.QMainWindow):
             self.setMessageBox("You must stop the recording before deleting the transcript", "Warning", QtWidgets.QMessageBox.Warning)
             return
 
-        msg = QtWidgets.QMessageBox()
-        msg.setIcon(QtWidgets.QMessageBox.Warning)
-        msg.setText("Are you sure you want to delete your transcript?")
-        msg.setWindowTitle("Warning")
-
-        msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
-        msg.defaultButton = QtWidgets.QMessageBox.No
-    
-        response = msg.exec_()
-
+        response = self.setQuestionBox("Are you sure you want to delete this transcript?", "Delete")
         if response == QtWidgets.QMessageBox.Yes:
             self.transcriptList = []
             self.subtitles.clearSubtitles()
@@ -305,6 +306,10 @@ class ControlWindow(QtWidgets.QMainWindow):
             self.setMessageBox("You must enter a name for your transcript", "Warning", QtWidgets.QMessageBox.Warning)
             return
         
+        response = self.setQuestionBox("Are you sure you want to save this transcript?", "Save")
+        if response == QtWidgets.QMessageBox.No:
+            return
+
         self.userDetails.insertTranscript(self.NameInput.text(), self.transcriptList)
         self.setMessageBox("Transcript saved", "Success", QtWidgets.QMessageBox.Information)
         self.transcriptList = []
@@ -313,7 +318,11 @@ class ControlWindow(QtWidgets.QMainWindow):
         self.NameInput.setText("")
 
     def onSettingsButtonClicked(self):
-        self.settingsWindow = QtWidgets.QMainWindow()
-        self.settingsWindowUi = SettingsWindow()
-        self.settingsWindowUi.setupUi(self.settingsWindow, self.userDetails)
+        if self.StartButton.text() == "Stop":
+            self.setMessageBox("You must stop the recording before changing settings", "Warning", QtWidgets.QMessageBox.Warning)
+            return
+
+        self.isSwitching = True
+        self.settingsWindow = SettingsWindow(self.app)
         self.settingsWindow.show()
+        self.close()

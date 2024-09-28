@@ -10,7 +10,6 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-from GUI.ControlGUI import ControlWindow
 from UserSystem.SettingsHandler import SettingsHandler
 from UserSystem.UserDetailsStorage import UserDetailsStorage
 from UserSystem.EncryptionSystem import EncryptionSystem
@@ -32,6 +31,10 @@ class SettingsWindow(QtWidgets.QMainWindow):
 
         self.app = app
         self.settingsHandler : SettingsHandler = SettingsHandler()
+
+        self.userDetails : UserDetailsStorage = UserDetailsStorage()
+        self.encryption : EncryptionSystem = EncryptionSystem()
+
 
         self.setupUi()
     
@@ -232,35 +235,30 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.SubtitlesLabel.setText(_translate("SettingsWindow", "Subtitles"))
 
     def closeEvent(self, event):
-        if not self.generateWarning("Are you sure you want to exit?"):
+        response = self.setQuestionBox("Are you sure you want to exit?", "Warning")
+        if response == QtWidgets.QMessageBox.No:
             event.ignore()
             return
         
-        userDetails : UserDetailsStorage = UserDetailsStorage()
-        encryption : EncryptionSystem = EncryptionSystem()
+        self.encryption.encrypt(self.userDetails.password, self.userDetails.accountPath)
 
-        encryption.encrypt(userDetails.password, userDetails.accountPath)
-
-    def generateWarning(self, text):
+    def setQuestionBox(self, text, title):
         msg = QtWidgets.QMessageBox()
-        msg.setIcon(QtWidgets.QMessageBox.Warning)
+        msg.setIcon(QtWidgets.QMessageBox.Question)
         msg.setText(text)
-        msg.setWindowTitle("Warning")
+        msg.setWindowTitle(title)
+
         msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
         msg.defaultButton = QtWidgets.QMessageBox.No
-        response = msg.exec_()
 
-        if response == QtWidgets.QMessageBox.No:
-            return False
-        return True
+        return msg.exec_()
     
     def onBackButtonClicked(self):
-        self.controlWindow = ControlWindow(self.app)
-        self.controlWindow.show()
-        self.close()
+        pass
 
     def onResetButtonClicked(self):
-        if not  self.generateWarning("Are you sure you want to reset all settings?"):
+        response = self.setQuestionBox("Are you sure you want to reset all settings?", "Reset Settings")
+        if response == QtWidgets.QMessageBox.No:
             return
         
         self.OrigLanguageBox.setCurrentText(self.settingsHandler.getSetting("OriginalLanguage"))
@@ -271,7 +269,8 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.YPositionBox.setValue(int(self.settingsHandler.getSetting("SubtitleWidth")))
 
     def onSaveButtonClicked(self):
-        if not self.generateWarning("Are you sure you want to save all settings?"):
+        response = self.setQuestionBox("Are you sure you want to save all settings?", "Save Settings")
+        if response == QtWidgets.QMessageBox.No:
             return
         
         self.settingsHandler.setSetting("OriginalLanguage", self.OrigLanguageBox.currentText())
