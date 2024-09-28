@@ -9,6 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+import pathlib
 
 from UserSystem.SettingsHandler import SettingsHandler
 from UserSystem.UserDetailsStorage import UserDetailsStorage
@@ -49,6 +50,9 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.resize(560, 448)
         self.setMinimumSize(QtCore.QSize(560, 448))
         self.setMaximumSize(QtCore.QSize(560, 448))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(str(pathlib.Path(__file__).parent.parent.resolve()) + "/Resources/Logo.jpeg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.setWindowIcon(icon)
         self.centralwidget = QtWidgets.QWidget(self)
         self.centralwidget.setObjectName("centralwidget")
 
