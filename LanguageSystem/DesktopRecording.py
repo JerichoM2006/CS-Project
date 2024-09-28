@@ -48,8 +48,6 @@ class DesktopRecording(Singleton):
     def startRecording(self):
         print("Recording started")
 
-        self.secondInterval = self.settingsHandler.getSetting("SecondInterval")
-
         self.clearQueue(self.buffer)
         self.stopRecord.clear()
         
