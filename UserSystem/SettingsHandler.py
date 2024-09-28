@@ -18,5 +18,5 @@ class SettingsHandler(Singleton):
             data = json.load(f)
         data[name] = value
         with open(path, 'w') as f:
-            json.dump(data, f)
+            json.dump(data, f, indent=4)
 

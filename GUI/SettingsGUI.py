@@ -10,7 +10,10 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+from GUI.ControlGUI import ControlWindow
 from UserSystem.SettingsHandler import SettingsHandler
+from UserSystem.UserDetailsStorage import UserDetailsStorage
+from UserSystem.EncryptionSystem import EncryptionSystem
 
 class SettingsWindow(QtWidgets.QMainWindow):
     languageDict = {"en-US" : "English",
@@ -46,6 +49,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
         font.setPointSize(18)
         self.BackButton.setFont(font)
         self.BackButton.setObjectName("BackButton")
+        self.BackButton.clicked.connect(self.onBackButtonClicked)
 
         self.ResetButton = QtWidgets.QPushButton(self.centralwidget)
         self.ResetButton.setGeometry(QtCore.QRect(410, 380, 141, 61))
@@ -53,6 +57,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
         font.setPointSize(18)
         self.ResetButton.setFont(font)
         self.ResetButton.setObjectName("ResetButton")
+        self.ResetButton.clicked.connect(self.onResetButtonClicked)
 
         self.SaveButton = QtWidgets.QPushButton(self.centralwidget)
         self.SaveButton.setGeometry(QtCore.QRect(210, 380, 141, 61))
@@ -60,6 +65,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
         font.setPointSize(18)
         self.SaveButton.setFont(font)
         self.SaveButton.setObjectName("SaveButton")
+        self.SaveButton.clicked.connect(self.onSaveButtonClicked)
 
         self.TranslationsFrame = QtWidgets.QFrame(self.centralwidget)
         self.TranslationsFrame.setGeometry(QtCore.QRect(10, 10, 191, 181))
@@ -224,3 +230,53 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.FontSizeLabel.setText(_translate("SettingsWindow", "Font Size"))
         self.YPositionLabel.setText(_translate("SettingsWindow", "Y Position"))
         self.SubtitlesLabel.setText(_translate("SettingsWindow", "Subtitles"))
+
+    def closeEvent(self, event):
+        if not self.generateWarning("Are you sure you want to exit?"):
+            event.ignore()
+            return
+        
+        userDetails : UserDetailsStorage = UserDetailsStorage()
+        encryption : EncryptionSystem = EncryptionSystem()
+
+        encryption.encrypt(userDetails.password, userDetails.accountPath)
+
+    def generateWarning(self, text):
+        msg = QtWidgets.QMessageBox()
+        msg.setIcon(QtWidgets.QMessageBox.Warning)
+        msg.setText(text)
+        msg.setWindowTitle("Warning")
+        msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+        msg.defaultButton = QtWidgets.QMessageBox.No
+        response = msg.exec_()
+
+        if response == QtWidgets.QMessageBox.No:
+            return False
+        return True
+    
+    def onBackButtonClicked(self):
+        self.controlWindow = ControlWindow(self.app)
+        self.controlWindow.show()
+        self.close()
+
+    def onResetButtonClicked(self):
+        if not  self.generateWarning("Are you sure you want to reset all settings?"):
+            return
+        
+        self.OrigLanguageBox.setCurrentText(self.settingsHandler.getSetting("OriginalLanguage"))
+        self.TranLanguageBox.setCurrentText(self.settingsHandler.getSetting("FinalLanguage"))
+        self.RecordingInterBox.setValue(int(self.settingsHandler.getSetting("RecordingInterval")))
+        self.MaxLinesBox.setValue(int(self.settingsHandler.getSetting("SubtitleLines")))
+        self.FontSizeBox.setValue(int(self.settingsHandler.getSetting("SubtitleFontSize")))
+        self.YPositionBox.setValue(int(self.settingsHandler.getSetting("SubtitleWidth")))
+
+    def onSaveButtonClicked(self):
+        if not self.generateWarning("Are you sure you want to save all settings?"):
+            return
+        
+        self.settingsHandler.setSetting("OriginalLanguage", self.OrigLanguageBox.currentText())
+        self.settingsHandler.setSetting("FinalLanguage", self.TranLanguageBox.currentText())
+        self.settingsHandler.setSetting("RecordingInterval", self.RecordingInterBox.value())
+        self.settingsHandler.setSetting("SubtitleLines", self.MaxLinesBox.value())
+        self.settingsHandler.setSetting("SubtitleFontSize", self.FontSizeBox.value())
+        self.settingsHandler.setSetting("SubtitleWidth", self.YPositionBox.value())

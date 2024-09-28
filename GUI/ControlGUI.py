@@ -13,7 +13,8 @@ from LanguageSystem.PrimitiveTranscription import Transcription
 from GUI.SubtitlesGUI import SubtitleWindow
 from UserSystem.UserDetailsStorage import UserDetailsStorage
 from UserSystem.EncryptionSystem import EncryptionSystem
-from Utilities.Threadpool import Threadpool 
+from Utilities.Threadpool import Threadpool
+from GUI.SettingsGUI import SettingsWindow
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from datetime import datetime
@@ -311,4 +312,8 @@ class ControlWindow(QtWidgets.QMainWindow):
         self.TranscriptLabel.setText("")
         self.NameInput.setText("")
 
-        
+    def onSettingsButtonClicked(self):
+        self.settingsWindow = QtWidgets.QMainWindow()
+        self.settingsWindowUi = SettingsWindow()
+        self.settingsWindowUi.setupUi(self.settingsWindow, self.userDetails)
+        self.settingsWindow.show()

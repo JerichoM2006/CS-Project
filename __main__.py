@@ -10,8 +10,6 @@ from LanguageSystem.PrimitiveTranscription import Transcription
 from LanguageSystem.TranslationAI import TranslationAI
 
 from GUI.LoginRegisterGUI import LoginRegisterWindow
-from GUI.ControlGUI import ControlWindow
-from GUI.SettingsGUI import SettingsWindow
 
 def main():
 
@@ -30,7 +28,7 @@ def main():
 
     app = QtWidgets.QApplication(sys.argv)
 
-    window = SettingsWindow(app)
+    window = LoginRegisterWindow(app)
     window.show()
     sys.exit(app.exec_())
     
