@@ -31,6 +31,10 @@ class SearchingWindow(QtWidgets.QMainWindow):
 
         self.setupUi()
 
+        self.transcriptionID = 0
+        self.transcriptButtons = []
+        self.generateTranscriptButtons("")
+
     def setupUi(self):
         self.setObjectName("self")
         self.resize(700, 448)
@@ -58,6 +62,7 @@ class SearchingWindow(QtWidgets.QMainWindow):
         font.setPointSize(18)
         self.SearchButton.setFont(font)
         self.SearchButton.setObjectName("SearchButton")
+        self.SearchButton.clicked.connect(self.onSearchButtonClicked)
 
         self.TranscriptScroll = QtWidgets.QScrollArea(self.centralwidget)
         self.TranscriptScroll.setEnabled(True)
@@ -139,3 +144,53 @@ class SearchingWindow(QtWidgets.QMainWindow):
         if not self.TranscriptScroll.isHidden():
             self.isSwitching = True
             self.managerWindow.switchWindow("ControlWindow")
+        else:
+            self.TranscriptScroll.show()
+            self.SectionScroll.hide()
+
+    def generateTranscriptButtons(self, filter):
+        for button in self.transcriptButtons:
+            button.close()
+        self.transcriptButtons.clear()
+
+        result = self.userDetails.getTranscripts(filter)
+
+        for transcript in result:
+            if self.verticalLayout.count() > 0 and isinstance(self.verticalLayout.itemAt(self.verticalLayout.count() - 1), QtWidgets.QSpacerItem):
+                self.verticalLayout.takeAt(self.verticalLayout.count() - 1)
+
+            button = QtWidgets.QPushButton(self.scrollAreaWidgetTranscript)
+            button.setText(f"{transcript[1]} - {transcript[2]}")
+            button.setFixedHeight(50)
+
+            font = QtGui.QFont()
+            font.setPointSize(12)
+            button.setFont(font)
+
+            self.verticalLayout.addWidget(button)
+
+            spacer = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+            self.verticalLayout.addItem(spacer)
+
+            button.clicked.connect(lambda: self.onTranscriptButtonClicked(transcript[0]))
+            self.transcriptButtons.append(button)
+
+    def onTranscriptButtonClicked(self, transcriptID):
+        self.TranscriptScroll.hide()
+        self.SectionScroll.show()
+        self.transcriptionID = transcriptID
+        self.searchSection("")
+
+    def onSearchButtonClicked(self):
+        filter = self.SearchBar.text()
+        self.generateTranscriptButtons(filter)
+        self.searchSection(filter)
+        
+    def searchSection(self, filter):
+        result = self.userDetails.getSections(self.transcriptionID, filter)
+        body = ""
+        for section in result:
+            body += f"[{section[3]}] {section[2]} \n"
+
+        self.SectionLabel.setText(body)
+            

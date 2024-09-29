@@ -96,7 +96,7 @@ class UserDetailsStorage(Singleton):
         if filter == "":
             userCursor.execute('SELECT * FROM Transcripts')
         else:
-            userCursor.execute('SELECT * FROM Transcripts WHERE name LIKE ?', (filter,))
+            userCursor.execute('SELECT * FROM Transcripts WHERE name LIKE ?', ('%' + filter + '%',))
 
         result = userCursor.fetchall()
         sortedResult = sorted(result, key=lambda x: datetime.strptime(x[2], '%d:%m:%y'), reverse=True)
@@ -111,10 +111,10 @@ class UserDetailsStorage(Singleton):
         if filter == "":
             userCursor.execute('SELECT * FROM Sections WHERE transcriptionID = ?', (transcriptID,))
         else:
-            userCursor.execute('SELECT * FROM Sections WHERE transcriptionID = ? AND body LIKE ?', (transcriptID, filter))
+            userCursor.execute('SELECT * FROM Sections WHERE transcriptionID = ? AND body LIKE ?', (transcriptID, '%' + filter + '%'))
 
         result = userCursor.fetchall()
-        sortedResult = sorted(result, key=lambda x: datetime.strptime(x[3], '%d:%m:%y'), reverse=True)
+        sortedResult = sorted(result, key=lambda x: datetime.strptime(x[3], '%H:%M'), reverse=False)
 
         userCon.close()
         return sortedResult
