@@ -65,7 +65,10 @@
      <string>Search</string>
     </property>
    </widget>
-   <widget class="QScrollArea" name="ScrollArea">
+   <widget class="QScrollArea" name="TranscriptScroll">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -82,8 +85,8 @@
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>662</width>
-       <height>683</height>
+       <width>679</width>
+       <height>369</height>
       </rect>
      </property>
      <property name="maximumSize">
@@ -93,38 +96,21 @@
       </size>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
-       <widget class="QLabel" name="OutputLable">
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>12</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Lorem ipsum odor amet, consectetuer adipiscing elit. Justo potenti nec at cras tempus blandit pharetra adipiscing. Placerat mattis conubia aliquam tellus nibh tellus ipsum et. Potenti magnis ad finibus tortor fringilla amet rutrum curabitur. Egestas convallis rutrum dignissim leo maximus ridiculus ultrices. Maecenas hendrerit tristique felis lobortis mollis etiam sapien lacinia. Auctor lacinia torquent magna amet laoreet justo dui. Rhoncus hendrerit litora condimentum molestie pellentesque quis feugiat facilisis. Gravida aliquam curabitur suspendisse nascetur natoque? Taciti in vestibulum laoreet inceptos pellentesque velit.
-
-Imperdiet sociosqu metus ex viverra class sem morbi mattis. Consectetur nascetur aliquet nulla, sociosqu quis velit. Nunc odio auctor lobortis nullam erat sapien ut hendrerit vulputate. Posuere diam natoque sociosqu enim facilisis commodo hac. Accumsan sodales senectus vulputate metus in feugiat magna elit primis. Morbi et natoque augue netus himenaeos primis.
-
-Sollicitudin lobortis volutpat sem aliquam libero tempor. Tincidunt vel tempus quisque lacinia molestie mi cursus posuere. Proin accumsan blandit ac posuere odio quisque. Tristique erat dapibus erat ante nisi? Non nunc enim nam erat cras adipiscing. Pretium pharetra auctor, urna elit dictumst nascetur tortor. Penatibus faucibus elementum euismod condimentum, vestibulum pellentesque pharetra nec curabitur. Suspendisse imperdiet orci nam, placerat fringilla orci scelerisque. Netus iaculis dis inceptos accumsan vulputate elementum pretium. Eleifend aliquam mollis, est parturient massa integer commodo.
-
-Metus ornare maximus netus quis bibendum mollis vulputate viverra. Scelerisque dignissim elit ipsum integer turpis orci. Neque adipiscing tortor nisi neque eros mi; posuere porta sociosqu. Non auctor torquent ante amet aliquam turpis. Habitasse tristique ante nunc scelerisque ipsum. Nisi phasellus est consectetur mauris etiam luctus volutpat. Vivamus sem risus vitae arcu tellus iaculis.
-
-Mi hendrerit odio platea suspendisse nostra bibendum. Mauris suspendisse dui commodo ullamcorper placerat suscipit? Aliquet mollis vitae fringilla hendrerit magnis volutpat congue porttitor. Conubia donec tristique ac lacus pulvinar torquent. Faucibus congue magna dictum dapibus morbi. Facilisi mollis pharetra facilisis curae mattis ipsum. Bibendum adipiscing quisque pulvinar himenaeos eu accumsan lectus. Suspendisse diam suspendisse sed ultricies gravida mi. Tellus sagittis pretium nullam habitasse enim.</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-        </property>
-        <property name="wordWrap">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
      </layout>
     </widget>
    </widget>
