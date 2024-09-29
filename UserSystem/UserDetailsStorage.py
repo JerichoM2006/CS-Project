@@ -89,6 +89,36 @@ class UserDetailsStorage(Singleton):
 
         userCon.close()
 
+    def getTranscripts(self, filter):
+        userCon = sqlite3.connect(self.accountPath)
+        userCursor = userCon.cursor()
+
+        if filter == "":
+            userCursor.execute('SELECT * FROM Transcripts')
+        else:
+            userCursor.execute('SELECT * FROM Transcripts WHERE name LIKE ?', (filter,))
+
+        result = userCursor.fetchall()
+        sortedResult = sorted(result, key=lambda x: datetime.strptime(x[2], '%d:%m:%y'), reverse=True)
+
+        userCon.close()
+        return sortedResult
+    
+    def getSections(self, transcriptID, filter):
+        userCon = sqlite3.connect(self.accountPath)
+        userCursor = userCon.cursor()
+
+        if filter == "":
+            userCursor.execute('SELECT * FROM Sections WHERE transcriptionID = ?', (transcriptID,))
+        else:
+            userCursor.execute('SELECT * FROM Sections WHERE transcriptionID = ? AND body LIKE ?', (transcriptID, filter))
+
+        result = userCursor.fetchall()
+        sortedResult = sorted(result, key=lambda x: datetime.strptime(x[3], '%d:%m:%y'), reverse=True)
+
+        userCon.close()
+        return sortedResult
+
 
     def clear(self):
         self.cursor.execute('DELETE FROM users')
