@@ -80,7 +80,7 @@
     <property name="widgetResizable">
      <bool>true</bool>
     </property>
-    <widget class="QWidget" name="scrollAreaWidgetContents">
+    <widget class="QWidget" name="scrollAreaWidgetTranscript">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -111,6 +111,93 @@
       <property name="bottomMargin">
        <number>0</number>
       </property>
+     </layout>
+    </widget>
+   </widget>
+   <widget class="QScrollArea" name="SectionScroll">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>70</y>
+      <width>681</width>
+      <height>371</height>
+     </rect>
+    </property>
+    <property name="widgetResizable">
+     <bool>true</bool>
+    </property>
+    <widget class="QWidget" name="scrollAreaWidgetSection">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>-372</y>
+       <width>662</width>
+       <height>741</height>
+      </rect>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="SectionLabel">
+        <property name="minimumSize">
+         <size>
+          <width>662</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>662</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ullamcorper nisl interdum, mattis orci ut, efficitur nulla. Donec in efficitur urna. Aliquam pretium euismod magna, eget bibendum turpis accumsan et. Donec fringilla rhoncus tortor nec consectetur. In accumsan suscipit tristique. Donec fermentum, velit vitae suscipit pulvinar, enim mauris pulvinar lacus, eu molestie justo nulla non lorem. Pellentesque mauris dui, finibus quis ullamcorper id, accumsan et arcu. Curabitur ac ornare sapien, ac luctus turpis. Integer eget tempor lectus. Fusce justo risus, elementum at augue ac, vehicula mollis ligula. Vivamus consectetur vulputate purus eu consequat. Suspendisse tempus nec ipsum vel interdum.
+
+Sed ultricies, neque eu dictum aliquet, felis leo sollicitudin elit, quis consectetur est nisl id augue. Aliquam feugiat enim turpis, non scelerisque odio venenatis vitae. Morbi a neque at risus dignissim venenatis et eget purus. Proin vitae placerat felis. Donec pharetra massa lectus, at interdum orci tincidunt eget. Maecenas quis sapien non ligula aliquet eleifend volutpat ac mauris. Donec volutpat, ipsum auctor auctor maximus, felis lacus feugiat sapien, dignissim iaculis odio libero eget risus.
+
+Etiam ut metus fringilla, auctor erat eu, mattis enim. Nullam ornare lobortis lobortis. Maecenas vel risus sed magna dignissim luctus eget a nunc. Aenean varius risus quis varius imperdiet. Curabitur ornare interdum sem. Nunc interdum mollis ultrices. Integer congue vulputate dolor quis feugiat. Nullam sed eros volutpat, suscipit nisl congue, tempor lectus. Phasellus eleifend venenatis tellus ut pharetra. Nulla ut nisl ligula. In nec arcu aliquam, ornare leo sit amet, placerat sapien. Donec at consequat nunc, eget volutpat metus. Nunc at faucibus est. Proin vehicula, est non vulputate porttitor, magna mi tristique diam, et pharetra ex ex id est. Praesent auctor, leo ac dictum tincidunt, massa velit tempus tortor, eu tincidunt diam ante sed lacus. In non dictum turpis.
+
+Morbi vehicula mattis pellentesque. Sed turpis libero, facilisis in ex quis, tristique ultricies eros. Maecenas convallis euismod lectus sit amet ultricies. Nam fermentum pellentesque rutrum. Praesent volutpat mauris ipsum, ac ultricies est maximus eget. Vestibulum gravida orci id nisl volutpat euismod. Etiam vitae ante risus. Aliquam consequat luctus mi, a ornare sapien porttitor at.
+
+In egestas at massa sit amet sodales. Aenean lacinia ipsum erat, eu viverra lacus rhoncus quis. Nam justo justo, vestibulum nec lacus vel, eleifend cursus quam. Sed sollicitudin mollis risus eu ornare. Etiam vehicula mi eu turpis bibendum aliquet. Mauris vulputate consectetur dolor, sed malesuada ante faucibus sit amet. Nam quis enim non est dignissim ultrices sed ac libero. Nunc iaculis tellus non orci convallis convallis. Donec bibendum ex sed nisl dapibus facilisis. Aliquam cursus, libero ac facilisis aliquet, neque tellus suscipit lacus, blandit ornare lorem justo sed nisl. Morbi pretium dapibus eros non hendrerit.</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </widget>

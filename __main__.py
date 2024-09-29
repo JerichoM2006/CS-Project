@@ -29,7 +29,7 @@ def main():
     app = QtWidgets.QApplication(sys.argv)
 
     manager = ManagerWindow(app)
-    manager.switchWindow("LoginRegisterWindow")
+    manager.switchWindow("SearchingWindow")
     sys.exit(app.exec_())
     
 
