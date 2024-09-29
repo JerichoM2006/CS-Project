@@ -177,6 +177,7 @@ class ControlWindow(QtWidgets.QMainWindow):
         font.setPointSize(14)
         self.TranscriptsButton.setFont(font)
         self.TranscriptsButton.setObjectName("TranscriptsButton")
+        self.TranscriptsButton.clicked.connect(self.onTranscriptsButtonClicked)
 
         self.setCentralWidget(self.centralwidget)
 
@@ -329,4 +330,11 @@ class ControlWindow(QtWidgets.QMainWindow):
 
         self.isSwitching = True
         self.managerWindow.switchWindow("SettingsWindow")
-        self.close()
+
+    def onTranscriptsButtonClicked(self):
+        if self.StartButton.text() == "Stop":
+            self.setMessageBox("You must stop the recording before looking at transcripts", "Warning", QtWidgets.QMessageBox.Warning)
+            return
+
+        self.isSwitching = True
+        self.managerWindow.switchWindow("SearchingWindow")

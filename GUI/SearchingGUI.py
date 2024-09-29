@@ -10,6 +10,9 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+from UserSystem.EncryptionSystem import EncryptionSystem
+from UserSystem.UserDetailsStorage import UserDetailsStorage
+
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from GUI.ManagerGUI import ManagerWindow
@@ -20,6 +23,11 @@ class SearchingWindow(QtWidgets.QMainWindow):
         super().__init__()
 
         self.managerWindow : 'ManagerWindow' = managerWindow
+
+        self.userDetails : UserDetailsStorage = UserDetailsStorage()
+        self.encryption : EncryptionSystem = EncryptionSystem()
+
+        self.isSwitching = False
 
         self.setupUi()
 
@@ -35,6 +43,7 @@ class SearchingWindow(QtWidgets.QMainWindow):
         font.setPointSize(18)
         self.BackButton.setFont(font)
         self.BackButton.setObjectName("BackButton")
+        self.BackButton.clicked.connect(self.onBackButtonClicked)
 
         self.SearchBar = QtWidgets.QLineEdit(self.centralwidget)
         self.SearchBar.setGeometry(QtCore.QRect(150, 10, 411, 51))
@@ -55,6 +64,7 @@ class SearchingWindow(QtWidgets.QMainWindow):
         self.TranscriptScroll.setGeometry(QtCore.QRect(10, 70, 681, 371))
         self.TranscriptScroll.setWidgetResizable(True)
         self.TranscriptScroll.setObjectName("TranscriptScroll")
+        self.TranscriptScroll.show()
 
         self.scrollAreaWidgetTranscript = QtWidgets.QWidget()
         self.scrollAreaWidgetTranscript.setGeometry(QtCore.QRect(0, 0, 679, 369))
@@ -65,13 +75,14 @@ class SearchingWindow(QtWidgets.QMainWindow):
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName("verticalLayout")
-
         self.TranscriptScroll.setWidget(self.scrollAreaWidgetTranscript)
+
         self.SectionScroll = QtWidgets.QScrollArea(self.centralwidget)
         self.SectionScroll.setEnabled(True)
         self.SectionScroll.setGeometry(QtCore.QRect(10, 70, 681, 371))
         self.SectionScroll.setWidgetResizable(True)
         self.SectionScroll.setObjectName("SectionScroll")
+        self.SectionScroll.hide()
 
         self.scrollAreaWidgetSection = QtWidgets.QWidget()
         self.scrollAreaWidgetSection.setGeometry(QtCore.QRect(0, -372, 662, 741))
@@ -107,3 +118,24 @@ class SearchingWindow(QtWidgets.QMainWindow):
         self.SearchButton.setText(_translate("self", "Search"))
         self.SectionLabel.setText(_translate("self", "Test"))
 
+    def closeEvent(self, event):
+        if self.isSwitching:
+            return
+
+        msg = QtWidgets.QMessageBox()
+        msg.setIcon(QtWidgets.QMessageBox.Question)
+        msg.setText("Are you sure you want to exit?")
+        msg.setWindowTitle("Exit")
+        msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+        result = msg.exec_()
+        
+        if result == QtWidgets.QMessageBox.No:
+            event.ignore()
+            return
+        
+        self.encryption.encrypt(self.userDetails.password, self.userDetails.accountPath)
+
+    def onBackButtonClicked(self):
+        if not self.TranscriptScroll.isHidden():
+            self.isSwitching = True
+            self.managerWindow.switchWindow("ControlWindow")
