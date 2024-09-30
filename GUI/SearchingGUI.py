@@ -172,7 +172,7 @@ class SearchingWindow(QtWidgets.QMainWindow):
             spacer = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
             self.verticalLayout.addItem(spacer)
 
-            button.clicked.connect(lambda: self.onTranscriptButtonClicked(transcript[0]))
+            button.clicked.connect(lambda _, transcriptID=transcript[0]: self.onTranscriptButtonClicked(transcriptID))
             self.transcriptButtons.append(button)
 
     def onTranscriptButtonClicked(self, transcriptID):
