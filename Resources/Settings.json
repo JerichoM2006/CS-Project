@@ -1,9 +1,7 @@
 {
     "OriginalLanguage": "ja-JP",
-    "FinalLanguage": "en-US",
-    
-    "RecordingInterval": 3,
-
+    "FinalLanguage": "tl-PH",
+    "RecordingInterval": 3.0,
     "SubtitleLines": 2,
     "SubtitlePadding": 10,
     "SubtitleFontSize": 24,

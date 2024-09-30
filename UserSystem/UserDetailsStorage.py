@@ -78,7 +78,7 @@ class UserDetailsStorage(Singleton):
         userCon = sqlite3.connect(self.accountPath)
         userCursor = userCon.cursor()
 
-        date = str(datetime.now().strftime("%d:%m:%y"))
+        date = str(datetime.now().strftime("%d/%m/%y"))
         userCursor.execute('INSERT INTO Transcripts (name, date) VALUES (?, ?)', (transcriptName, date))
         userCon.commit()
 
@@ -99,7 +99,7 @@ class UserDetailsStorage(Singleton):
             userCursor.execute('SELECT * FROM Transcripts WHERE name LIKE ?', ('%' + filter + '%',))
 
         result = userCursor.fetchall()
-        sortedResult = sorted(result, key=lambda x: datetime.strptime(x[2], '%d:%m:%y'), reverse=True)
+        sortedResult = sorted(result, key=lambda x: datetime.strptime(x[2], '%d/%m/%y'), reverse=True)
 
         userCon.close()
         return sortedResult

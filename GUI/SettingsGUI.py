@@ -275,8 +275,9 @@ class SettingsWindow(QtWidgets.QMainWindow):
         if response == QtWidgets.QMessageBox.No:
             return
         
-        self.OrigLanguageBox.setCurrentText(self.settingsHandler.getSetting("OriginalLanguage"))
-        self.TranLanguageBox.setCurrentText(self.settingsHandler.getSetting("FinalLanguage"))
+        self.OrigLanguageBox.setCurrentText(self.codeToLanguage(self.settingsHandler.getSetting("OriginalLanguage")))
+        self.TranLanguageBox.setCurrentText(self.codeToLanguage(self.settingsHandler.getSetting("FinalLanguage")))
+
         self.RecordingInterBox.setValue(int(self.settingsHandler.getSetting("RecordingInterval")))
         self.MaxLinesBox.setValue(int(self.settingsHandler.getSetting("SubtitleLines")))
         self.FontSizeBox.setValue(int(self.settingsHandler.getSetting("SubtitleFontSize")))
@@ -287,9 +288,17 @@ class SettingsWindow(QtWidgets.QMainWindow):
         if response == QtWidgets.QMessageBox.No:
             return
         
-        self.settingsHandler.setSetting("OriginalLanguage", self.OrigLanguageBox.currentText())
-        self.settingsHandler.setSetting("FinalLanguage", self.TranLanguageBox.currentText())
+        self.settingsHandler.setSetting("OriginalLanguage", self.languageToCode(self.OrigLanguageBox.currentText()))
+        self.settingsHandler.setSetting("FinalLanguage", self.languageToCode(self.TranLanguageBox.currentText()))
         self.settingsHandler.setSetting("RecordingInterval", self.RecordingInterBox.value())
         self.settingsHandler.setSetting("SubtitleLines", self.MaxLinesBox.value())
         self.settingsHandler.setSetting("SubtitleFontSize", self.FontSizeBox.value())
         self.settingsHandler.setSetting("SubtitleWidth", self.YPositionBox.value())
+
+    def languageToCode(self, language):
+        for key, value in self.languageDict.items():
+            if value == language:
+                return key
+    
+    def codeToLanguage(self, code):
+        return self.languageDict[code]
