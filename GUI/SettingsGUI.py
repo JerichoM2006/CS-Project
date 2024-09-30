@@ -95,7 +95,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
         font.setPointSize(12)
         self.OrigLanguageBox.setFont(font)
         self.OrigLanguageBox.setObjectName("OrigLanguageBox")
-        self.OrigLanguageBox.addItems(SettingsWindow.languageDict.values())
+        self.OrigLanguageBox.addItems(sorted(SettingsWindow.languageDict.values()))
         self.OrigLanguageBox.setCurrentText(SettingsWindow.languageDict[self.settingsHandler.getSetting("OriginalLanguage")])
 
         self.TranLanguageBox = QtWidgets.QComboBox(self.TranslationsFrame)
@@ -104,7 +104,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
         font.setPointSize(12)
         self.TranLanguageBox.setFont(font)
         self.TranLanguageBox.setObjectName("TranLanguageBox")
-        self.TranLanguageBox.addItems(SettingsWindow.languageDict.values())
+        self.TranLanguageBox.addItems(sorted(SettingsWindow.languageDict.values()))
         self.TranLanguageBox.setCurrentText(SettingsWindow.languageDict[self.settingsHandler.getSetting("FinalLanguage")])
 
         self.OrigLanguageLabel = QtWidgets.QLabel(self.TranslationsFrame)
