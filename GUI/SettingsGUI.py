@@ -20,17 +20,6 @@ if TYPE_CHECKING:
     from GUI.ManagerGUI import ManagerWindow
 
 class SettingsWindow(QtWidgets.QMainWindow):
-    languageDict = {"en-US" : "English",
-                    "ja-JP" : "Japanese",
-                    "es-ES" : "Spanish",
-                    "fr-FR" : "French",
-                    "de-DE" : "German",
-                    "it-IT" : "Italian",
-                    "ru-RU" : "Russian",
-                    "zh-CN" : "Chinese",
-                    "tl-PH" : "Filipino"
-                    }
-
     def __init__(self, managerWindow : 'ManagerWindow'):
         super().__init__()
 
@@ -95,8 +84,8 @@ class SettingsWindow(QtWidgets.QMainWindow):
         font.setPointSize(12)
         self.OrigLanguageBox.setFont(font)
         self.OrigLanguageBox.setObjectName("OrigLanguageBox")
-        self.OrigLanguageBox.addItems(sorted(SettingsWindow.languageDict.values()))
-        self.OrigLanguageBox.setCurrentText(SettingsWindow.languageDict[self.settingsHandler.getSetting("OriginalLanguage")])
+        self.OrigLanguageBox.addItems(sorted(self.settingsHandler.languageCodes.keys()))
+        self.OrigLanguageBox.setCurrentText(self.settingsHandler.getSetting("OriginalLanguage"))
 
         self.TranLanguageBox = QtWidgets.QComboBox(self.TranslationsFrame)
         self.TranLanguageBox.setGeometry(QtCore.QRect(10, 130, 101, 41))
@@ -104,8 +93,8 @@ class SettingsWindow(QtWidgets.QMainWindow):
         font.setPointSize(12)
         self.TranLanguageBox.setFont(font)
         self.TranLanguageBox.setObjectName("TranLanguageBox")
-        self.TranLanguageBox.addItems(sorted(SettingsWindow.languageDict.values()))
-        self.TranLanguageBox.setCurrentText(SettingsWindow.languageDict[self.settingsHandler.getSetting("FinalLanguage")])
+        self.TranLanguageBox.addItems(sorted(self.settingsHandler.languageCodes.keys()))
+        self.TranLanguageBox.setCurrentText(self.settingsHandler.getSetting("FinalLanguage"))
 
         self.OrigLanguageLabel = QtWidgets.QLabel(self.TranslationsFrame)
         self.OrigLanguageLabel.setGeometry(QtCore.QRect(10, 20, 131, 21))
@@ -275,8 +264,8 @@ class SettingsWindow(QtWidgets.QMainWindow):
         if response == QtWidgets.QMessageBox.No:
             return
         
-        self.OrigLanguageBox.setCurrentText(self.codeToLanguage(self.settingsHandler.getSetting("OriginalLanguage")))
-        self.TranLanguageBox.setCurrentText(self.codeToLanguage(self.settingsHandler.getSetting("FinalLanguage")))
+        self.OrigLanguageBox.setCurrentText(self.settingsHandler.getSetting("OriginalLanguage"))
+        self.TranLanguageBox.setCurrentText(self.settingsHandler.getSetting("FinalLanguage"))
 
         self.RecordingInterBox.setValue(int(self.settingsHandler.getSetting("RecordingInterval")))
         self.MaxLinesBox.setValue(int(self.settingsHandler.getSetting("SubtitleLines")))
@@ -288,17 +277,9 @@ class SettingsWindow(QtWidgets.QMainWindow):
         if response == QtWidgets.QMessageBox.No:
             return
         
-        self.settingsHandler.setSetting("OriginalLanguage", self.languageToCode(self.OrigLanguageBox.currentText()))
-        self.settingsHandler.setSetting("FinalLanguage", self.languageToCode(self.TranLanguageBox.currentText()))
+        self.settingsHandler.setSetting("OriginalLanguage", self.OrigLanguageBox.currentText())
+        self.settingsHandler.setSetting("FinalLanguage", self.TranLanguageBox.currentText())
         self.settingsHandler.setSetting("RecordingInterval", self.RecordingInterBox.value())
         self.settingsHandler.setSetting("SubtitleLines", self.MaxLinesBox.value())
         self.settingsHandler.setSetting("SubtitleFontSize", self.FontSizeBox.value())
         self.settingsHandler.setSetting("SubtitleWidth", self.YPositionBox.value())
-
-    def languageToCode(self, language):
-        for key, value in self.languageDict.items():
-            if value == language:
-                return key
-    
-    def codeToLanguage(self, code):
-        return self.languageDict[code]

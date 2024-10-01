@@ -14,7 +14,8 @@ class Transcription(Singleton):
         self.settingsHandler : SettingsHandler = SettingsHandler()
 
         self.r = sr.Recognizer()
-        self.language = self.settingsHandler.getSetting("OriginalLanguage")
+        languageRaw = self.settingsHandler.getSetting("OriginalLanguage")
+        self.language = self.settingsHandler.languageCodes[languageRaw][0]
 
         self.pool : Threadpool = Threadpool()
         self.recording : DesktopRecording = DesktopRecording()
@@ -24,8 +25,6 @@ class Transcription(Singleton):
 
     def startGeneration(self):
         print("Transcription started")
-
-        self.language = self.settingsHandler.getSetting("OriginalLanguage")
 
         self.stopTranscript.clear()
         self.clearQueue(self.transcriptBuffer)

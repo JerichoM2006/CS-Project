@@ -14,18 +14,17 @@ class TranslationAI(Singleton):
 
         self.settingsHandler : SettingsHandler = SettingsHandler()
 
-        self.origLanguage = self.settingsHandler.getSetting("OriginalLanguage")
-        self.finalLanguage = self.settingsHandler.getSetting("FinalLanguage")
-        self.translator = GoogleTranslator()
+        self.origLanguageRaw = self.settingsHandler.getSetting("OriginalLanguage")
+        self.finalLanguageRaw = self.settingsHandler.getSetting("FinalLanguage")
+        self.origLanguage = self.settingsHandler.languageCodes[self.origLanguageRaw][1]
+        self.finalLanguage = self.settingsHandler.languageCodes[self.finalLanguageRaw][1]
+        self.translator = GoogleTranslator(source=self.origLanguage, target=self.finalLanguage)
 
         self.translationBuffer = queue.Queue()
         self.stop = threading.Event()
 
     def startTranslation(self):
         print("Translation started")
-
-        self.origLanguage = self.settingsHandler.getSetting("OriginalLanguage")
-        self.finalLanguage = self.settingsHandler.getSetting("FinalLanguage")
 
         self.stop.clear()
         self.clearQueue(self.translationBuffer)

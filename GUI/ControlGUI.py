@@ -37,6 +37,10 @@ class ControlWindow(QtWidgets.QMainWindow):
         self.recording : DesktopRecording = DesktopRecording()
         self.transcription : Transcription = Transcription()
         self.translation : TranslationAI = TranslationAI()
+        
+        self.recording.initialise()
+        self.transcription.initialise()
+        self.translation.initialise()
 
         self.userDetails : UserDetailsStorage = UserDetailsStorage()
         self.encryption : EncryptionSystem = EncryptionSystem()
