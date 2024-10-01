@@ -1,0 +1,26 @@
+Introduction:
+The translation transcriptor is a way for you to translate audio in your online meetings. This will presented as subtitles for easy viewing. The translated transcripts are able to be stored dependent on you account which can be viewed at a later date through the search window.
+
+Control window:
+Start/stop button - used to start and stop the recording of you online meeting
+Transcript name text bar - used to input the name of the transcript when you want to save your transcript
+Save button - used to save the transcript to your account
+Delete button - used to delete the current transcript if your not willing to save input
+Transcript button - used to go to the search window
+Help button - used to go to the help window
+Settings button - used to go to the Settings
+
+Transcript window:
+Search bar - used to filter the output to find specific parts
+Search button - apply the filter
+Back - used to go back to saved transcripts and to go back to the control panel
+
+First a list of transcripts will be shown and if one transcript is clicked then the full transcript will be shown
+
+Settings window:
+Original Lanugage - the language the person in the audio is talking in
+Translated Language - the language you wish to be displayed in the subtitles
+Recording Interval - the amount of time each part of the scenetence will be shown in the subtitles
+Max Lines - the max amount of lines to be shown in the subtitles
+Font Size - the size of the letters of the subtitles
+Y Position - the height that the subtitles will be displayed in
