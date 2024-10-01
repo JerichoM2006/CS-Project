@@ -9,16 +9,39 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+import pathlib
+
+from UserSystem.UserDetailsStorage import UserDetailsStorage
+from UserSystem.EncryptionSystem import EncryptionSystem
+
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from GUI.ManagerGUI import ManagerWindow
 
 
-class Ui_self(QtWidgets.QMainWindow):
+class HelpWindow(QtWidgets.QMainWindow):
+    def __init__(self, managerWindow : 'ManagerWindow'):
+        super().__init__()
+
+        self.userDetails : UserDetailsStorage = UserDetailsStorage()
+        self.encryption : EncryptionSystem = EncryptionSystem()
+
+        self.managerWindow : 'ManagerWindow' = managerWindow
+        self.isSwitching = False
+
+        self.setupUi()
+
     def setupUi(self):
         self.setObjectName("HelpWindow")
         self.resize(700, 448)
         self.setMinimumSize(QtCore.QSize(700, 448))
         self.setMaximumSize(QtCore.QSize(700, 448))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(str(pathlib.Path(__file__).parent.parent.resolve()) + "/Resources/Logo.jpeg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.setWindowIcon(icon)
         self.centralwidget = QtWidgets.QWidget(self)
         self.centralwidget.setObjectName("centralwidget")
+
         self.HelpLabel = QtWidgets.QLabel(self.centralwidget)
         self.HelpLabel.setGeometry(QtCore.QRect(280, 10, 141, 41))
         font = QtGui.QFont()
@@ -28,40 +51,46 @@ class Ui_self(QtWidgets.QMainWindow):
         self.HelpLabel.setFont(font)
         self.HelpLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.HelpLabel.setObjectName("HelpLabel")
+
         self.scrollArea = QtWidgets.QScrollArea(self.centralwidget)
         self.scrollArea.setGeometry(QtCore.QRect(10, 60, 681, 311))
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
+
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
         self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 662, 718))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.label_2 = QtWidgets.QLabel(self.scrollAreaWidgetContents)
+
+        self.BodyLabel = QtWidgets.QLabel(self.scrollAreaWidgetContents)
         font = QtGui.QFont()
         font.setPointSize(15)
-        self.label_2.setFont(font)
-        self.label_2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
-        self.label_2.setWordWrap(True)
-        self.label_2.setObjectName("label_2")
-        self.verticalLayout.addWidget(self.label_2)
+        self.BodyLabel.setFont(font)
+        self.BodyLabel.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.BodyLabel.setWordWrap(True)
+        self.BodyLabel.setObjectName("BodyLabel")
+        self.verticalLayout.addWidget(self.BodyLabel)
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
+
         self.BackButton = QtWidgets.QPushButton(self.centralwidget)
         self.BackButton.setGeometry(QtCore.QRect(270, 380, 161, 61))
         font = QtGui.QFont()
         font.setPointSize(18)
         self.BackButton.setFont(font)
         self.BackButton.setObjectName("BackButton")
+        self.BackButton.clicked.connect(self.onBackButtonClicked)
+
         self.setCentralWidget(self.centralwidget)
 
-        self.retranslateUi(self)
+        self.retranslateUi()
         QtCore.QMetaObject.connectSlotsByName(self)
 
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
-        self.setWindowTitle(_translate("self", "Translation Transcriptor"))
-        self.HelpLabel.setText(_translate("self", "Help"))
-        self.label_2.setText(_translate("self", "Introduction:\n"
+        self.setWindowTitle(_translate("HelpWindow", "Translation Transcriptor"))
+        self.HelpLabel.setText(_translate("HelpWindow", "Help"))
+        self.BodyLabel.setText(_translate("HelpWindow", "Introduction:\n"
 "The translation transcriptor translates audio in online meetings, presenting it as subtitles for easy viewing.\n"
 "Translated transcripts are stored based on your account, viewable later via the search window.\n"
 "\n"
@@ -87,4 +116,26 @@ class Ui_self(QtWidgets.QMainWindow):
 "Max Lines - the maximum number of subtitle lines.\n"
 "Font Size - the size of the subtitle letters.\n"
 "Y Position - the height where subtitles are displayed."))
-        self.BackButton.setText(_translate("self", "Back"))
+        self.BackButton.setText(_translate("HelpWindow", "Back"))
+
+    def closeEvent(self, event):
+        if self.isSwitching:
+            return
+
+        msg = QtWidgets.QMessageBox()
+        msg.setIcon(QtWidgets.QMessageBox.Question)
+        msg.setText("Are you sure you want to exit?")
+        msg.setWindowTitle("Exit")
+        msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+        result = msg.exec_()
+        
+        if result == QtWidgets.QMessageBox.No:
+            event.ignore()
+            return
+        
+        self.encryption.encrypt(self.userDetails.password, self.userDetails.accountPath)
+
+    def onBackButtonClicked(self):
+        self.isSwitching = True
+        self.managerWindow.switchWindow("ControlWindow")
+

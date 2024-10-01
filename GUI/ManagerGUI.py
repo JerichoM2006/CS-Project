@@ -4,6 +4,7 @@ from GUI.LoginRegisterGUI import LoginRegisterWindow
 from GUI.ControlGUI import ControlWindow
 from GUI.SettingsGUI import SettingsWindow
 from GUI.SearchingGUI import SearchingWindow
+from GUI.HelpGUI import HelpWindow
 
 class ManagerWindow():
     def __init__(self, app : QtWidgets.QApplication):
@@ -25,6 +26,9 @@ class ManagerWindow():
             self.currentWindow.show()
         elif window == "SearchingWindow":
             self.currentWindow = SearchingWindow(self)
+            self.currentWindow.show()
+        elif window == "HelpWindow":
+            self.currentWindow = HelpWindow(self)
             self.currentWindow.show()
         else:
             print("Invalid Window")

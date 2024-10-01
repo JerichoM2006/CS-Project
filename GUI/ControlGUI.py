@@ -37,7 +37,7 @@ class ControlWindow(QtWidgets.QMainWindow):
         self.recording : DesktopRecording = DesktopRecording()
         self.transcription : Transcription = Transcription()
         self.translation : TranslationAI = TranslationAI()
-        
+
         self.recording.initialise()
         self.transcription.initialise()
         self.translation.initialise()
@@ -174,6 +174,7 @@ class ControlWindow(QtWidgets.QMainWindow):
         font.setPointSize(14)
         self.HelpButton.setFont(font)
         self.HelpButton.setObjectName("HelpButton")
+        self.HelpButton.clicked.connect(self.onHelpButtonClicked)
 
         self.TranscriptsButton = QtWidgets.QPushButton(self.NavigationFrame)
         self.TranscriptsButton.setGeometry(QtCore.QRect(100, 20, 121, 41))
@@ -342,3 +343,11 @@ class ControlWindow(QtWidgets.QMainWindow):
 
         self.isSwitching = True
         self.managerWindow.switchWindow("SearchingWindow")
+
+    def onHelpButtonClicked(self):
+        if self.StartButton.text() == "Stop":
+            self.setMessageBox("You must stop the recording before looking at help", "Warning", QtWidgets.QMessageBox.Warning)
+            return
+
+        self.isSwitching = True
+        self.managerWindow.switchWindow("HelpWindow")
