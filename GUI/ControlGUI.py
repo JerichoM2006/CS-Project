@@ -224,6 +224,8 @@ class ControlWindow(QtWidgets.QMainWindow):
         date = ""
         while not self.updateTranscriptEvent.is_set():
             translation = self.translation.getTranslation()
+            if translation is None:
+                continue
 
             if len(self.transcriptList):
                 if translation == "..." and self.transcriptList[-1][1].split()[-1] == "...":

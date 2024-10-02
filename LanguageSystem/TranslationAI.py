@@ -37,11 +37,17 @@ class TranslationAI(Singleton):
         self.pool.getResult(self.translate.__name__)
 
     def getTranslation(self):
-        return self.translationBuffer.get(block=True)
+        try:
+            return self.translationBuffer.get(timeout=0.1)
+        except queue.Empty:
+            return None
 
     def translate(self):
         while not self.stop.is_set():
             transcript = self.transciptionAI.getTranscript()
+            if transcript is None:
+                continue
+
             translation  = self.translator.translate(transcript, src=self.origLanguage, dest=self.finalLanguage)
 
             if(translation == None):

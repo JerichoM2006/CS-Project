@@ -59,13 +59,19 @@ class DesktopRecording(Singleton):
         self.pool.getResult(self.record.__name__)
 
     def getSegment(self):
-        return self.buffer.get(block=True)
+        try:
+            return self.buffer.get(block=False)
+        except queue.Empty:
+            return None
  
     def record(self):
         while not self.stopRecord.is_set():
             frames = []
 
             for i in range(0, int(self.rate / self.chunk * self.secondInterval)):
+                if self.stopRecord.is_set():
+                    return
+
                 data = self.stream.read(self.chunk)
                 audio_data = numpy.frombuffer(data, dtype=numpy.int16)
 

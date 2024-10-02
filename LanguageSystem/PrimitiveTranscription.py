@@ -37,12 +37,18 @@ class Transcription(Singleton):
         self.pool.getResult(self.generateTranscript.__name__)
 
     def getTranscript(self):
-        return self.transcriptBuffer.get(block=True)
+        try:
+            return self.transcriptBuffer.get(timeout=0.1)
+        except queue.Empty:
+            return None
         
     def generateTranscript(self):
         while not self.stopTranscript.is_set():
-            segmentFile = io.BytesIO()
             record = self.recording.getSegment()
+            if record is None:
+                continue
+
+            segmentFile = io.BytesIO()
             with wave.open(segmentFile, 'wb') as f:
                 f.setnchannels(self.recording.channels)
                 f.setsampwidth(self.recording.p.get_sample_size(self.recording.format))
