@@ -18,6 +18,7 @@ if TYPE_CHECKING:
     from GUI.ManagerGUI import ManagerWindow
 
 class LoginRegisterWindow(QtWidgets.QMainWindow):
+    # The constructor for the login/register window
     def __init__(self, managerWindow : 'ManagerWindow'):
         super().__init__()
         self.setupUi()
@@ -25,6 +26,7 @@ class LoginRegisterWindow(QtWidgets.QMainWindow):
         self.managerWindow : 'ManagerWindow' = managerWindow
         self.storage : UserDetailsStorage = UserDetailsStorage()
 
+    # The setup function for the login/register window
     def setupUi(self):
         #Create the window
         self.setObjectName("LoginRegisterWindow")
@@ -149,6 +151,7 @@ class LoginRegisterWindow(QtWidgets.QMainWindow):
         self.retranslateUi()
         QtCore.QMetaObject.connectSlotsByName(self)
 
+    # The retranslate function for the login/register window
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
         self.setWindowTitle(_translate("LoginRegisterWindow", "Translation Transcriptor"))
@@ -160,19 +163,25 @@ class LoginRegisterWindow(QtWidgets.QMainWindow):
         self.RegisterButton.setText(_translate("LoginRegisterWindow", "Register"))
         self.NoticeLabel.setText(_translate("LoginRegisterWindow", ""))
 
+    # The function for the log in button
     def onLoginButtonClicked(self):
+        # Check if the user exists
         if self.storage.logIn(self.UsernameInput.text(), self.PasswordInput.text()):
             self.NoticeLabel.setText("Log in successful")
 
+            # Switch to the control window
             self.managerWindow.switchWindow("ControlWindow")
         else:
             self.NoticeLabel.setText("Log in failed")
 
+    # The function for the register button
     def onRegisterButtonClicked(self):
+        # Check if the user does not already exist
         if not self.storage.checkUserExistence(self.UsernameInput.text()):
             self.storage.signUp(self.UsernameInput.text(), self.PasswordInput.text())
             self.NoticeLabel.setText("Sign up successful")
 
+            # Switch to the control window
             self.managerWindow.switchWindow("ControlWindow")
         else:
             self.NoticeLabel.setText("Username already exists")

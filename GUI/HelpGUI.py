@@ -18,20 +18,23 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from GUI.ManagerGUI import ManagerWindow
 
-
+# The help window provides information about the application
 class HelpWindow(QtWidgets.QMainWindow):
     def __init__(self, managerWindow : 'ManagerWindow'):
         super().__init__()
 
+        # Set up the user details and encryption objects
         self.userDetails : UserDetailsStorage = UserDetailsStorage()
         self.encryption : EncryptionSystem = EncryptionSystem()
 
         self.managerWindow : 'ManagerWindow' = managerWindow
         self.isSwitching = False
 
+        # Set up the ui
         self.setupUi()
 
     def setupUi(self):
+        # Set the window icon
         self.setObjectName("HelpWindow")
         self.resize(700, 448)
         self.setMinimumSize(QtCore.QSize(700, 448))
@@ -39,9 +42,12 @@ class HelpWindow(QtWidgets.QMainWindow):
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(str(pathlib.Path(__file__).parent.parent.resolve()) + "/Resources/Logo.jpeg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.setWindowIcon(icon)
+
+        # Create the central widget
         self.centralwidget = QtWidgets.QWidget(self)
         self.centralwidget.setObjectName("centralwidget")
 
+        # Create the help label
         self.HelpLabel = QtWidgets.QLabel(self.centralwidget)
         self.HelpLabel.setGeometry(QtCore.QRect(280, 10, 141, 41))
         font = QtGui.QFont()
@@ -52,17 +58,22 @@ class HelpWindow(QtWidgets.QMainWindow):
         self.HelpLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.HelpLabel.setObjectName("HelpLabel")
 
+        # Create the scroll area
         self.scrollArea = QtWidgets.QScrollArea(self.centralwidget)
         self.scrollArea.setGeometry(QtCore.QRect(10, 60, 681, 311))
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
 
+        # Create the scroll area widget contents
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
         self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 662, 718))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
+
+        # Create the vertical layout
         self.verticalLayout = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout.setObjectName("verticalLayout")
 
+        # Create the body label
         self.BodyLabel = QtWidgets.QLabel(self.scrollAreaWidgetContents)
         font = QtGui.QFont()
         font.setPointSize(15)
@@ -71,8 +82,11 @@ class HelpWindow(QtWidgets.QMainWindow):
         self.BodyLabel.setWordWrap(True)
         self.BodyLabel.setObjectName("BodyLabel")
         self.verticalLayout.addWidget(self.BodyLabel)
+
+        # Add the body label to the scroll area
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
 
+        # Create the back button
         self.BackButton = QtWidgets.QPushButton(self.centralwidget)
         self.BackButton.setGeometry(QtCore.QRect(270, 380, 161, 61))
         font = QtGui.QFont()
@@ -81,8 +95,10 @@ class HelpWindow(QtWidgets.QMainWindow):
         self.BackButton.setObjectName("BackButton")
         self.BackButton.clicked.connect(self.onBackButtonClicked)
 
+        # Set the central widget
         self.setCentralWidget(self.centralwidget)
 
+        # Translate the ui
         self.retranslateUi()
         QtCore.QMetaObject.connectSlotsByName(self)
 
@@ -118,10 +134,13 @@ class HelpWindow(QtWidgets.QMainWindow):
 "Y Position - the height where subtitles are displayed."))
         self.BackButton.setText(_translate("HelpWindow", "Back"))
 
+    # Close the window
     def closeEvent(self, event):
+        # Check if the user is switching
         if self.isSwitching:
             return
 
+        # Check if the user is sure they want to exit
         msg = QtWidgets.QMessageBox()
         msg.setIcon(QtWidgets.QMessageBox.Question)
         msg.setText("Are you sure you want to exit?")
@@ -133,8 +152,10 @@ class HelpWindow(QtWidgets.QMainWindow):
             event.ignore()
             return
         
+        # Encrypt the user details
         self.encryption.encrypt(self.userDetails.password, self.userDetails.accountPath)
 
+    # Go back to the control window
     def onBackButtonClicked(self):
         self.isSwitching = True
         self.managerWindow.switchWindow("ControlWindow")

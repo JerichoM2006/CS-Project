@@ -20,21 +20,51 @@ if TYPE_CHECKING:
     from GUI.ManagerGUI import ManagerWindow
 
 class SettingsWindow(QtWidgets.QMainWindow):
+    # Constructor for the SettingsWindow class
     def __init__(self, managerWindow : 'ManagerWindow'):
+        # Calls the superclass constructor
         super().__init__()
 
+        # Stores the manager window
         self.managerWindow : 'ManagerWindow' = managerWindow
+        # Used to prevent the window from closing when switching windows
         self.isSwitching = False
 
+        # Gets the instance of SettingsHandler
         self.settingsHandler : SettingsHandler = SettingsHandler()
 
+        # Gets the instance of UserDetailsStorage
         self.userDetails : UserDetailsStorage = UserDetailsStorage()
+        # Gets the instance of EncryptionSystem
         self.encryption : EncryptionSystem = EncryptionSystem()
 
 
+        # Sets up the ui
         self.setupUi()
     
+    # Constructor for the SettingsWindow class
+    def __init__(self, managerWindow : 'ManagerWindow'):
+        # Calls the superclass constructor
+        super().__init__()
+
+        # Stores the manager window
+        self.managerWindow : 'ManagerWindow' = managerWindow
+        # Used to prevent the window from closing when switching windows
+        self.isSwitching = False
+
+        # Gets the instance of SettingsHandler
+        self.settingsHandler : SettingsHandler = SettingsHandler()
+        # Gets the instance of UserDetailsStorage
+        self.userDetails : UserDetailsStorage = UserDetailsStorage()
+        # Gets the instance of EncryptionSystem
+        self.encryption : EncryptionSystem = EncryptionSystem()
+
+        # Sets up the ui
+        self.setupUi()
+
+    # Sets up the UI for the window
     def setupUi(self):
+        # Window properties
         self.setObjectName("SettingsWindow")
         self.resize(560, 448)
         self.setMinimumSize(QtCore.QSize(560, 448))
@@ -45,6 +75,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.centralwidget = QtWidgets.QWidget(self)
         self.centralwidget.setObjectName("centralwidget")
 
+        # Back button
         self.BackButton = QtWidgets.QPushButton(self.centralwidget)
         self.BackButton.setGeometry(QtCore.QRect(10, 380, 141, 61))
         font = QtGui.QFont()
@@ -53,6 +84,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.BackButton.setObjectName("BackButton")
         self.BackButton.clicked.connect(self.onBackButtonClicked)
 
+        # Reset button
         self.ResetButton = QtWidgets.QPushButton(self.centralwidget)
         self.ResetButton.setGeometry(QtCore.QRect(410, 380, 141, 61))
         font = QtGui.QFont()
@@ -61,6 +93,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.ResetButton.setObjectName("ResetButton")
         self.ResetButton.clicked.connect(self.onResetButtonClicked)
 
+        # Save button
         self.SaveButton = QtWidgets.QPushButton(self.centralwidget)
         self.SaveButton.setGeometry(QtCore.QRect(210, 380, 141, 61))
         font = QtGui.QFont()
@@ -69,6 +102,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.SaveButton.setObjectName("SaveButton")
         self.SaveButton.clicked.connect(self.onSaveButtonClicked)
 
+        # Translations frame
         self.TranslationsFrame = QtWidgets.QFrame(self.centralwidget)
         self.TranslationsFrame.setGeometry(QtCore.QRect(10, 10, 191, 181))
         font = QtGui.QFont()
@@ -78,6 +112,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.TranslationsFrame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.TranslationsFrame.setObjectName("TranslationsFrame")
 
+        # Original language combo box
         self.OrigLanguageBox = QtWidgets.QComboBox(self.TranslationsFrame)
         self.OrigLanguageBox.setGeometry(QtCore.QRect(10, 40, 101, 41))
         font = QtGui.QFont()
@@ -87,6 +122,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.OrigLanguageBox.addItems(sorted(self.settingsHandler.languageCodes.keys()))
         self.OrigLanguageBox.setCurrentText(self.settingsHandler.getSetting("OriginalLanguage"))
 
+        # Translation language combo box
         self.TranLanguageBox = QtWidgets.QComboBox(self.TranslationsFrame)
         self.TranLanguageBox.setGeometry(QtCore.QRect(10, 130, 101, 41))
         font = QtGui.QFont()
@@ -96,14 +132,17 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.TranLanguageBox.addItems(sorted(self.settingsHandler.languageCodes.keys()))
         self.TranLanguageBox.setCurrentText(self.settingsHandler.getSetting("FinalLanguage"))
 
+        # Original language label
         self.OrigLanguageLabel = QtWidgets.QLabel(self.TranslationsFrame)
         self.OrigLanguageLabel.setGeometry(QtCore.QRect(10, 20, 131, 21))
         self.OrigLanguageLabel.setObjectName("OrigLanguageLabel")
 
+        # Translation language label
         self.TranLanguageLabel = QtWidgets.QLabel(self.TranslationsFrame)
         self.TranLanguageLabel.setGeometry(QtCore.QRect(10, 110, 151, 21))
         self.TranLanguageLabel.setObjectName("TranLanguageLabel")
 
+        # Translations label
         self.TranslationsLabel = QtWidgets.QLabel(self.TranslationsFrame)
         self.TranslationsLabel.setGeometry(QtCore.QRect(0, 0, 111, 16))
         font = QtGui.QFont()
@@ -113,6 +152,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.TranslationsLabel.setFont(font)
         self.TranslationsLabel.setObjectName("TranslationsLabel")
 
+        # Recordings frame
         self.RecordingsFrame = QtWidgets.QFrame(self.centralwidget)
         self.RecordingsFrame.setGeometry(QtCore.QRect(10, 210, 191, 91))
         font = QtGui.QFont()
@@ -122,6 +162,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.RecordingsFrame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.RecordingsFrame.setObjectName("RecordingsFrame")
 
+        # Recording interval box
         self.RecordingInterBox = QtWidgets.QDoubleSpinBox(self.RecordingsFrame)
         self.RecordingInterBox.setGeometry(QtCore.QRect(10, 40, 101, 41))
         font = QtGui.QFont()
@@ -132,10 +173,12 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.RecordingInterBox.setObjectName("RecordingInterBox")
         self.RecordingInterBox.setValue(float(self.settingsHandler.getSetting("RecordingInterval")))
 
+        # Recording interval label
         self.RecordingInterLabel = QtWidgets.QLabel(self.RecordingsFrame)
         self.RecordingInterLabel.setGeometry(QtCore.QRect(10, 20, 131, 21))
         self.RecordingInterLabel.setObjectName("RecordingInterLabel")
 
+        # Recordings label
         self.RecordingsLabel = QtWidgets.QLabel(self.RecordingsFrame)
         self.RecordingsLabel.setGeometry(QtCore.QRect(0, 0, 101, 21))
         font = QtGui.QFont()
@@ -145,6 +188,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.RecordingsLabel.setFont(font)
         self.RecordingsLabel.setObjectName("RecordingsLabel")
 
+        # Subtitles frame
         self.SubtitlesFrame = QtWidgets.QFrame(self.centralwidget)
         self.SubtitlesFrame.setGeometry(QtCore.QRect(290, 10, 151, 271))
         font = QtGui.QFont()
@@ -154,6 +198,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.SubtitlesFrame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.SubtitlesFrame.setObjectName("SubtitlesFrame")
 
+        # Maximum lines box
         self.MaxLinesBox = QtWidgets.QSpinBox(self.SubtitlesFrame)
         self.MaxLinesBox.setGeometry(QtCore.QRect(10, 40, 101, 41))
         font = QtGui.QFont()
@@ -164,6 +209,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.MaxLinesBox.setObjectName("MaxLinesBox")
         self.MaxLinesBox.setValue(int(self.settingsHandler.getSetting("SubtitleLines")))
 
+        # Font size box
         self.FontSizeBox = QtWidgets.QSpinBox(self.SubtitlesFrame)
         self.FontSizeBox.setGeometry(QtCore.QRect(10, 130, 101, 41))
         font = QtGui.QFont()
@@ -174,6 +220,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.FontSizeBox.setObjectName("FontSizeBox")
         self.FontSizeBox.setValue(int(self.settingsHandler.getSetting("SubtitleFontSize")))
 
+        # Y position box
         self.YPositionBox = QtWidgets.QSpinBox(self.SubtitlesFrame)
         self.YPositionBox.setGeometry(QtCore.QRect(10, 220, 101, 41))
         font = QtGui.QFont()
@@ -184,18 +231,22 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.YPositionBox.setObjectName("YPositionBox")
         self.YPositionBox.setValue(int(self.settingsHandler.getSetting("SubtitleWidth")))
 
+        # Maximum lines label
         self.MaxLinesLabel = QtWidgets.QLabel(self.SubtitlesFrame)
         self.MaxLinesLabel.setGeometry(QtCore.QRect(10, 20, 71, 21))
         self.MaxLinesLabel.setObjectName("MaxLinesLabel")
         
+        # Font size label
         self.FontSizeLabel = QtWidgets.QLabel(self.SubtitlesFrame)
         self.FontSizeLabel.setGeometry(QtCore.QRect(10, 110, 71, 16))
         self.FontSizeLabel.setObjectName("FontSizeLabel")
 
+        # Y position label
         self.YPositionLabel = QtWidgets.QLabel(self.SubtitlesFrame)
         self.YPositionLabel.setGeometry(QtCore.QRect(10, 200, 71, 16))
         self.YPositionLabel.setObjectName("YPositionLabel")
 
+        # Subtitles label
         self.SubtitlesLabel = QtWidgets.QLabel(self.SubtitlesFrame)
         self.SubtitlesLabel.setGeometry(QtCore.QRect(0, 0, 81, 16))
         font = QtGui.QFont()
@@ -205,6 +256,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.SubtitlesLabel.setFont(font)
         self.SubtitlesLabel.setObjectName("SubtitlesLabel")
 
+        # Line
         self.Line = QtWidgets.QFrame(self.centralwidget)
         self.Line.setGeometry(QtCore.QRect(270, 0, 20, 371))
         self.Line.setFrameShape(QtWidgets.QFrame.VLine)
@@ -214,9 +266,11 @@ class SettingsWindow(QtWidgets.QMainWindow):
         
         self.setCentralWidget(self.centralwidget)
 
+        # Translates ui
         self.retranslateUi()
         QtCore.QMetaObject.connectSlotsByName(self)
 
+    # Translates ui
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
         self.setWindowTitle(_translate("SettingsWindow", "Translation Transcriptor"))
@@ -233,53 +287,82 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.YPositionLabel.setText(_translate("SettingsWindow", "Y Position"))
         self.SubtitlesLabel.setText(_translate("SettingsWindow", "Subtitles"))
 
+    # CloseEvent is called when the window is about to be closed
     def closeEvent(self, event):
+        # Check if the user is switching windows
         if self.isSwitching:
             return
 
+        # Ask the user if they are sure they want to exit
         response = self.setQuestionBox("Are you sure you want to exit?", "Warning")
+        # If the user clicked no, ignore the event
         if response == QtWidgets.QMessageBox.No:
             event.ignore()
             return
         
+        # Encrypt the user details
         self.encryption.encrypt(self.userDetails.password, self.userDetails.accountPath)
 
+    # Asks the user a question and returns the result
     def setQuestionBox(self, text, title):
+        # Create the message box
         msg = QtWidgets.QMessageBox()
+        # Set the icon, text, and title
         msg.setIcon(QtWidgets.QMessageBox.Question)
         msg.setText(text)
         msg.setWindowTitle(title)
 
+        # Set the standard buttons
         msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+        # Set the default button
         msg.defaultButton = QtWidgets.QMessageBox.No
 
+        # Execute the message box and return the result
         return msg.exec_()
     
+    # Switches back to the control window when the back button is clicked
     def onBackButtonClicked(self):
+        # Switches the window to the control window
         self.isSwitching = True
         self.managerWindow.switchWindow("ControlWindow")
 
+    # Handles reset button clicks
     def onResetButtonClicked(self):
+        # Confirm reset
         response = self.setQuestionBox("Are you sure you want to reset all settings?", "Reset Settings")
         if response == QtWidgets.QMessageBox.No:
             return
         
+        # Reset original language
         self.OrigLanguageBox.setCurrentText(self.settingsHandler.getSetting("OriginalLanguage"))
+        # Reset translated language
         self.TranLanguageBox.setCurrentText(self.settingsHandler.getSetting("FinalLanguage"))
 
+        # Reset recording interval
         self.RecordingInterBox.setValue(int(self.settingsHandler.getSetting("RecordingInterval")))
+        # Reset subtitle lines
         self.MaxLinesBox.setValue(int(self.settingsHandler.getSetting("SubtitleLines")))
+        # Reset font size
         self.FontSizeBox.setValue(int(self.settingsHandler.getSetting("SubtitleFontSize")))
+        # Reset subtitle width
         self.YPositionBox.setValue(int(self.settingsHandler.getSetting("SubtitleWidth")))
 
-    def onSaveButtonClicked(self):
-        response = self.setQuestionBox("Are you sure you want to save all settings?", "Save Settings")
-        if response == QtWidgets.QMessageBox.No:
-            return
-        
-        self.settingsHandler.setSetting("OriginalLanguage", self.OrigLanguageBox.currentText())
-        self.settingsHandler.setSetting("FinalLanguage", self.TranLanguageBox.currentText())
-        self.settingsHandler.setSetting("RecordingInterval", self.RecordingInterBox.value())
-        self.settingsHandler.setSetting("SubtitleLines", self.MaxLinesBox.value())
-        self.settingsHandler.setSetting("SubtitleFontSize", self.FontSizeBox.value())
-        self.settingsHandler.setSetting("SubtitleWidth", self.YPositionBox.value())
+# Save the settings when the save button is clicked
+def onSaveButtonClicked(self):
+    # Check if the user is sure they want to save the settings
+    response = self.setQuestionBox("Are you sure you want to save all settings?", "Save Settings")
+    if response == QtWidgets.QMessageBox.No:
+        return
+
+    # Save the original language
+    self.settingsHandler.setSetting("OriginalLanguage", self.OrigLanguageBox.currentText())
+    # Save the translated language
+    self.settingsHandler.setSetting("FinalLanguage", self.TranLanguageBox.currentText())
+    # Save the recording interval
+    self.settingsHandler.setSetting("RecordingInterval", self.RecordingInterBox.value())
+    # Save the subtitle lines
+    self.settingsHandler.setSetting("SubtitleLines", self.MaxLinesBox.value())
+    # Save the font size
+    self.settingsHandler.setSetting("SubtitleFontSize", self.FontSizeBox.value())
+    # Save the subtitle width
+    self.settingsHandler.setSetting("SubtitleWidth", self.YPositionBox.value())

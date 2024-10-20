@@ -17,30 +17,40 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from GUI.ManagerGUI import ManagerWindow
 
-
 class SearchingWindow(QtWidgets.QMainWindow):
+    # Setup the searching window
     def __init__(self, managerWindow : 'ManagerWindow'):
         super().__init__()
 
+        # Store the manager window
         self.managerWindow : 'ManagerWindow' = managerWindow
 
+        # Store the user details and encryption objects
         self.userDetails : UserDetailsStorage = UserDetailsStorage()
         self.encryption : EncryptionSystem = EncryptionSystem()
 
+        # Used to prevent the window from closing when switching windows
         self.isSwitching = False
 
+        # Setup the ui
         self.setupUi()
 
+        # Store the transcript ID and transcript buttons
         self.transcriptionID = 0
         self.transcriptButtons = []
+
+        # Generate the transcript buttons
         self.generateTranscriptButtons("")
 
+    # Setup the ui
     def setupUi(self):
+        # Create the main widgets
         self.setObjectName("self")
         self.resize(700, 448)
         self.centralwidget = QtWidgets.QWidget(self)
         self.centralwidget.setObjectName("centralwidget")
 
+        # Create the back button
         self.BackButton = QtWidgets.QPushButton(self.centralwidget)
         self.BackButton.setGeometry(QtCore.QRect(10, 10, 131, 51))
         font = QtGui.QFont()
@@ -49,6 +59,7 @@ class SearchingWindow(QtWidgets.QMainWindow):
         self.BackButton.setObjectName("BackButton")
         self.BackButton.clicked.connect(self.onBackButtonClicked)
 
+        # Create the search bar
         self.SearchBar = QtWidgets.QLineEdit(self.centralwidget)
         self.SearchBar.setGeometry(QtCore.QRect(150, 10, 411, 51))
         font = QtGui.QFont()
@@ -56,6 +67,7 @@ class SearchingWindow(QtWidgets.QMainWindow):
         self.SearchBar.setFont(font)
         self.SearchBar.setObjectName("SearchBar")
 
+        # Create the search button
         self.SearchButton = QtWidgets.QPushButton(self.centralwidget)
         self.SearchButton.setGeometry(QtCore.QRect(560, 10, 131, 51))
         font = QtGui.QFont()
@@ -64,6 +76,7 @@ class SearchingWindow(QtWidgets.QMainWindow):
         self.SearchButton.setObjectName("SearchButton")
         self.SearchButton.clicked.connect(self.onSearchButtonClicked)
 
+        # Create the transcript scroll area
         self.TranscriptScroll = QtWidgets.QScrollArea(self.centralwidget)
         self.TranscriptScroll.setEnabled(True)
         self.TranscriptScroll.setGeometry(QtCore.QRect(10, 70, 681, 371))
@@ -71,17 +84,20 @@ class SearchingWindow(QtWidgets.QMainWindow):
         self.TranscriptScroll.setObjectName("TranscriptScroll")
         self.TranscriptScroll.show()
 
+        # Create the transcript scroll area widget
         self.scrollAreaWidgetTranscript = QtWidgets.QWidget()
         self.scrollAreaWidgetTranscript.setGeometry(QtCore.QRect(0, 0, 679, 369))
         self.scrollAreaWidgetTranscript.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.scrollAreaWidgetTranscript.setObjectName("scrollAreaWidgetTranscript")
 
+        # Create the transcript layout
         self.verticalLayout = QtWidgets.QVBoxLayout(self.scrollAreaWidgetTranscript)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName("verticalLayout")
         self.TranscriptScroll.setWidget(self.scrollAreaWidgetTranscript)
 
+        # Create the section scroll area
         self.SectionScroll = QtWidgets.QScrollArea(self.centralwidget)
         self.SectionScroll.setEnabled(True)
         self.SectionScroll.setGeometry(QtCore.QRect(10, 70, 681, 371))
@@ -89,16 +105,19 @@ class SearchingWindow(QtWidgets.QMainWindow):
         self.SectionScroll.setObjectName("SectionScroll")
         self.SectionScroll.hide()
 
+        # Create the section scroll area widget
         self.scrollAreaWidgetSection = QtWidgets.QWidget()
         self.scrollAreaWidgetSection.setGeometry(QtCore.QRect(0, -372, 662, 741))
         self.scrollAreaWidgetSection.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.scrollAreaWidgetSection.setObjectName("scrollAreaWidgetSection")
 
+        # Create the section layout
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetSection)
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_2.setSpacing(0)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
 
+        # Create the section label
         self.SectionLabel = QtWidgets.QLabel(self.scrollAreaWidgetSection)
         self.SectionLabel.setMinimumSize(QtCore.QSize(662, 0))
         self.SectionLabel.setMaximumSize(QtCore.QSize(662, 16777215))
@@ -109,13 +128,20 @@ class SearchingWindow(QtWidgets.QMainWindow):
         self.SectionLabel.setWordWrap(True)
         self.SectionLabel.setObjectName("SectionLabel")
 
+        # Add the section label to the section layout
         self.verticalLayout_2.addWidget(self.SectionLabel)
         self.SectionScroll.setWidget(self.scrollAreaWidgetSection)
+
+        # Set the main widget
         self.setCentralWidget(self.centralwidget)
 
+        # Translate the ui
         self.retranslateUi()
+
+        # Connect the slots
         QtCore.QMetaObject.connectSlotsByName(self)
 
+    # Translate the ui
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
         self.setWindowTitle(_translate("self", "Translation Transcriptor"))
@@ -123,6 +149,7 @@ class SearchingWindow(QtWidgets.QMainWindow):
         self.SearchButton.setText(_translate("self", "Search"))
         self.SectionLabel.setText(_translate("self", "Test"))
 
+    # Close the window
     def closeEvent(self, event):
         if self.isSwitching:
             return
@@ -140,6 +167,7 @@ class SearchingWindow(QtWidgets.QMainWindow):
         
         self.encryption.encrypt(self.userDetails.password, self.userDetails.accountPath)
 
+    # Switch back to the control window
     def onBackButtonClicked(self):
         if not self.TranscriptScroll.isHidden():
             self.isSwitching = True
@@ -148,13 +176,17 @@ class SearchingWindow(QtWidgets.QMainWindow):
             self.TranscriptScroll.show()
             self.SectionScroll.hide()
 
+    # Generate the transcript buttons
     def generateTranscriptButtons(self, filter):
+        # Remove the old buttons
         for button in self.transcriptButtons:
             button.close()
         self.transcriptButtons.clear()
 
+        # Get the transcripts
         result = self.userDetails.getTranscripts(filter)
 
+        # Add a button for each transcript
         for transcript in result:
             if self.verticalLayout.count() > 0 and isinstance(self.verticalLayout.itemAt(self.verticalLayout.count() - 1), QtWidgets.QSpacerItem):
                 self.verticalLayout.takeAt(self.verticalLayout.count() - 1)
@@ -175,17 +207,20 @@ class SearchingWindow(QtWidgets.QMainWindow):
             button.clicked.connect(lambda _, transcriptID=transcript[0]: self.onTranscriptButtonClicked(transcriptID))
             self.transcriptButtons.append(button)
 
+    # Switch to the transcript window
     def onTranscriptButtonClicked(self, transcriptID):
         self.TranscriptScroll.hide()
         self.SectionScroll.show()
         self.transcriptionID = transcriptID
         self.searchSection("")
 
+    # Search the transcripts
     def onSearchButtonClicked(self):
         filter = self.SearchBar.text()
         self.generateTranscriptButtons(filter)
         self.searchSection(filter)
         
+    # Search the sections
     def searchSection(self, filter):
         result = self.userDetails.getSections(self.transcriptionID, filter)
         body = ""
