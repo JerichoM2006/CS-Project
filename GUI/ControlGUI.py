@@ -16,6 +16,7 @@ from UserSystem.EncryptionSystem import EncryptionSystem
 from Utilities.Threadpool import Threadpool
 
 from typing import TYPE_CHECKING
+
 if TYPE_CHECKING:
     from GUI.ManagerGUI import ManagerWindow
 
@@ -25,33 +26,45 @@ import pathlib
 import threading
 
 class ControlWindow(QtWidgets.QMainWindow):
+    # ControlWindow class, for the control window of the application
     def __init__(self, managerWindow : 'ManagerWindow', app : QtWidgets.QApplication):
+        # Initialise the main window
         super().__init__()
         
         self.pool : Threadpool = Threadpool()
         self.updateTranscriptEvent = threading.Event()
         self.transcriptList = []
 
+        # Store the manager window
         self.managerWindow : 'ManagerWindow' = managerWindow
 
+        # Store the recording, transcription and translation objects
         self.recording : DesktopRecording = DesktopRecording()
         self.transcription : Transcription = Transcription()
         self.translation : TranslationAI = TranslationAI()
 
+        # Initialise the recording, transcription and translation objects
         self.recording.initialise()
         self.transcription.initialise()
         self.translation.initialise()
 
+        # Store the user details and encryption objects
         self.userDetails : UserDetailsStorage = UserDetailsStorage()
         self.encryption : EncryptionSystem = EncryptionSystem()
 
+        # Store the application
         self.app = app
+
+        # Store the subtitles window
         self.subtitles = SubtitleWindow(app)
 
+        # Store a flag to determine if the window is currently switching
         self.isSwitching = False
 
+        # Setup the UI
         self.setupUi()
 
+    # Setup the UI for the window
     def setupUi(self):
         self.setObjectName("ControlWindow")
         self.resize(700, 448)
@@ -63,6 +76,7 @@ class ControlWindow(QtWidgets.QMainWindow):
         self.centralwidget = QtWidgets.QWidget(self)
         self.centralwidget.setObjectName("centralwidget")
 
+        # Add a separator line
         self.Line = QtWidgets.QFrame(self.centralwidget)
         self.Line.setGeometry(QtCore.QRect(350, -1, 20, 441))
         self.Line.setFrameShape(QtWidgets.QFrame.VLine)
@@ -70,6 +84,7 @@ class ControlWindow(QtWidgets.QMainWindow):
         self.Line.setLineWidth(1)
         self.Line.setObjectName("Line")
 
+        # Add a scrollable area for the transcript
         self.scrollArea = QtWidgets.QScrollArea(self.centralwidget)
         self.scrollArea.setGeometry(QtCore.QRect(0, 50, 351, 381))
         self.scrollArea.setFrameShape(QtWidgets.QFrame.NoFrame)
@@ -83,6 +98,7 @@ class ControlWindow(QtWidgets.QMainWindow):
         self.verticalLayout = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout.setObjectName("verticalLayout")
 
+        # Add a label to display the transcript
         self.TranscriptLabel = QtWidgets.QLabel(self.scrollAreaWidgetContents)
         font = QtGui.QFont()
         font.setPointSize(8)
@@ -93,6 +109,8 @@ class ControlWindow(QtWidgets.QMainWindow):
 
         self.verticalLayout.addWidget(self.TranscriptLabel)
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
+
+        # Add a button to start the recording
         self.StartButton = QtWidgets.QPushButton(self.centralwidget)
         self.StartButton.setGeometry(QtCore.QRect(450, 50, 161, 81))
         font = QtGui.QFont()
@@ -101,12 +119,14 @@ class ControlWindow(QtWidgets.QMainWindow):
         self.StartButton.setObjectName("StartButton")
         self.StartButton.clicked.connect(self.onStartButtonClicked)
 
+        # Add a frame for the naming and saving options
         self.NamingFrame = QtWidgets.QFrame(self.centralwidget)
         self.NamingFrame.setGeometry(QtCore.QRect(370, 160, 321, 61))
         self.NamingFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.NamingFrame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.NamingFrame.setObjectName("NamingFrame")
 
+        # Add a label and input for the name of the transcript
         self.NameInput = QtWidgets.QLineEdit(self.NamingFrame)
         self.NameInput.setGeometry(QtCore.QRect(20, 20, 281, 31))
         font = QtGui.QFont()
@@ -122,12 +142,14 @@ class ControlWindow(QtWidgets.QMainWindow):
         self.NameLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.NameLabel.setObjectName("NameLabel")
 
+        # Add a frame for the saving and deleting options
         self.SavingFrame = QtWidgets.QFrame(self.centralwidget)
         self.SavingFrame.setGeometry(QtCore.QRect(370, 210, 321, 71))
         self.SavingFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.SavingFrame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.SavingFrame.setObjectName("SavingFrame")
 
+        # Add a button to save the transcript
         self.SaveButton = QtWidgets.QPushButton(self.SavingFrame)
         self.SaveButton.setGeometry(QtCore.QRect(20, 10, 131, 51))
         font = QtGui.QFont()
@@ -136,6 +158,7 @@ class ControlWindow(QtWidgets.QMainWindow):
         self.SaveButton.setObjectName("SaveButton")
         self.SaveButton.clicked.connect(self.onSaveButtonClicked)
 
+        # Add a button to delete the transcript
         self.DeleteButton = QtWidgets.QPushButton(self.SavingFrame)
         self.DeleteButton.setGeometry(QtCore.QRect(171, 10, 131, 51))
         font = QtGui.QFont()
@@ -144,6 +167,7 @@ class ControlWindow(QtWidgets.QMainWindow):
         self.DeleteButton.setObjectName("DeleteButton")
         self.DeleteButton.clicked.connect(self.onDeleteButtonClicked)
 
+        # Add a label for the transcript title
         self.TranscriptTitle = QtWidgets.QLabel(self.centralwidget)
         self.TranscriptTitle.setGeometry(QtCore.QRect(0, 10, 351, 31))
         font = QtGui.QFont()
@@ -154,12 +178,14 @@ class ControlWindow(QtWidgets.QMainWindow):
         self.TranscriptTitle.setAlignment(QtCore.Qt.AlignCenter)
         self.TranscriptTitle.setObjectName("TranscriptTitle")
 
+        # Add a frame for the navigation options
         self.NavigationFrame = QtWidgets.QFrame(self.centralwidget)
         self.NavigationFrame.setGeometry(QtCore.QRect(370, 300, 321, 121))
         self.NavigationFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.NavigationFrame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.NavigationFrame.setObjectName("NavigationFrame")
 
+        # Add a button to open the settings window
         self.SettingsButton = QtWidgets.QPushButton(self.NavigationFrame)
         self.SettingsButton.setGeometry(QtCore.QRect(30, 70, 121, 41))
         font = QtGui.QFont()
@@ -168,6 +194,7 @@ class ControlWindow(QtWidgets.QMainWindow):
         self.SettingsButton.setObjectName("SettingsButton")
         self.SettingsButton.clicked.connect(self.onSettingsButtonClicked)
 
+        # Add a button to open the help window
         self.HelpButton = QtWidgets.QPushButton(self.NavigationFrame)
         self.HelpButton.setGeometry(QtCore.QRect(170, 70, 111, 41))
         font = QtGui.QFont()
@@ -176,6 +203,7 @@ class ControlWindow(QtWidgets.QMainWindow):
         self.HelpButton.setObjectName("HelpButton")
         self.HelpButton.clicked.connect(self.onHelpButtonClicked)
 
+        # Add a button to open the transcripts window
         self.TranscriptsButton = QtWidgets.QPushButton(self.NavigationFrame)
         self.TranscriptsButton.setGeometry(QtCore.QRect(100, 20, 121, 41))
         font = QtGui.QFont()
@@ -189,12 +217,12 @@ class ControlWindow(QtWidgets.QMainWindow):
         self.retranslateUi()
         QtCore.QMetaObject.connectSlotsByName(self)
 
+    # Updates the text of the buttons and labels in the control window
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
         self.setWindowTitle(_translate("ControlWindow", "Transcription Transcriptor"))
         self.TranscriptLabel.setText(_translate("ControlWindow", ""))
         self.StartButton.setText(_translate("ControlWindow", "Start"))
-        self.NameInput.setPlaceholderText(_translate("ControlWindow", "Transcript Name"))
         self.NameInput.setPlaceholderText(_translate("ControlWindow", "Transcript Name"))
         self.NameLabel.setText(_translate("ControlWindow", "Transcript Name"))
         self.SaveButton.setText(_translate("ControlWindow", "Save"))
@@ -204,152 +232,225 @@ class ControlWindow(QtWidgets.QMainWindow):
         self.HelpButton.setText(_translate("ControlWindow", "Help"))
         self.TranscriptsButton.setText(_translate("ControlWindow", "Transcripts"))
 
+    # Handles the close event when the window is about to be closed
     def closeEvent(self, event):
+        # Check if the window is currently switching
         if self.isSwitching:
             return
-            
+
+        # Check if the recording is ongoing before exiting
         if self.StartButton.text() == "Stop":
             self.setMessageBox("You must stop the recording before exiting", "Warning", QtWidgets.QMessageBox.Warning)
             event.ignore()
             return
 
+        # Ask for confirmation before exiting
         response = self.setQuestionBox("Are you sure you want to exit?", "Warning")
         if response == QtWidgets.QMessageBox.No:
             event.ignore()
             return
         
+        # Encrypt the user details before closing the window
         self.encryption.encrypt(self.userDetails.password, self.userDetails.accountPath)
 
+    # Updates the transcript text box with new translations
     def updateTranscript(self):
+        # Stores the current time
         date = ""
         while not self.updateTranscriptEvent.is_set():
+            # Gets the next translation
             translation = self.translation.getTranslation()
+            # If the buffer is empty, skip
             if translation is None:
                 continue
 
+            # Check if the previous transcript is the same
             if len(self.transcriptList):
+                # If the translation is an ellipsis, skip if the last transcript is also an ellipsis
                 if translation == "..." and self.transcriptList[-1][1].split()[-1] == "...":
                     continue
 
+            # If the current time is different from the last time
             if not date == str(datetime.now().strftime("%H:%M")):
+                # Add a new transcript to the list
                 date = str(datetime.now().strftime("%H:%M"))
                 self.transcriptList.append([date, translation])
             else:
+                # Append the translation to the last transcript
                 self.transcriptList[-1][1] += " " + translation
 
+            # Update the subtitles
             self.subtitles.setSubtitle(translation)
+            # Update the transcript text box
             self.TranscriptLabel.setText(self.generateText())
 
+    # Generates the text for the transcript text box based on the current transcript list
     def generateText(self):
+        # Initializes the text
         text = ""
+        # Loops through each transcript in the list
         for i in self.transcriptList:
+            # Adds the time and transcript text to the string
             text += "[" + str(i[0]) + "] "
             text += str(i[1])
+            # Adds a new line
             text += "\n"
+        # Returns the generated text
         return text
 
+
+    # Displays a message box with the specified text, title, and type
     def setMessageBox(self, text, title, type : QtWidgets.QMessageBox):
+        # Create a new QMessageBox instance
         msg = QtWidgets.QMessageBox()
         msg.setIcon(type)
         msg.setText(text)
         msg.setWindowTitle(title)
 
+        # Set standard buttons and default button
         msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
         msg.defaultButton = QtWidgets.QMessageBox.Ok
 
+        # Execute the message box
         msg.exec_()
+
+    # Displays a message box with the specified text and title, and returns the user response
     def setQuestionBox(self, text, title):
+        # Create a QMessageBox instance
         msg = QtWidgets.QMessageBox()
+        # Set the message box icon to a question mark
         msg.setIcon(QtWidgets.QMessageBox.Question)
+        # Set the text and title of the message box
         msg.setText(text)
         msg.setWindowTitle(title)
 
+        # Set standard buttons for Yes and No options
         msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
         msg.defaultButton = QtWidgets.QMessageBox.No
 
+        # Execute the message box and return the user response
         return msg.exec_()
 
+    # Handles the start button click event
     def onStartButtonClicked(self):
+        # Check if the start button is pressed
         if(self.StartButton.text() == "Start"):
+            # Clear the subtitles and set the button text to "Stop"
             self.subtitles.clearSubtitles()
             self.StartButton.setText("Stop")
 
+            # Start the recording and transcript generation
             self.recording.startRecording()
             self.transcription.startGeneration()
             self.translation.startTranslation()
 
+            # Show the subtitles and set the subtitle text
             self.subtitles.show()
             self.subtitles.setSubtitle("")
 
+            # Clear the update transcript event and start the update transcript thread
             self.updateTranscriptEvent.clear()
             self.pool.submit(self.updateTranscript)
         else:
+            # Set the button text to "Start"
             self.StartButton.setText("Start")
 
+            # Set the update transcript event and wait for the update transcript thread to finish
             self.updateTranscriptEvent.set()
             self.pool.getResult(self.updateTranscript.__name__)
 
+            # Close the subtitles
             self.subtitles.close()
 
+            # Stop the recording and transcript generation
             self.recording.stopRecording()
             self.transcription.stopGeneration()
             self.translation.stopTranslation()
 
+    # Handles the delete button click event
     def onDeleteButtonClicked(self):
+        # Check if the start button is pressed
         if self.StartButton.text() == "Stop":
+            # Show a message box with a warning message
             self.setMessageBox("You must stop the recording before deleting the transcript", "Warning", QtWidgets.QMessageBox.Warning)
             return
 
+        # Ask the user if they are sure they want to delete the transcript
         response = self.setQuestionBox("Are you sure you want to delete this transcript?", "Delete")
         if response == QtWidgets.QMessageBox.Yes:
+            # Clear the transcript list and subtitles
             self.transcriptList = []
             self.subtitles.clearSubtitles()
+            # Clear the transcript label
             self.TranscriptLabel.setText("")
 
+    # Handles the save button click event
     def onSaveButtonClicked(self):
+        # Check if the recording is ongoing
         if self.StartButton.text() == "Stop":
+            # Display a warning message
             self.setMessageBox("You must stop the recording before saving the transcript", "Warning", QtWidgets.QMessageBox.Warning)
             return
 
+        # Check if there is a transcript
         if len(self.transcriptList) == 0:
+            # Display a warning message
             self.setMessageBox("You must have a transcript", "Warning", QtWidgets.QMessageBox.Warning)
             return
 
+        # Check if a name is entered
         if self.NameInput.text() == "":
+            # Display a warning message
             self.setMessageBox("You must enter a name for your transcript", "Warning", QtWidgets.QMessageBox.Warning)
             return
         
+        # Ask for confirmation to save the transcript
         response = self.setQuestionBox("Are you sure you want to save this transcript?", "Save")
         if response == QtWidgets.QMessageBox.No:
             return
 
+        # Insert the transcript to user details
         self.userDetails.insertTranscript(self.NameInput.text(), self.transcriptList)
+        # Display a success message
         self.setMessageBox("Transcript saved", "Success", QtWidgets.QMessageBox.Information)
+        # Reset transcript list, clear subtitles, and reset text input
         self.transcriptList = []
         self.subtitles.clearSubtitles()
         self.TranscriptLabel.setText("")
         self.NameInput.setText("")
 
+    # Handles the settings button click event
     def onSettingsButtonClicked(self):
+        # Check if the recording is ongoing
         if self.StartButton.text() == "Stop":
+            # Display a warning message
             self.setMessageBox("You must stop the recording before changing settings", "Warning", QtWidgets.QMessageBox.Warning)
             return
 
+        # Set switching flag to true and switch to settings window
         self.isSwitching = True
         self.managerWindow.switchWindow("SettingsWindow")
 
+    # Switch to searching window when the transcripts button is clicked
     def onTranscriptsButtonClicked(self):
+        # Check if the recording is ongoing
         if self.StartButton.text() == "Stop":
+            # Display a warning message
             self.setMessageBox("You must stop the recording before looking at transcripts", "Warning", QtWidgets.QMessageBox.Warning)
             return
 
+        # Set switching flag to true and switch to searching window
         self.isSwitching = True
         self.managerWindow.switchWindow("SearchingWindow")
 
+    # Switch to help window when the help button is clicked
     def onHelpButtonClicked(self):
+        # Check if the recording is ongoing
         if self.StartButton.text() == "Stop":
+            # Display a warning message
             self.setMessageBox("You must stop the recording before looking at help", "Warning", QtWidgets.QMessageBox.Warning)
             return
 
+        # Set switching flag to true and switch to help window
         self.isSwitching = True
         self.managerWindow.switchWindow("HelpWindow")
