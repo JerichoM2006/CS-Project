@@ -11,9 +11,6 @@ class Threadpool(Singleton):
         self.workers = dict()
     
     # Submits a function to the thread pool
-    # func: Function to submit
-    # *args and **kwargs: Arguments to pass to the function
-    # Returns the future
     def submit(self, func, *args, **kwargs):
         name = func.__name__
         index = 1
@@ -30,8 +27,6 @@ class Threadpool(Singleton):
         return self.workers[name]
     
     # Gets the result of a worker
-    # name: Name of the worker
-    # Returns the result of the worker
     def getResult(self, name):
         # Checks if the worker exists
         if name not in self.workers:
@@ -40,7 +35,6 @@ class Threadpool(Singleton):
         # Returns the result of the worker
         return self.workers[name].result()
     
-    # Destructor
     # Shuts down the thread pool
     def __del__(self):
         self.executor.shutdown()
